@@ -3,13 +3,13 @@ importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js')
 
 // Replace these with your own Firebase config keys...
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  apiKey: 'AIzaSyBvOLvPou5XN-dOo7Q4WxnTR6lfLULCJlQ',
+  authDomain: 'dnadi-onna.firebaseapp.com',
+  projectId: 'dnadi-onna',
+  storageBucket: 'dnadi-onna.firebasestorage.app',
+  messagingSenderId: '743475295051',
+  appId: '1:743475295051:web:df690ebd96f95ac2bc2ece',
+  measurementId: 'G-9XVCVW1T60',
 };
 
 firebase.initializeApp(firebaseConfig);
