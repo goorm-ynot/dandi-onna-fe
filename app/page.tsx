@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import useFcmToken from "@/hooks/useFcmToken";
+import { Button } from '@/components/ui/button';
+import useFcmToken from '@/hooks/useFcmToken';
 
 export default function Home() {
   const { token, notificationPermissionStatus } = useFcmToken();
 
   const handleTestNotification = async () => {
-    const response = await fetch("/send-notification", {
-      method: "POST",
+    const response = await fetch('/send-notification', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         token: token,
-        title: "Test Notification",
-        message: "This is a test notification",
-        link: "/contact",
+        title: 'Test Notification',
+        message: 'This is a test notification',
+        link: '/contact',
       }),
     });
 
@@ -25,25 +25,23 @@ export default function Home() {
   };
 
   return (
-    <main className="p-10">
-      <h1 className="text-4xl mb-4 font-bold">Firebase Cloud Messaging Demo</h1>
+    <main className='p-10'>
+      <h1 className='text-4xl mb-4 font-bold'>Firebase Cloud Messaging Demo</h1>
 
-      {notificationPermissionStatus === "granted" ? (
+      {notificationPermissionStatus === 'granted' ? (
         <p>Permission to receive notifications has been granted.</p>
       ) : notificationPermissionStatus !== null ? (
         <p>
-          You have not granted permission to receive notifications. Please
-          enable notifications in your browser settings.
+          You have not granted permission to receive notifications. Please enable notifications in your browser
+          settings.
         </p>
       ) : null}
 
-      <Button
-        disabled={!token}
-        className="mt-5"
-        onClick={handleTestNotification}
-      >
-        Send Test Notification
+      <Button disabled={!token} className='mt-5' onClick={handleTestNotification}>
+        직접보내는 알람 설정
       </Button>
+      <h2 className='text-2xl mb-4 font-bold pt-4'>My Token </h2>
+      <p>{token}</p>
     </main>
   );
 }
