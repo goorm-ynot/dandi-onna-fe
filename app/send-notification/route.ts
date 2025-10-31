@@ -1,12 +1,28 @@
-import admin from "firebase-admin";
-import { Message } from "firebase-admin/messaging";
-import { NextRequest, NextResponse } from "next/server";
+import admin from 'firebase-admin';
+import { Message } from 'firebase-admin/messaging';
+import { NextRequest, NextResponse } from 'next/server';
 
 // Initialize Firebase Admin SDK
+// if (!admin.apps.length) {
+//   const serviceAccount = require("@/service_key.json");
+//   admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount),
+//   });
+// }
 if (!admin.apps.length) {
-  const serviceAccount = require("@/service_key.json");
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert({
+      type: 'service_account',
+      project_id: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+      private_key_id: process.env.NEXT_PUBLIC_FIREBASE_PRIVATE_KEY_ID,
+      private_key: process.env.NEXT_PUBLIC_FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      client_email: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_EMAIL,
+      client_id: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_ID,
+      auth_uri: process.env.NEXT_PUBLIC_FIREBASE_AUTH_URI,
+      token_uri: process.env.NEXT_PUBLIC_FIREBASE_TOKEN_URI,
+      auth_provider_x509_cert_url: process.env.NEXT_PUBLIC_FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+      client_x509_cert_url: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_X509_CERT_URL,
+    } as admin.ServiceAccount),
   });
 }
 
@@ -29,7 +45,7 @@ export async function POST(request: NextRequest) {
   try {
     await admin.messaging().send(payload);
 
-    return NextResponse.json({ success: true, message: "Notification sent!" });
+    return NextResponse.json({ success: true, message: 'Notification sent!' });
   } catch (error) {
     return NextResponse.json({ success: false, error });
   }
