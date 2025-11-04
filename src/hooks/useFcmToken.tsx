@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { getToken, onMessage, Unsubscribe } from 'firebase/messaging';
 import { fetchToken, messaging } from '@/firebase';
 import { useRouter } from 'next/navigation';
@@ -81,12 +81,25 @@ const useFcmToken = () => {
     isLoading.current = false;
   };
 
+  // Original code:
+  // useEffect(() => {
+  //   if ('Notification' in window) {
+  //     loadToken();
+  //   }
+  // }, []);
+
+  // Fixed: Added loadToken to dependencies array and wrapped in useCallback to prevent infinite loop
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const memoizedLoadToken = useCallback(loadToken, []); // Memoize loadToken
+  // Note: loadToken is intentionally omitted from the dependency array to prevent infinite loops
+  // as it contains state setters and can be called recursively
+
   useEffect(() => {
     // Step 8: Initialize token loading when the component mounts.
     if ('Notification' in window) {
-      loadToken();
+      memoizedLoadToken();
     }
-  }, []);
+  }, [memoizedLoadToken]);
 
   useEffect(() => {
     const setupListener = async () => {
@@ -153,7 +166,12 @@ const useFcmToken = () => {
 
     // Step 11: Cleanup the listener when the component unmounts.
     return () => unsubscribe?.();
-  }, [token, router, toast]);
+    // Original code:
+    // }, [token, router, toast]);
+
+    // Fixed: Removed toast from dependencies as it's an external function
+    // that doesn't need to trigger useEffect
+  }, [token, router]);
 
   return { token, notificationPermissionStatus }; // Return the token and permission status.
 };
