@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function dashboard() {
   return (
-    <div className='h-screen flex flex-col max-w-full'>
+    <div className='w-screen h-screen flex flex-col '>
       {/* seller 헤더 */}
       {/* seller 사이드 메뉴 */}
       {/* 아... 이건 레이아웃에 들어가야하지 */}
