@@ -32,8 +32,8 @@ export default function OnboardingPage() {
           <p className='text-black text-lg font-normal'>모두가 신뢰할 수 있는 경험</p>
           <h1 className='text-black text-4xl font-black mb-4'>단디온나</h1>
         </div>
-        {/* 스와이프 default=4초 */}
-        <ImageSlider images={images} />
+        {/* 스와이프 default=3초 */}
+        <ImageSlider images={images} interval={4000} />
         {/* 로그인 버튼들 */}
         <div className='flex flex-col justify-start items-center gap-3 w-full mt-5'>
           <div className='self-stretch h-14 p-3 bg-yellow-400 rounded-lg inline-flex justify-center items-center gap-2.5'>

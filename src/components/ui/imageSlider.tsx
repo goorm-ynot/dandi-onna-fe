@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
 
 interface ImageSliderProps {
@@ -147,7 +148,14 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, autoPlay = true, inte
           }}>
           {images.map((image, index) => (
             <div key={index} className='w-[304px] h-[293px] flex-shrink-0'>
-              <img src={image} alt={`Slide ${index + 1}`} className='w-full h-full object-cover' draggable={false} />
+              <Image
+                src={image}
+                alt={`Slide ${index + 1}`}
+                width={304}
+                height={293}
+                className='w-full h-full object-cover'
+                draggable={false}
+              />
             </div>
           ))}
         </div>
