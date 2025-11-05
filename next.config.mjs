@@ -22,10 +22,23 @@ const withPWA = nextPWA({
 
 const nextConfig = {
   images: {
-    domains: ['placehold.co'],
+    domains: ['placehold.co', 'dandi-pre.s3.ap-northeast-2.amazonaws.com'],
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox",
+  },
+  // kakao map 설정 추가
+  experimental: {
+    esmExternals: 'loose',
+  },
+  webpack: (config) => {
+    // 카카오 맵 SDK를 위한 웹팩 설정
+    config.module.rules.push({
+      test: /\.js$/,
+      use: ['babel-loader'],
+      exclude: /node_modules\/(?!(react-kaka-maps-sdk)\/).*/,
+    });
+    return config;
   },
 };
 
