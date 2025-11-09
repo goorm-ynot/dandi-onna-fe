@@ -17,7 +17,8 @@ const shopFormSchema = z.object({
   latitude: z.number({ message: '위도는 숫자여야 합니다' }),
   longitude: z.number({ message: '경도는 숫자여야 합니다' }),
   // businessHours: z.array(z.string()).length(7, '요일별 영업시간을 입력해주세요'),
-  opening_hours: z.string(),
+  opening_hours: z.string({ message: '오픈시간은 숫자여야 합니다' }), // time
+  ending_hours: z.string({ message: '오픈시간은 숫자여야 합니다' }), // time
   email: z.string().min(1, '아이디를 입력해주세요'),
   password: z.string().min(1, '비밀번호를 입력해주세요'),
 });
@@ -95,9 +96,14 @@ export default function ShopFormPage() {
       </div>
 
       <div>
-        <label className='block font-medium'>요일별 영업시간</label>
+        <label className='block font-medium'>오픈시간</label>
         <input {...register(`opening_hours`)} className='border border-gray-300 rounded-lg p-2 w-full' />
         {errors.opening_hours && <p className='text-red-500'>{errors.opening_hours.message}</p>}
+      </div>
+      <div>
+        <label className='block font-medium'>마감시간</label>
+        <input {...register(`ending_hours`)} className='border border-gray-300 rounded-lg p-2 w-full' />
+        {errors.ending_hours && <p className='text-red-500'>{errors.ending_hours.message}</p>}
       </div>
 
       <div>

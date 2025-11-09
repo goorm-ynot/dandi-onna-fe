@@ -1,40 +1,85 @@
-'use client'; // Next.js App Router 사용 시 클라이언트 컴포넌트 지정
+'use client';
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { BellIcon } from '../icons';
+import { MenuItem } from '@/constants/sellerNavConstant';
+import { usePathname } from 'next/navigation';
+import DropDownNav from './DropDownNav';
+import { useDropdownPosition } from '@/hooks/useDropdownPosition';
+import DropdownPortal from './DropDownPortal';
 
-export default function Header() {
+interface HeaderProps {
+  navList: MenuItem[];
+  hasNotification: boolean;
+  userName: string;
+}
+
+export default function Header({ navList, hasNotification, userName }: HeaderProps) {
+  const pathname = usePathname();
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const menuRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const { pos, updatePosition } = useDropdownPosition();
+
+  const openMenu = (id: string) => {
+    const target = menuRefs.current[id];
+    if (target) updatePosition(target);
+    setOpenMenuId(id);
+  };
+
+  const closeMenu = () => setOpenMenuId(null);
+
   return (
-    <header className='w-full px-5 py-4 bg-white shadow-sm border-b border-gray-300'>
-      <div className='max-w-[1280px] mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
+    <header className='relative w-full bg-white shadow-sm border-b border-gray-300'>
+      {/* ✅ 한 줄 정렬 + 중앙정렬 */}
+      <div className='max-w-[1280px] mx-auto flex items-center justify-between px-6 py-4'>
         {/* 왼쪽: 로고 + 네비게이션 */}
-        <div className='flex flex-col md:flex-row md:items-center md:gap-10'>
+        <div className='flex items-center gap-12'>
           {/* 로고 */}
-          <div className='text-neutral-900 text-2xl font-black text-center md:text-left font-[PartialSans]'>
-            단디온나
-          </div>
+          <div className='logo text-2xl'>단디온나</div>
 
           {/* 네비게이션 */}
-          <nav className='flex flex-row flex-wrap md:flex-nowrap gap-10 text-lg '>
-            <button className='text-neutral-900 px-12 font-bold  whitespace-nowrap'>주문 관리</button>
-            <button className='text-neutral-600 px-12 font-medium hidden sm:block  whitespace-nowrap'>매출 관리</button>
-            <button className='text-neutral-600 px-12 font-medium  hidden sm:block  whitespace-nowrap'>
-              상품/재고
-            </button>
+          <nav className='self-stretch inline-flex justify-center items-center '>
+            {navList.map((menu) => {
+              const isActive = menu.children?.some((child) => child.path === pathname);
+              const isOpen = openMenuId === menu.id;
+
+              return (
+                <button
+                  key={menu.id}
+                  ref={(el) => {
+                    menuRefs.current[menu.id] = el;
+                  }}
+                  onMouseEnter={() => openMenu(menu.id)}
+                  onClick={() => openMenu(menu.id)}
+                  className={`
+          transition px-[50px] py-1
+          ${isActive || isOpen ? 'text-neutral-900 font-bold   text-lg' : 'text-neutral-600 font-medium   text-lg'}
+          hover:text-neutral-900
+        `}>
+                  {menu.label}
+                </button>
+              );
+            })}
           </nav>
         </div>
 
-        {/* 오른쪽: 프로필 + 알림 */}
-        <div className='flex items-center justify-center gap-4'>
-          <div className='text-neutral-900 text-lg text-center sm:text-left'>
-            <span className='font-semibold'>한정민 </span>
-            <span className='font-normal'>사장님 오늘도 번창하세요!</span>
+        {/* 오른쪽: 사용자 정보 + 알림 */}
+        <div className='flex items-center gap-4'>
+          <div className='text-neutral-900 text-lg'>
+            <span className='font-semibold'>{userName}</span> <span>사장님 오늘도 번창하세요!</span>
           </div>
-          <div data-alarm='true' className='relative w-6 h-6'>
-            <BellIcon hasNotification={true} />
+          <div className='relative w-[20px] h-[24px]'>
+            <BellIcon hasNotification={hasNotification} />
           </div>
         </div>
       </div>
+
+      {/* ✅ Portal로 드롭다운 렌더링 */}
+      {openMenuId && (
+        <DropdownPortal>
+          <DropDownNav menu={navList.find((m) => m.id === openMenuId)!} x={pos.x} y={pos.y} close={closeMenu} />
+        </DropdownPortal>
+      )}
     </header>
   );
 }

@@ -49,7 +49,7 @@ export default function OnboardingPage() {
             </button>
           </div>
           <button
-            onClick={() => router.push('/customer')}
+            // onClick={() => router.push('/customer')}
             className="text-center justify-start text-black text-xs font-normal font-['Pretendard']">
             비회원으로 둘러보기
           </button>
