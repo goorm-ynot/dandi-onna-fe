@@ -1,4 +1,5 @@
 // src/constants/menu.ts
+import { DynamicIcon } from '@/lib/iconMapper';
 
 export interface MenuItem {
   id: string; // 고유 식별자
@@ -23,9 +24,9 @@ export const MENU_ITEMS: MenuItem[] = [
     id: 'sales-management',
     label: '매출 관리',
     children: [
-      { id: 'settlement-management', label: '정산관리' },
-      { id: 'tax-invoice', label: '세금계산서' },
-      { id: 'vat-management', label: '부가가치세' },
+      { id: 'settlement-management', label: '정산관리', icon: 'Lock' },
+      { id: 'tax-invoice', label: '세금계산서', icon: 'Lock' },
+      { id: 'vat-management', label: '부가가치세', icon: 'Lock' },
     ],
   },
   {

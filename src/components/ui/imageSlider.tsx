@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
+import { Button } from './button';
 
 interface ImageSliderProps {
   images: string[];
@@ -165,12 +166,13 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, autoPlay = true, inte
       {images.length > 1 && (
         <div className='flex justify-center gap-2 mt-4'>
           {images.map((_, index) => (
-            <button
+            <Button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-2 h-2 rounded-full transition-all duration-200 ${
+              className={` rounded-full transition-all duration-200 ${
                 index === currentIndex ? 'bg-gray-600' : 'bg-gray-300 hover:bg-gray-400'
               }`}
+              size={'icon'}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
