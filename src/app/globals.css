@@ -101,7 +101,8 @@
     @apply bg-background text-foreground;
   }
   html {
-    font-family: var(--font-pretendard), system-ui, sans-serif;
+    /* font-family: var(--font-pretendard), system-ui, sans-serif; */
+    @apply font-[var(--font-pretendard)];
   }
 }
 
