@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import React from 'react';
 
+const USER_ROLE = ['CONSUMER', 'OWNER', 'ADMIN'];
 export default function OnboardingPage() {
   const router = useRouter();
   const { token, notificationPermissionStatus } = useFcmToken();
@@ -18,17 +19,32 @@ export default function OnboardingPage() {
   const putToken = () => {
     if (notificationPermissionStatus === 'granted') {
       console.log('토큰 발급: ', token);
+      try {
+      } catch (error) {}
+    } else {
+      alert('알람 허용을 해주셔야 푸시알림을 받을 수 있습니다.');
     }
   };
 
   const onKakaoClick = () => {
+    const userLoginData = {
+      loginId: 'owner@example.com',
+      password: 'pass123!',
+      role: USER_ROLE[0], // CUSTOMER
+    };
+
     putToken();
-    router.push('/customer');
+    // router.push('/customer');
   };
 
   const onSellerClick = () => {
+    const userLoginData = {
+      loginId: 'owner@example.com',
+      password: 'pass123!',
+      role: USER_ROLE[1], // OWNER
+    };
     putToken();
-    router.push('/seller/dashboard');
+    // router.push('/seller/dashboard');
   };
 
   const images = [

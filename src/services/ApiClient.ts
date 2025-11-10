@@ -1,98 +1,84 @@
-// lib/api.ts
-import axios from 'axios';
+// lib/serverApiClient.ts
+import { cookies } from 'next/headers';
 
-type AxiosInstanceType = ReturnType<typeof axios.create>;
-type AxiosRequestConfigType = Parameters<AxiosInstanceType['get']>[1];
-type AxiosResponseType<T = any> = { data: T; status: number; statusText?: string; headers?: any; config?: any };
-
-interface ApiResponse<T = any> {
-  data: T;
-  message: string;
-  status: number;
-}
-
-class ApiClient {
-  private instance: AxiosInstanceType;
+class ServerApiClient {
+  private baseURL: string;
 
   constructor() {
-    this.instance = axios.create({
-      baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1',
-      timeout: 10000,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    this.baseURL = `${process.env.BACKEND_URL}/${process.env.API_BASE}`;
+  }
+
+  private async getAuthHeaders() {
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get('access-token')?.value;
+
+    return {
+      'Content-Type': 'application/json',
+      ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+    };
+  }
+
+  async get<T>(endpoint: string): Promise<T> {
+    const headers = await this.getAuthHeaders();
+
+    const res = await fetch(`${this.baseURL}${endpoint}`, {
+      method: 'GET',
+      headers,
     });
 
-    this.setupInterceptors();
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    return res.json();
   }
 
-  private setupInterceptors(): void {
-    // 요청 인터셉터
-    this.instance.interceptors.request.use(
-      (config) => {
-        const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+  async post<T>(endpoint: string, data?: any): Promise<T> {
+    const headers = await this.getAuthHeaders();
 
-        if (token) {
-          if (!config.headers) config.headers = {} as any;
-          (config.headers as any).Authorization = `Bearer ${token}`;
-        }
-        return config;
-      },
-      (error) => Promise.reject(error)
-    );
+    const res = await fetch(`${this.baseURL}${endpoint}`, {
+      method: 'POST',
+      headers,
+      body: data ? JSON.stringify(data) : undefined,
+    });
 
-    // 응답 인터셉터
-    this.instance.interceptors.response.use(
-      (response) => response,
-      async (error) => {
-        const originalRequest = error.config as any;
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
-          originalRequest._retry = true;
-
-          try {
-            const refreshToken = localStorage.getItem('refreshToken');
-            if (refreshToken) {
-              const response = await this.instance.post('/auth/refresh', {
-                refreshToken,
-              });
-
-              const { accessToken } = (response as any).data;
-              localStorage.setItem('accessToken', accessToken);
-
-              return this.instance(originalRequest);
-            }
-          } catch (refreshError) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            window.location.href = '/';
-          }
-        }
-
-        return Promise.reject(error);
-      }
-    );
+    return res.json();
   }
 
-  async get<T>(url: string, config?: AxiosRequestConfigType): Promise<ApiResponse<T>> {
-    const response = await this.instance.get(url, config as any);
-    return (response as any).data;
+  async put<T>(endpoint: string, data?: any): Promise<T> {
+    const headers = await this.getAuthHeaders();
+
+    const res = await fetch(`${this.baseURL}${endpoint}`, {
+      method: 'PUT',
+      headers,
+      body: data ? JSON.stringify(data) : undefined,
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    return res.json();
   }
 
-  async post<T>(url: string, data?: any, config?: AxiosRequestConfigType): Promise<ApiResponse<T>> {
-    const response = await this.instance.post(url, data, config as any);
-    return (response as any).data;
-  }
+  async delete<T>(endpoint: string): Promise<T> {
+    const headers = await this.getAuthHeaders();
 
-  async put<T>(url: string, data?: any, config?: AxiosRequestConfigType): Promise<ApiResponse<T>> {
-    const response = await this.instance.put(url, data, config as any);
-    return (response as any).data;
-  }
+    const res = await fetch(`${this.baseURL}${endpoint}`, {
+      method: 'DELETE',
+      headers,
+    });
 
-  async delete<T>(url: string, config?: AxiosRequestConfigType): Promise<ApiResponse<T>> {
-    const response = await this.instance.delete(url, config as any);
-    return (response as any).data;
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    return res.json();
   }
 }
 
-export const apiClient = new ApiClient();
+export const serverApiClient = new ServerApiClient();
