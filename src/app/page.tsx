@@ -6,7 +6,7 @@ import { useGeolocationConsent } from '@/hooks/useGeolocationConsent';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const USER_ROLE = ['CONSUMER', 'OWNER', 'ADMIN'];
 export default function OnboardingPage() {
@@ -15,6 +15,11 @@ export default function OnboardingPage() {
   const { permission, requestPermission } = useGeolocationConsent();
 
   const isLocationAllowed = permission === 'granted';
+
+  useEffect(() => {
+    // 위치 권한 정보 수집
+    requestPermission();
+  }, []);
 
   const putToken = () => {
     if (notificationPermissionStatus === 'granted') {
@@ -54,44 +59,6 @@ export default function OnboardingPage() {
     'https://placehold.co/304x293/96CEB4/ffffff?text=Image+4',
   ];
 
-  // ✅ Step 1: 위치 권한 미허용 시
-  if (permission === 'prompt' || permission === 'unsupported' || permission === null) {
-    return (
-      <div className='w-screen h-screen flex flex-col justify-center items-center gap-10 p-5 text-center'>
-        <h1 className='text-3xl font-bold text-black'>단디온나</h1>
-        <p className='text-gray-700 text-base max-w-sm'>
-          서비스 이용을 위해 위치정보 접근이 필요합니다. 주변 매장 탐색 및 맞춤 추천 기능을 사용하려면 위치정보 사용에
-          동의해주세요.
-        </p>
-        <Button
-          onClick={async () => {
-            await requestPermission();
-            // if (navigator.geolocation) {
-            //   navigator.geolocation.getCurrentPosition(
-            //     () => toast.success('위치정보 사용이 허용되었습니다!'),
-            //     () => toast.error('위치정보 접근이 거부되었습니다.')
-            //   );
-            // }
-          }}
-          size='default'
-          className='w-1/4 bg-blue-500 hover:bg-blue-600 text-white text-lg'>
-          위치정보 사용 동의하기
-        </Button>
-      </div>
-    );
-  }
-
-  // ✅ Step 2: 위치 권한 거부 시
-  if (permission === 'denied') {
-    return (
-      <div className='w-screen h-screen flex flex-col justify-center items-center text-center gap-5'>
-        <h2 className='text-xl font-semibold text-red-500'>위치정보 접근이 거부되었습니다.</h2>
-        <p className='text-gray-600 max-w-xs'>브라우저 설정에서 위치 권한을 허용한 뒤 다시 시도해주세요.</p>
-      </div>
-    );
-  }
-
-  // ✅ Step 3: 위치 권한 허용 후 (정상 온보딩 UI)
   return (
     <div className='w-screen h-screen flex flex-col max-w-full justify-center items-center'>
       <div className='flex-1 flex flex-col justify-center items-center gap-8 p-3'>
