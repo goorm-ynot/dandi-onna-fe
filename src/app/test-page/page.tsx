@@ -38,26 +38,22 @@ export default function LoginPage() {
   };
 
   const putToken = async () => {
-    if (notificationPermissionStatus === 'granted') {
-      console.log('토큰 발급: ', token);
-      try {
-        const response = await fetch('/api/v1/push/token', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(token),
-        });
+    console.log('토큰 발급: ', token);
+    try {
+      const response = await fetch('/api/v1/push/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(token),
+      });
 
-        toast.success('토큰이 저장되었습니다.');
-        console.log(response);
-      } catch (error) {
-        toast.error('토큰 저장 실패함요');
-        console.log(error);
-        throw error;
-      }
-    } else {
-      alert('알람 허용을 해주셔야 푸시알림을 받을 수 있습니다.');
+      toast.success('토큰이 저장되었습니다.');
+      console.log(response);
+    } catch (error) {
+      toast.error('토큰 저장 실패함요');
+      console.log(error);
+      throw error;
     }
   };
 

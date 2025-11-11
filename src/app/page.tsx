@@ -22,13 +22,7 @@ export default function OnboardingPage() {
   }, []);
 
   const putToken = () => {
-    if (notificationPermissionStatus === 'granted') {
-      console.log('토큰 발급: ', token);
-      try {
-      } catch (error) {}
-    } else {
-      alert('알람 허용을 해주셔야 푸시알림을 받을 수 있습니다.');
-    }
+    // 허용 상관없이 token 전송으로
   };
 
   const onKakaoClick = () => {

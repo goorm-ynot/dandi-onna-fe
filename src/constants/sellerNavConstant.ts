@@ -38,3 +38,9 @@ export const MENU_ITEMS: MenuItem[] = [
     ],
   },
 ];
+
+export const reservationStatus = {
+  PROCESSING: '방문예정',
+  NOSHOW: '노쇼',
+  DISABLED: '방문완료',
+};

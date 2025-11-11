@@ -13,6 +13,7 @@ async function getNotificationPermissionAndToken() {
     return null;
   }
 
+  // 허용 상관없이 토큰은 발급 받기
   // Step 2: Check if permission is already granted.
   if (Notification.permission === 'granted') {
     return await fetchToken();
