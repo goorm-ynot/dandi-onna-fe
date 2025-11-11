@@ -1,8 +1,8 @@
 // src/app/api/users/route.ts
 import { NextResponse } from 'next/server';
 
-// ✅ 임시 목데이터
-export const mockReservations = [
+// ✅ 임시 목데이터 (export 제거)
+const mockReservations = [
   {
     reservationNo: 'RSV-001',
     time: '2025-11-11T10:00:00Z',
@@ -93,7 +93,7 @@ export const mockReservations = [
   },
 ];
 
-// ✅ GET 요청: mockUsers 리턴
+// ✅ GET 요청: mockReservations 리턴
 export async function GET() {
   try {
     return NextResponse.json(mockReservations, { status: 200 });
