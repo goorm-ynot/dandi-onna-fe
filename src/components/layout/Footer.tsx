@@ -4,9 +4,9 @@ import React from 'react';
 
 export default function Footer() {
   return (
-    <footer className='w-full border-t border-gray-200 bg-white'>
+    <footer className='w-full bg-white py-20'>
       {/* ✅ 전체는 중앙 정렬 + 최대 1920px 제한 */}
-      <div className='max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-20 py-10'>
+      <div className='max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-20 py-20'>
         {/* ✅ 내부 컨테이너: 중앙에 1280px 고정, 양쪽 여백 균등 */}
         <div className='max-w-[1280px] mx-auto flex flex-col gap-5'>
           {/* 상단: 로고 + 링크 + 고객센터 */}

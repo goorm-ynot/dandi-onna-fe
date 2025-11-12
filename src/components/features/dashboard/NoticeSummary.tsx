@@ -10,7 +10,7 @@ interface Notice {
 
 export default function NoticeSummary() {
   return (
-    <div className='w-full px-10 pt-5 pb-10 flex justify-between items-center'>
+    <div className='max-w-[1280px] w-full pt-20 pb-40 flex justify-between items-center'>
       <div className='flex items-center'>
         <Label className='justify-center text-neutral-900 text-3xl font-semibold leading-8 pr-10'>공지사항</Label>
         <Label className="flex-1 max-w-[1024px] justify-center text-neutral-900 text-base font-normal font-['Pretendard'] leading-4">

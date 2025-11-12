@@ -69,6 +69,7 @@
     --padding-20: 20px;
     --padding-24: 24px;
     --padding-10: 10px;
+    --padding-40: 40px;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -111,10 +112,84 @@
   }
 }
 
-@layer component {
+@layer components {
   /* 로고 스타일 */
   .logo {
     @apply text-neutral-900 font-black font-[PartialSans];
+  }
+  /* 글자 스타일 */
+  /* title */
+  .title1 {
+    @apply text-[16px] font-normal leading-[18px] font-[var(--font-pretendard)];
+  }
+  .title2 {
+    @apply text-[16px] font-medium leading-[18px] font-[var(--font-pretendard)];
+  }
+  .title3 {
+    @apply text-[16px] font-semibold leading-[18px] font-[var(--font-pretendard)];
+  }
+  .title4 {
+    @apply text-[18px] font-normal leading-[20px] font-[var(--font-pretendard)];
+  }
+  .title5 {
+    @apply text-[18px] font-semibold leading-[20px] font-[var(--font-pretendard)];
+  }
+  .title6 {
+    @apply text-[28px] font-semibold leading-[32px];
+  }
+  /* Body */
+  .body1 {
+    @apply text-[14px] font-normal leading-[16px] font-[var(--font-pretendard)];
+  }
+  .body2 {
+    @apply text-[16px] font-normal leading-[18px] font-[var(--font-pretendard)];
+  }
+  .body3 {
+    @apply text-[16px] font-medium leading-[18px] font-[var(--font-pretendard)];
+  }
+  .body4 {
+    @apply text-[16px] font-semibold leading-[18px] font-[var(--font-pretendard)];
+  }
+  .body5 {
+    @apply text-[18px] font-normal leading-[20px] font-[var(--font-pretendard)];
+  }
+  .body6 {
+    @apply text-[18px] font-semibold leading-[20px] font-[var(--font-pretendard)];
+  }
+  .body7 {
+    @apply text-[18px] font-bold leading-[20px] font-[var(--font-pretendard)];
+  }
+  /* caption */
+  .caption1 {
+    @apply text-[10px] font-normal leading-[12x] font-[var(--font-pretendard)];
+  }
+  .caption2 {
+    @apply text-[10px] font-normal leading-[14px] font-[var(--font-pretendard)];
+  }
+  .caption3 {
+    @apply text-[12px] font-normal leading-[14px] font-[var(--font-pretendard)];
+  }
+  .caption4 {
+    @apply text-[14px] font-normal leading-[16px] font-[var(--font-pretendard)];
+  }
+  .caption5 {
+    @apply text-[16px] font-normal leading-[18px] font-[var(--font-pretendard)];
+  }
+  .caption6 {
+    @apply text-[16px] font-medium leading-[18px] font-[var(--font-pretendard)];
+  }
+  .caption7 {
+    @apply text-[16px] font-bold leading-[18px] font-[var(--font-pretendard)];
+  }
+  .caption8 {
+    @apply text-[20px] font-bold leading-[24px] font-[var(--font-pretendard)];
+  }
+  /* 그림자 스타일 */
+  .shadow-1 {
+    @apply shadow-[0px_10px_10px_0px_rgba(0,0,0,0.6)];
+  }
+  .shadow-2 {
+    @apply shadow-[0px_4px_32px_0px_rgba(0,0,0,0.15)];
   }
 }
 

@@ -19,6 +19,9 @@ interface ReservationStore {
   // ===== 상태 (State) =====
   reservations: Reservation[]; // 예약 목록 전체
   selectedReservation: Reservation | null; // 현재 선택된 예약
+  totalPage: number; // 전체 페이지
+  cursor: number; // 현재 페이지
+  activeTab?: string; // 필터 탭
 
   // ===== 액션 (Actions) =====
   /**
@@ -26,6 +29,12 @@ interface ReservationStore {
    * (⚠️ 정렬은 서버 API 단에서 수행하도록 변경됨)
    */
   setReservations: (reservations: Reservation[]) => void;
+
+  /**
+   * 전체 페이지 및 현재 페이지 세팅
+   * 추후 페이지 변경이 일어날 때, (cursor) API 호출용
+   */
+  setPages: (totalPage: number, cursor: number) => void;
 
   /**
    * 현재 선택된 예약을 지정 (ex. 상세 모달용)
@@ -53,6 +62,12 @@ interface ReservationStore {
    * (⚠️ 단, 실제 정렬 로직은 서버 API에서 수행하도록 예정)
    */
   getSortedReservations: () => Reservation[];
+
+  /**
+   * 필터 선택
+   * (필터링을 할 때, 서버 API 호출)
+   */
+  setActiveTab: (activeTab: string) => void;
 }
 
 /**
@@ -64,6 +79,9 @@ export const useReservationStore = create<ReservationStore>()(
     // 초기 상태값
     reservations: [],
     selectedReservation: null,
+    totalPage: 0,
+    cursor: 1,
+    activeTab: 'ALL',
 
     // ===== 액션들 =====
     setReservations: (reservations) =>
@@ -73,6 +91,11 @@ export const useReservationStore = create<ReservationStore>()(
         reservations,
       }),
 
+    setPages: (totalPage, cursor) =>
+      set({
+        totalPage,
+        cursor,
+      }),
     setSelectedReservation: (reservation) => set({ selectedReservation: reservation }),
 
     markAsExpired: (reservationId) =>
@@ -96,5 +119,7 @@ export const useReservationStore = create<ReservationStore>()(
       // ✅ 실제 정렬은 서버 API 호출로 대체 예정
       // 예: onSortChange 이벤트 → fetchSortedReservations() 호출
       get().reservations.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()),
+
+    setActiveTab: (activeTab) => set({ activeTab }),
   }))
 );

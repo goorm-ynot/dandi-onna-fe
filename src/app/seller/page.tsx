@@ -3,6 +3,7 @@
  */
 'use client';
 
+import SinglePageLayout from '@/components/features/dashboard/SinglePageLayout';
 import SingleColumnLayout from '@/components/layout/SingleColumnLayout';
 import { TwoColumnLayout } from '@/components/layout/TwoCloumnLayout';
 import { useReservationManager } from '@/hooks/useReservationManger';
@@ -21,12 +22,16 @@ export default function RegistPage() {
     expiredReservations,
     isLoading,
     isUpdating,
+    totalPage,
+    cursor,
     setSelectedReservation,
     handleStatusUpdate,
     handleBatchNoShow,
     forceCheck,
+    handlePageChange,
+    handleFilterChange,
   } = useReservationManager();
-
+  console.log('선택된 데이터: ', selectedReservation);
   /** 예시 탭 목록 (UI용) */
   const tabs = [
     { id: 'all', label: '전체' },
@@ -62,24 +67,56 @@ export default function RegistPage() {
   if (!selectedReservation) {
     return (
       <SingleColumnLayout
+        title='오늘의 예약 내역이에요'
         tabs={tabs}
+        showFilters={true}
         columns={columns}
         reservations={reservations}
         expiredReservations={expiredReservations}
         onSelectReservation={setSelectedReservation}
+        onTabChange={handleFilterChange}
         onBatchNoShow={handleBatchNoShow}
         isUpdating={isUpdating}
+        totalPages={Number(totalPage)}
+        page={Number(cursor)}
+        onPageChange={handlePageChange}
+        emptyMessage='오늘 예약이 비어있습니다.'
       />
     );
   }
 
   /** 예약이 선택된 경우 — 두 개의 패널로 세부 정보 표시 */
-  // return (
-  //   <TwoColumnLayout
-  //     reservation={selectedReservation}
-  //     onBack={() => setSelectedReservation(null)}
-  //     onStatusUpdate={handleStatusUpdate}
-  //     isUpdating={isUpdating}
-  //   />
-  // );
+  return (
+    <TwoColumnLayout
+      rightTitle={'상태에 따라 바뀜'}
+      leftContent={
+        <SinglePageLayout
+          title='오늘의 예약 내역이에요'
+          tabs={tabs}
+          showFilters={true}
+          columns={columns}
+          reservations={reservations}
+          expiredReservations={expiredReservations}
+          onSelectReservation={setSelectedReservation}
+          onTabChange={handleFilterChange}
+          onBatchNoShow={handleBatchNoShow}
+          isUpdating={isUpdating}
+          totalPages={Number(totalPage)}
+          page={Number(cursor)}
+          onPageChange={handlePageChange}
+          emptyMessage='오늘 예약이 비어있습니다.'
+        />
+      }
+      panelType={'reservation-detail'}
+      panelMode={'edit'}
+      selectedData={selectedReservation}
+      onBack={() => console.log('onBack')}
+      onModeChange={() => console.log('mode change')}
+      onDataUpdate={() => console.log('update')}
+      onStatusUpdate={() => console.log('update2')}
+      leftClassName='flex-1'
+      rightClassName='w-96'
+      showTitles={true}
+    />
+  );
 }

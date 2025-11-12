@@ -15,8 +15,9 @@ export const MENU_ITEMS: MenuItem[] = [
   {
     id: 'order-management',
     label: '주문 관리',
+    path: '/',
     children: [
-      { id: 'order-list', label: '주문 내역', path: '/dashboard' },
+      { id: 'order-list', label: '주문 내역', path: '/' },
       { id: 'no-show-order-list', label: '노쇼 주문 내역', path: '' },
     ],
   },
@@ -35,12 +36,20 @@ export const MENU_ITEMS: MenuItem[] = [
     children: [
       { id: 'product-management', label: '상품 관리' },
       { id: 'stock-management', label: '재고 관리' },
+      { id: 'menu-management', label: '메뉴 관리' },
+      { id: 'noshow-menu-management', label: '노쇼 메뉴 관리' },
     ],
   },
 ];
 
 export const reservationStatus = {
   PROCESSING: '방문예정',
+  PENDING: '방문예정',
   NOSHOW: '노쇼',
   DISABLED: '방문완료',
+  VISIT_DONE: '방문완료',
+  // TODO: 아래 OrderListResponse 의 status 어떤건지 확인 필요
+  CONFIRMED: '노쇼 등록 완료',
+  COMPLETED: '노쇼 주문 완료',
+  CANCELLED: '노쇼 방문 완료',
 };

@@ -90,6 +90,7 @@ const config = {
       padding: {
         20: 'var(--padding-20)',
         24: 'var(--padding-24)',
+        40: 'var(--padding-40)',
       },
       keyframes: {
         'accordion-down': {

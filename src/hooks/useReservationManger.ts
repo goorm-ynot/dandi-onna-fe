@@ -7,25 +7,19 @@ import { useReservationStore } from '@/store/useReservationStore';
 import { useReservationTimer } from './useReservationTimer';
 import { useReservationApi } from './useReservationApi';
 
-interface ReservationParams {
-  date: Date;
-  status?: string;
-  sort?: 'time_desc' | 'id_desc';
-  cursor: string;
-  size?: number;
-}
-
-export const useReservationManager = (
-  params: ReservationParams = {
-    date: new Date(),
-    status: '',
-    sort: 'time_desc',
-    cursor: '1',
-    size: 10,
-  }
-) => {
-  const { reservations, selectedReservation, setReservations, setSelectedReservation, getExpiredReservations } =
-    useReservationStore();
+export const useReservationManager = () => {
+  const {
+    reservations,
+    selectedReservation,
+    totalPage,
+    cursor,
+    activeTab,
+    setPages,
+    setReservations,
+    setSelectedReservation,
+    getExpiredReservations,
+    setActiveTab,
+  } = useReservationStore();
 
   const { forceCheck } = useReservationTimer();
   const { updateStatus, batchNoShow, isUpdating } = useReservationApi();
@@ -34,24 +28,29 @@ export const useReservationManager = (
   const { data: reservationData, isLoading } = useQuery({
     queryKey: ['reservations'],
     queryFn: async () => {
-      const response = await fetch('/api/v1/seller/reservations');
-      // const response = await axios.post('/api/v1/seller/reservations', {
-      //   date: params.date,
-      //   status: params.status,
-      //   sort: params.sort,
-      //   cursor: params.cursor,
-      //   size: params.size,
-      // });
-      return response.json();
+      // fetch 넘길 때 Params 넘겨야함. 참고
+      // const response = await fetch('/api/v1/seller/reservations');
+      const response = await axios.get('/api/v1/seller/reservations', {
+        params: {
+          date: new Date(),
+          status: activeTab,
+          sort: 'time_desc',
+          cursor: Number(cursor),
+          size: 10,
+        },
+      });
+      console.log('response: ', response.data);
+      return response.data;
     },
   });
 
   // 데이터 로드 시 Zustand에 저장
   useEffect(() => {
     if (reservationData) {
-      setReservations(reservationData);
+      setReservations(reservationData.data);
+      setPages(reservationData.totalPage, reservationData.cursor);
     }
-  }, [reservationData, setReservations]);
+  }, [reservationData, setReservations, setPages, setActiveTab]);
 
   // 만료된 예약 알림
   const expiredReservations = getExpiredReservations();
@@ -64,6 +63,18 @@ export const useReservationManager = (
     batchNoShow(reservationIds);
   };
 
+  // 페이지 변경 함수
+  const handlePageChange = (newPage: number) => {
+    setPages(totalPage, newPage); // cursor 업데이트
+    // React Query가 자동으로 refetch함 (쿼리키 변경으로 인해)
+  };
+
+  // Filter 선택 함수
+  const handleFilterChange = (filter: string) => {
+    setActiveTab(filter);
+    // React Query가 자동을 refetch 진행
+  };
+
   return {
     // 상태
     reservations,
@@ -71,11 +82,16 @@ export const useReservationManager = (
     expiredReservations,
     isLoading,
     isUpdating,
+    totalPage,
+    cursor,
 
     // 액션
     setSelectedReservation,
     handleStatusUpdate,
     handleBatchNoShow,
     forceCheck,
+    handlePageChange,
+    setPages,
+    handleFilterChange,
   };
 };

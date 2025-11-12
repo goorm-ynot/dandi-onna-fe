@@ -7,10 +7,11 @@ import React from 'react';
 export default function layout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <div className='min-h-screen flex flex-col justify-center items-center'>
-      <Header navList={MENU_ITEMS} hasNotification={true} userName='한정민' />
-      <main className='max-w-[1920px] min-h-screen mx-auto bg-white'>{children}</main>
-      {/* 공지사항 부분 추가해야함 */}
-      <Footer />
+      <main className=' max-w-[1920px] min-h-screen mx-auto bg-white z-999'>
+        <Header navList={MENU_ITEMS} hasNotification={true} userName='한정민' />
+        {children}
+        <Footer />
+      </main>
     </div>
   );
 }
