@@ -26,7 +26,7 @@ export default function RootLayout({
       <body className={`${pretendard.variable} bg-gray-100 min-h-screen flex flex-col justify-center items-center`}>
         <Providers>
           <div className='mx-auto bg-white'>
-            <Toaster />
+            <Toaster position='top-right' />
             {children}
           </div>
         </Providers>

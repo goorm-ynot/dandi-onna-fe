@@ -43,16 +43,16 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { userId, password, role } = await req.json();
+    const { loginId, password, role } = await req.json();
 
     if (process.env.NODE_ENV === 'development') {
-      console.log('🔧 [DEV] Login request:', { userId, password, role });
+      console.log('🔧 [DEV] Login request:', { loginId, password, role });
     }
 
     // 백엔드 API 호출
     const res = await fetch(`${process.env.BACKEND_URL}/${process.env.API_BASE}/auth/login`, {
       method: 'POST',
-      body: JSON.stringify({ loginId: userId, password: password }),
+      body: JSON.stringify({ loginId, password: password }),
       headers: { 'Content-Type': 'application/json' },
     });
 

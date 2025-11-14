@@ -206,3 +206,68 @@
   font-weight: normal;
   font-display: swap;
 }
+
+/* Sonner Toast 커스텀 스타일 */
+@layer components {
+  /* Toast 컨테이너 */
+  [data-sonner-toaster] {
+    @apply font-[var(--font-pretendard)];
+  }
+
+  /* Toast 기본 스타일 */
+  [data-sonner-toast] {
+    @apply rounded-lg shadow-lg;
+  }
+
+  /* Success Toast */
+  [data-sonner-toast][data-type='success'] {
+    @apply bg-green-50 border-green-200;
+  }
+
+  [data-sonner-toast][data-type='success'] [data-title] {
+    @apply text-green-900 font-semibold;
+  }
+
+  [data-sonner-toast][data-type='success'] [data-description] {
+    @apply text-green-700;
+  }
+
+  /* Error Toast */
+  [data-sonner-toast][data-type='error'] {
+    @apply bg-red-50 border-red-200;
+  }
+
+  [data-sonner-toast][data-type='error'] [data-title] {
+    @apply text-red-900 font-semibold;
+  }
+
+  [data-sonner-toast][data-type='error'] [data-description] {
+    @apply text-red-700;
+  }
+
+  /* Info Toast */
+  [data-sonner-toast][data-type='info'] {
+    @apply bg-blue-50 border-blue-200;
+  }
+
+  [data-sonner-toast][data-type='info'] [data-title] {
+    @apply text-blue-900 font-semibold;
+  }
+
+  [data-sonner-toast][data-type='info'] [data-description] {
+    @apply text-blue-700;
+  }
+
+  /* Warning Toast */
+  [data-sonner-toast][data-type='warning'] {
+    @apply bg-yellow-50 border-yellow-200;
+  }
+
+  [data-sonner-toast][data-type='warning'] [data-title] {
+    @apply text-yellow-900 font-semibold;
+  }
+
+  [data-sonner-toast][data-type='warning'] [data-description] {
+    @apply text-yellow-700;
+  }
+}

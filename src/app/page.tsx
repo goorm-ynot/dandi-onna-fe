@@ -7,23 +7,20 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import React, { useEffect } from 'react';
+import { useUserHook } from '@/hooks/useUser';
 
 const USER_ROLE = ['CONSUMER', 'OWNER', 'ADMIN'];
 export default function OnboardingPage() {
   const router = useRouter();
-  const { token, notificationPermissionStatus } = useFcmToken();
+  const { token } = useFcmToken();
   const { permission, requestPermission } = useGeolocationConsent();
-
+  const { handleLogin } = useUserHook();
   const isLocationAllowed = permission === 'granted';
 
   useEffect(() => {
     // 위치 권한 정보 수집
     requestPermission();
   }, []);
-
-  const putToken = () => {
-    // 허용 상관없이 token 전송으로
-  };
 
   const onKakaoClick = () => {
     const userLoginData = {
@@ -32,18 +29,27 @@ export default function OnboardingPage() {
       role: USER_ROLE[0], // CUSTOMER
     };
 
-    putToken();
     // router.push('/customer');
   };
 
-  const onSellerClick = () => {
+  const onSellerClick = async () => {
     const userLoginData = {
-      loginId: 'owner@example.com',
-      password: 'pass123!',
+      loginId: 'CEO1',
+      password: '111111',
       role: USER_ROLE[1], // OWNER
     };
-    putToken();
-    // router.push('/seller/dashboard');
+
+    try {
+      const result = await handleLogin(userLoginData);
+      toast.success('로그인 성공!', {
+        description: '사장님 페이지로 이동합니다.',
+      });
+      router.push('/seller');
+    } catch (error) {
+      toast.error('로그인 실패', {
+        description: '아이디 또는 비밀번호를 확인해주세요.',
+      });
+    }
   };
 
   const images = [
