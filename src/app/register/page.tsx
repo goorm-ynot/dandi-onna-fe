@@ -45,7 +45,7 @@ export default function ShopFormPage() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='p-6 space-y-6 max-w-xl mx-auto'>
       <div>
-        <label className='block font-medium'>가게명</label>
+        <label className='block font-medium'>메뉴명</label>
         <input {...register('shopName')} className='border border-gray-300 rounded-lg p-2 w-full' />
         {errors.shopName && <p className='text-red-500'>{errors.shopName.message}</p>}
       </div>

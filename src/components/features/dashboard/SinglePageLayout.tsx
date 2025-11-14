@@ -23,6 +23,7 @@ export default function SinglePageLayout({
   onSelectReservation,
   isUpdating = false,
   emptyMessage,
+  selectItemId,
 
   // 페이지네이션
   totalPages = 1,
@@ -31,13 +32,15 @@ export default function SinglePageLayout({
 
   // 기타
   expiredReservations = [],
+  sortState,
+  onSort,
 }: // onBatchNoShow,
 SingleColumnLayoutProps) {
   return (
     <>
       {/* 헤더 (title + 날짜) */}
       <PageHeader title={title} />
-      <div className='border border-1 rounded-md'>
+      <div className='h-[758px] overflow-hidden border border-1 rounded-md'>
         <ContentDate showDate={showDate} dateString={dateString} />
         {/* 필터 (조건부) */}
         {showFilters && tabs.length > 0 && onTabChange && (
@@ -47,10 +50,13 @@ SingleColumnLayoutProps) {
         {/* 테이블 */}
         <ContentTable
           columns={columns}
-          reservations={reservations}
-          onSelectReservation={onSelectReservation}
-          isUpdating={isUpdating}
+          data={reservations}
+          onSelectRow={onSelectReservation}
+          selectItemId={selectItemId}
           emptyMessage={emptyMessage}
+          expiredReservations={expiredReservations}
+          sortState={sortState}
+          onSort={onSort}
         />
 
         {/* 페이지네이션 */}

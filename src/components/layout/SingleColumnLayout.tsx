@@ -36,26 +36,29 @@ export default function SingleColumnLayout({
 
   // 기타
   expiredReservations = [],
-  onBatchNoShow,
+  sortState,
+  onSort,
 }: SingleColumnLayoutProps) {
   return (
     <DashBoardLayout>
-      <div className='max-w-[1280px] w-full h-[758px] flex flex-col py-40 mb-8'>
+      <div className='max-w-[1280px] w-full h-full flex flex-col pt-40 pb-20'>
         <SinglePageLayout
           title={title}
           tabs={tabs}
-          showFilters={true}
+          showFilters={showFilters}
           columns={columns}
           reservations={reservations}
           expiredReservations={expiredReservations}
           onSelectReservation={onSelectReservation}
           onTabChange={onTabChange}
-          // onBatchNoShow={onBatchNoShow}
           isUpdating={isUpdating}
           totalPages={Number(totalPages)}
           page={Number(page)}
           onPageChange={onPageChange}
           emptyMessage={emptyMessage}
+          activeTab={activeTab}
+          sortState={sortState}
+          onSort={onSort}
         />
       </div>
     </DashBoardLayout>

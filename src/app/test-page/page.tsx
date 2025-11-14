@@ -1,14 +1,27 @@
 // app/login/page.tsx
-'use client';
+'use client'; // ✅ 파일 최상단에 추가
 
 import { useRouter } from 'next/navigation';
 import { LoginForm } from '@/components/features/auth/LoginForm';
 import { toast } from 'sonner'; // 또는 다른 toast 라이브러리
 import useFcmToken from '@/hooks/useFcmToken';
+import { useEffect, useState } from 'react';
 
 export default function LoginPage() {
   const router = useRouter();
   const { token, notificationPermissionStatus } = useFcmToken();
+  const [deviceId, setDeviceId] = useState<string | null>(null);
+
+  // ✅ localStorage 접근
+  useEffect(() => {
+    let storedId = localStorage.getItem('deviceId');
+    if (!storedId) {
+      storedId = crypto.randomUUID();
+      localStorage.setItem('deviceId', storedId);
+    }
+    setDeviceId(storedId);
+  }, []);
+
   const handleLogin = async (data: { userId: string; password: string; role: 'CUSTOMER' | 'OWNER' }) => {
     try {
       const response = await fetch('/api/v1/auth/login', {
@@ -27,9 +40,9 @@ export default function LoginPage() {
 
       // 성공 시 대시보드로 리다이렉트
       toast.success('로그인에 성공했습니다!');
-      console.log(result);
+      // console.log(result);
       putToken();
-      // router.push('/dashboard');
+      // router.push('/register');
     } catch (error) {
       toast.error('로그인에 실패했습니다. 다시 시도해주세요.');
       console.error(error);
@@ -38,21 +51,21 @@ export default function LoginPage() {
   };
 
   const putToken = async () => {
-    console.log('토큰 발급: ', token);
+    // console.log('토큰 발급: ', token);
     try {
-      const response = await fetch('/api/v1/push/token', {
+      const response = await fetch('/api/v1/push/tokens', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(token),
+        body: JSON.stringify({ token, deviceId }),
       });
 
       toast.success('토큰이 저장되었습니다.');
-      console.log(response);
+      // console.log(response);
     } catch (error) {
-      toast.error('토큰 저장 실패함요');
-      console.log(error);
+      toast.error('토큰 저장에 실패했습니다. 다시 시도해주세요.');
+      console.error(error);
       throw error;
     }
   };

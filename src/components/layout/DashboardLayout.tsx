@@ -8,7 +8,7 @@ interface DashboardLayout {
 export default function DashBoardLayout({ children }: DashboardLayout) {
   return (
     <div className='w-screen flex flex-col justify-center items-center gap-8'>
-      <div className='w-full mb-8 flex flex-col justify-center items-center'>
+      <div className='w-full flex flex-col justify-center items-center'>
         {/* 간격 추가 */}
         {children}
       </div>

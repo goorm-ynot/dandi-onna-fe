@@ -1,6 +1,7 @@
 // hooks/useReservationApi.ts
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useReservationStore } from '@/store/useReservationStore';
+import axios from 'axios';
 
 interface UpdateStatusParams {
   reservationNo: string;
@@ -49,4 +50,21 @@ export const useReservationApi = () => {
     batchNoShow: batchNoShowMutation.mutate,
     isUpdating: updateStatusMutation.isPending || batchNoShowMutation.isPending,
   };
+};
+
+// 별도의 Hook으로 분리
+export const useReservationDetail = (reservationNo: string) => {
+  return useQuery({
+    queryKey: ['reservation', reservationNo],
+    queryFn: async () => {
+      const response = await axios.get('/api/v1/seller/reservations/detail', {
+        params: {
+          date: new Date(),
+          reservationNo: reservationNo,
+        },
+      });
+      return response.data;
+    },
+    enabled: !!reservationNo, // reservationNo가 있을 때만 쿼리 실행
+  });
 };

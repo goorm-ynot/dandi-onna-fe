@@ -43,16 +43,16 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { loginId, password, role } = await req.json();
+    const { userId, password, role } = await req.json();
 
     if (process.env.NODE_ENV === 'development') {
-      console.log('🔧 [DEV] Login request:', { loginId, role });
+      console.log('🔧 [DEV] Login request:', { userId, password, role });
     }
 
     // 백엔드 API 호출
     const res = await fetch(`${process.env.BACKEND_URL}/${process.env.API_BASE}/auth/login`, {
       method: 'POST',
-      body: JSON.stringify({ loginId, password }),
+      body: JSON.stringify({ loginId: userId, password: password }),
       headers: { 'Content-Type': 'application/json' },
     });
 
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
 
     // 백엔드에서 에러 응답이 온 경우
     if (!res.ok) {
-      const errorData = await res.json().catch(() => ({ message: 'Unknown error' }));
+      const errorData = await res.json().catch(() => ({ message: res }));
 
       if (process.env.NODE_ENV === 'development') {
         console.log('🚨 [DEV] Backend error response:', errorData);
@@ -78,8 +78,10 @@ export async function POST(req: Request) {
       );
     }
 
+    // 실제로 이렇게 날라오는게 맞는지 확인 필요
     const responseData = await res.json();
-    const { accessJWE: accessToken, refreshJWE: refreshToken } = responseData;
+    //...
+    const { accessToken, refreshToken } = responseData.data;
 
     // 토큰이 없는 경우
     if (!accessToken || !refreshToken) {
@@ -105,7 +107,7 @@ export async function POST(req: Request) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 30, // 30분
+      maxAge: 60 * 60 * 24 * 1, // 1일
     });
 
     response.cookies.set('refresh-token', refreshToken, {

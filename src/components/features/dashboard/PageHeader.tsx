@@ -8,7 +8,7 @@ interface PageHeaderProps {
 export default function PageHeader({ title }: PageHeaderProps) {
   return (
     <>
-      <h1 className='title6 pb-20'>{title}</h1>
+      <h1 className='title6 pb-40'>{title}</h1>
     </>
   );
 }

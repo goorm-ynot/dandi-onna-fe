@@ -33,9 +33,9 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      userId: 'owner@example.com',
-      password: 'pass123!',
-      role: 'CUSTOMER',
+      userId: 'CEO1',
+      password: '111111',
+      role: 'OWNER',
     },
   });
 

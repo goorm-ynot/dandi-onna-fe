@@ -50,6 +50,14 @@ const config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        line: {
+          DEFAULT: '#656565',
+          foreground: '#DDDDDD',
+        },
+        error: {
+          DEFAULT: '#da1717ff',
+          foreground: '#fee2e2',
+        },
         toast: {
           bg: '#ffffff',
           border: '#e5e7eb',
@@ -66,6 +74,12 @@ const config = {
           3: 'hsl(var(--chart-3))',
           4: 'hsl(var(--chart-4))',
           5: 'hsl(var(--chart-5))',
+        },
+        table: {
+          bg: '#F5F5F5',
+          hover: '#e2f2fe',
+          secondary: '#abf2bf',
+          expired: 'rgb(254 226 226)',
         },
       },
       borderRadius: {
@@ -91,6 +105,11 @@ const config = {
         20: 'var(--padding-20)',
         24: 'var(--padding-24)',
         40: 'var(--padding-40)',
+      },
+      gap: {
+        16: '16px',
+        20: '20px',
+        24: '24px',
       },
       keyframes: {
         'accordion-down': {

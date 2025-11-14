@@ -6,7 +6,9 @@
 import SinglePageLayout from '@/components/features/dashboard/SinglePageLayout';
 import SingleColumnLayout from '@/components/layout/SingleColumnLayout';
 import { TwoColumnLayout } from '@/components/layout/TwoCloumnLayout';
+import { reservationStatus } from '@/constants/sellerNavConstant';
 import { useReservationManager } from '@/hooks/useReservationManger';
+import { Reservation } from '@/types/boardData';
 import { useEffect } from 'react';
 
 export default function RegistPage() {
@@ -24,35 +26,82 @@ export default function RegistPage() {
     isUpdating,
     totalPage,
     cursor,
+    activeTab,
+    selectItemId,
+    selectItemStatus,
+    activeEdit,
     setSelectedReservation,
     handleStatusUpdate,
     handleBatchNoShow,
     forceCheck,
     handlePageChange,
     handleFilterChange,
+    setActiveEdit,
+    // 정렬
+    sortState,
+    sortedReservations,
+    handleSort,
   } = useReservationManager();
-  console.log('선택된 데이터: ', selectedReservation);
+
   /** 예시 탭 목록 (UI용) */
   const tabs = [
     { id: 'all', label: '전체' },
-    { id: 'pending', label: '방문예정' },
-    { id: 'confirmed', label: '노쇼' },
-    { id: 'cancelled', label: '방문완료' },
+    { id: 'PENDING', label: '방문예정' },
+    { id: 'NOSHOW', label: '노쇼' },
+    { id: 'VISIT_DONE', label: '방문완료' },
   ];
 
-  /** 예시 테이블 컬럼 (UI용) */
+  /** 테이블 컬럼 (UI용) */
   const columns = [
-    { key: 'id', header: '주문번호', width: '' },
-    { key: 'time', header: '시간', width: '' },
-    { key: 'menu', header: '메뉴명', width: '' },
+    { key: 'reservationNo', sortable: true, header: '예약번호' },
+    {
+      key: 'time',
+      header: '시간',
+      sortable: true,
+      render: (res: { time: string | number | Date }) =>
+        new Date(res.time).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false }),
+    },
+    {
+      key: 'menu',
+      header: '메뉴명',
+      isWide: true, // ✅ 메뉴명 컬럼만 넓게
+      render: (res: { menus: any[] }) => res.menus.map((m: { name: any }) => m.name).join(', '),
+    },
     { key: 'contact', header: '연락처', width: '' },
-    { key: 'status', header: '예약관리', width: '' },
+    {
+      key: 'status',
+      header: '예약관리',
+      render: (res: Reservation) => (
+        <span
+          className={`px-3 py-1 rounded-full text-base font-normal ${
+            res.status === 'PENDING'
+              ? 'bg-secondary text-secondary-foreground'
+              : res.status === 'NOSHOW'
+              ? 'bg-primary text-primary-foreground'
+              : 'bg-muted text-muted-foreground'
+          }`}>
+          {reservationStatus[res.status as keyof typeof reservationStatus] || res.status}
+        </span>
+      ),
+    },
   ];
 
   /** 페이지 로드시 타이머 강제 체크 (만료 예약 즉시 반영용) */
   useEffect(() => {
     forceCheck();
   }, [forceCheck]);
+
+  /** 방문 완료 된 부분은 선택 안되게
+   * (INFO: 당장은 mock데이터를 사용해서 그냥 다 넘기지만 API 호출 시, 이부분 수정 필요)
+   */
+  const onSelectReservation = (reservation: Reservation) => {
+    if (reservation.status === 'PENDING') {
+      setSelectedReservation(reservation);
+      setActiveEdit(false);
+      return;
+    }
+    setSelectedReservation(null);
+  };
 
   /** 로딩 중 상태 표시 */
   if (isLoading) {
@@ -71,9 +120,9 @@ export default function RegistPage() {
         tabs={tabs}
         showFilters={true}
         columns={columns}
-        reservations={reservations}
+        reservations={sortedReservations}
         expiredReservations={expiredReservations}
-        onSelectReservation={setSelectedReservation}
+        onSelectReservation={onSelectReservation}
         onTabChange={handleFilterChange}
         onBatchNoShow={handleBatchNoShow}
         isUpdating={isUpdating}
@@ -81,6 +130,10 @@ export default function RegistPage() {
         page={Number(cursor)}
         onPageChange={handlePageChange}
         emptyMessage='오늘 예약이 비어있습니다.'
+        activeTab={activeTab}
+        selectItemId={selectItemId}
+        sortState={sortState}
+        onSort={handleSort}
       />
     );
   }
@@ -88,7 +141,7 @@ export default function RegistPage() {
   /** 예약이 선택된 경우 — 두 개의 패널로 세부 정보 표시 */
   return (
     <TwoColumnLayout
-      rightTitle={'상태에 따라 바뀜'}
+      rightTitle={selectItemStatus === 'PENDING' ? '예약 상세정보를 확인해주세요' : '앗, 노쇼가 발생했나요?'}
       leftContent={
         <SinglePageLayout
           title='오늘의 예약 내역이에요'
@@ -97,7 +150,7 @@ export default function RegistPage() {
           columns={columns}
           reservations={reservations}
           expiredReservations={expiredReservations}
-          onSelectReservation={setSelectedReservation}
+          onSelectReservation={onSelectReservation}
           onTabChange={handleFilterChange}
           onBatchNoShow={handleBatchNoShow}
           isUpdating={isUpdating}
@@ -105,15 +158,20 @@ export default function RegistPage() {
           page={Number(cursor)}
           onPageChange={handlePageChange}
           emptyMessage='오늘 예약이 비어있습니다.'
+          activeTab={activeTab}
+          selectItemId={selectItemId}
         />
       }
-      panelType={'reservation-detail'}
-      panelMode={'edit'}
+      // selectItemStatus 말고 다른 방법?
+      panelType={!activeEdit ? 'reservation-detail' : 'noshow-edit'}
+      // panelMode={'edit'}
+      panelMode={'noshow-form'}
       selectedData={selectedReservation}
       onBack={() => console.log('onBack')}
       onModeChange={() => console.log('mode change')}
       onDataUpdate={() => console.log('update')}
       onStatusUpdate={() => console.log('update2')}
+      onEditMode={(active: boolean) => setActiveEdit?.(active)}
       leftClassName='flex-1'
       rightClassName='w-96'
       showTitles={true}

@@ -1,8 +1,7 @@
-// components/layout/RightPanelContent.tsx
-// import ReservationDetailPanel from '../features/reservation/ReservationDetailPanel';
-// import NoShowEditPanel from '../features/noshow/NoShowEditPanel';
-// import NoShowOrderPanel from '../features/noshow/NoShowOrderPanel';
 import { PanelMode, PanelType } from '@/types/PanleTypes';
+import ReservationDetailPanel from '../features/reservation/ReservationDetailPanel';
+import NoShowEditPanel from '../features/noshow/NoShowEditPanel';
+import NoShowPanel from '../features/noshow';
 
 interface RightPanelContentProps {
   type: PanelType;
@@ -12,6 +11,7 @@ interface RightPanelContentProps {
   onDataUpdate?: (data: any) => void;
   onStatusUpdate?: (id: string, status: string) => void;
   onClose?: () => void;
+  onEditMode?: (editmode: boolean) => void;
 }
 
 export default function RightPanelContent({
@@ -22,27 +22,28 @@ export default function RightPanelContent({
   onDataUpdate,
   onStatusUpdate,
   onClose,
+  onEditMode,
 }: RightPanelContentProps) {
-  // switch (type) {
-  //   case 'reservation-detail':
-  //     return (
-  //       <ReservationDetailPanel
-  //         mode={mode}
-  //         reservation={data}
-  //         onModeChange={onModeChange}
-  //         onStatusUpdate={onStatusUpdate}
-  //         onClose={onClose}
-  //       />
-  //     );
+  switch (type) {
+    case 'reservation-detail':
+      return (
+        <ReservationDetailPanel
+          mode={mode}
+          reservation={data}
+          onModeChange={onModeChange}
+          onStatusUpdate={onStatusUpdate}
+          onClose={onClose}
+          onEditMode={onEditMode}
+        />
+      );
 
-  //   case 'noshow-edit':
-  //     return <NoShowEditPanel mode={mode} noShowData={data} onDataUpdate={onDataUpdate} onClose={onClose} />;
+    case 'noshow-edit':
+      return <NoShowPanel mode={mode} noShowData={data} onDataUpdate={onDataUpdate} />;
 
-  //   case 'noshow-order-view':
-  //     return <NoShowOrderPanel orderData={data} onClose={onClose} />;
+    // case 'noshow-order-view':
+    //   return <NoShowOrderPanel orderData={data} onClose={onClose} />;
 
-  //   default:
-  //     return <div>알 수 없는 패널 타입입니다.</div>;
-  // }
-  return <div>패널이 들어올 자리에요!!</div>;
+    default:
+      return <div>알 수 없는 패널 타입입니다.</div>;
+  }
 }

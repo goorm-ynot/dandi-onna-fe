@@ -22,6 +22,9 @@ interface ReservationStore {
   totalPage: number; // 전체 페이지
   cursor: number; // 현재 페이지
   activeTab?: string; // 필터 탭
+  selectItemId?: string; // 선택한 아이템 id
+  selectItemStatus?: string; // 선택한 아이템 상태
+  activeEdit?: boolean;
 
   // ===== 액션 (Actions) =====
   /**
@@ -68,6 +71,11 @@ interface ReservationStore {
    * (필터링을 할 때, 서버 API 호출)
    */
   setActiveTab: (activeTab: string) => void;
+
+  /**
+   * edit 모드 세팅용
+   */
+  setActiveEdit: (activeEdit: boolean) => void;
 }
 
 /**
@@ -81,7 +89,10 @@ export const useReservationStore = create<ReservationStore>()(
     selectedReservation: null,
     totalPage: 0,
     cursor: 1,
-    activeTab: 'ALL',
+    activeTab: 'all',
+    selectItemId: '',
+    selectItemStatus: '',
+    activeEdit: false,
 
     // ===== 액션들 =====
     setReservations: (reservations) =>
@@ -96,12 +107,17 @@ export const useReservationStore = create<ReservationStore>()(
         totalPage,
         cursor,
       }),
-    setSelectedReservation: (reservation) => set({ selectedReservation: reservation }),
+    setSelectedReservation: (reservation) =>
+      set({
+        selectedReservation: reservation,
+        selectItemId: reservation?.reservationNo,
+        selectItemStatus: reservation?.status,
+      }),
 
     markAsExpired: (reservationId) =>
       set((state) => ({
         reservations: state.reservations.map((res) =>
-          res.reservationNo === reservationId ? { ...res, expired: true, status: 'NOSHOW' } : res
+          res.reservationNo === reservationId ? { ...res, expired: true } : res
         ),
       })),
 
@@ -121,5 +137,7 @@ export const useReservationStore = create<ReservationStore>()(
       get().reservations.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()),
 
     setActiveTab: (activeTab) => set({ activeTab }),
+
+    setActiveEdit: (activeEdit) => set({ activeEdit }),
   }))
 );

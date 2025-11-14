@@ -7,6 +7,7 @@ export interface MenuMini {
   menuId: string;
   name: string;
   qty: number;
+  price: number;
 }
 
 /** 일반 예약 타입 */
@@ -36,6 +37,10 @@ export interface SingleColumnLayoutProps {
   onSelectReservation?: (reservation: Reservation) => void;
   isUpdating?: boolean;
   emptyMessage?: string;
+  selectItemId?: string;
+  // ✅ 정렬 관련 props 추가
+  sortState?: SortState;
+  onSort?: (key: string) => void;
 
   // 페이지네이션 관련
   totalPages?: number;
@@ -63,8 +68,27 @@ export interface TwoColumnLayoutProps {
   onModeChange?: (mode: PanelMode) => void;
   onDataUpdate?: (data: any) => void;
   onStatusUpdate?: (id: string, status: string) => void;
+  onEditMode?: (active: boolean) => void;
 
   leftClassName?: string;
   rightClassName?: string;
   showTitles?: boolean;
+}
+
+// table 컬럼 타입
+export interface Column<T> {
+  key: string;
+  header: string;
+  className?: string;
+  isWide?: boolean;
+  sortable?: boolean; // ✅ 정렬 가능한 컬럼인지
+  sortKey?: string; // ✅ 실제 정렬에 사용할 키 (key와 다를 수 있음)
+  render?: (item: T) => React.ReactNode;
+}
+
+export type SortOrder = 'asc' | 'desc' | null;
+
+export interface SortState {
+  key: string;
+  order: SortOrder;
 }

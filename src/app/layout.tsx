@@ -12,8 +12,8 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  title: '단디노쇼',
-  description: '단디노쇼 온보딩 화면입니다.',
+  title: '단디온나',
+  description: '단디온나 온보딩 화면입니다.',
 };
 
 export default function RootLayout({

@@ -1,70 +1,94 @@
 // src/lib/serverApiClient.ts
+import axios, { AxiosHeaders, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { cookies } from 'next/headers';
 
 class ServerApiClient {
   private baseURL: string;
+  private axiosInstance: AxiosInstance;
 
   constructor() {
     this.baseURL = `${process.env.BACKEND_URL}/${process.env.API_BASE}`;
-  }
 
-  /** ✅ 쿠키 기반 인증 헤더 생성 */
-  private async getAuthHeaders() {
-    const cookieStore = await cookies();
-    const accessToken = cookieStore.get('access-token')?.value;
-
-    return {
-      'Content-Type': 'application/json',
-      ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
-    };
-  }
-
-  /** ✅ 공통 fetch 래퍼 */
-  private async request<T>(method: string, endpoint: string, data?: any): Promise<T> {
-    const headers = await this.getAuthHeaders();
-
-    const res = await fetch(`${this.baseURL}${endpoint}`, {
-      method,
-      headers,
-      body: data ? JSON.stringify(data) : undefined,
-      cache: 'no-store', // SSR 캐시 방지 (API 결과 즉시 반영)
+    this.axiosInstance = axios.create({
+      baseURL: this.baseURL,
+      headers: { 'Content-Type': 'application/json' },
     });
 
-    if (!res.ok) {
-      const errorText = await res.text().catch(() => '');
-      throw new Error(`HTTP Error ${res.status}: ${res.statusText}\n${errorText || ''}`);
-    }
+    // 요청 인터셉터: 쿠키 기반 인증 헤더 추가
+    this.axiosInstance.interceptors.request.use(async (config) => {
+      const cookieStore = await cookies();
+      const accessToken = cookieStore.get('access-token')?.value;
 
-    try {
-      return await res.json();
-    } catch {
-      return {} as T; // 응답이 비어있을 경우
-    }
+      const headers = new AxiosHeaders(config.headers);
+
+      if (accessToken) {
+        headers.set('Authorization', `Bearer ${accessToken}`);
+      }
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log('📡 [DEV] API Request:', {
+          method: config.method,
+          url: config.url,
+          headers: config.headers,
+          data: config.data,
+        });
+      }
+
+      return { ...config, headers };
+    });
+
+    // 응답 인터셉터: 에러 처리 및 개발 환경 로그
+    this.axiosInstance.interceptors.response.use(
+      (response) => {
+        if (process.env.NODE_ENV === 'development') {
+          console.log('✅ [DEV] API Response:', {
+            status: response.status,
+            data: response.data,
+          });
+        }
+        return response;
+      },
+      (error) => {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('🚨 [DEV] API Error:', {
+            status: error.response?.status,
+            data: error.response?.data,
+            message: error.message,
+          });
+        }
+        return Promise.reject(error);
+      }
+    );
   }
 
-  /** GET: 조회 */
-  async get<T>(endpoint: string): Promise<T> {
-    return this.request<T>('GET', endpoint);
+  /** GET */
+  async get<T>(endpoint: string, config?: AxiosRequestConfig) {
+    const res = await this.axiosInstance.get<T>(endpoint, config);
+    return res.data;
   }
 
-  /** POST: 생성 */
-  async post<T>(endpoint: string, data?: any): Promise<T> {
-    return this.request<T>('POST', endpoint, data);
+  /** POST */
+  async post<T>(endpoint: string, data?: any, config?: AxiosRequestConfig) {
+    const res = await this.axiosInstance.post<T>(endpoint, data, config);
+    return res.data;
   }
 
-  /** PUT: 전체 수정 */
-  async put<T>(endpoint: string, data?: any): Promise<T> {
-    return this.request<T>('PUT', endpoint, data);
+  /** PUT */
+  async put<T>(endpoint: string, data?: any, config?: AxiosRequestConfig) {
+    const res = await this.axiosInstance.put<T>(endpoint, data, config);
+    return res.data;
   }
 
-  /** PATCH: 부분 수정 */
-  async patch<T>(endpoint: string, data?: any): Promise<T> {
-    return this.request<T>('PATCH', endpoint, data);
+  /** PATCH */
+  async patch<T>(endpoint: string, data?: any, config?: AxiosRequestConfig) {
+    const res = await this.axiosInstance.patch<T>(endpoint, data, config);
+    return res.data;
   }
 
-  /** DELETE: 삭제 */
-  async delete<T>(endpoint: string): Promise<T> {
-    return this.request<T>('DELETE', endpoint);
+  /** DELETE */
+  async delete<T>(endpoint: string, config?: AxiosRequestConfig) {
+    const res = await this.axiosInstance.delete<T>(endpoint, config);
+    return res.data;
   }
 }
 

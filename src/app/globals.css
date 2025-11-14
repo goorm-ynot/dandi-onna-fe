@@ -32,15 +32,6 @@
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
 
-    /* TODO: 실제 디자인 토큰으로 변경 */
-    --color-toast-bg: #ffffff;
-    --color-toast-border: #e5e7eb;
-    --color-toast-text: #111827;
-
-    --color-toast-bg-destructive: #fee2e2;
-    --color-toast-border-destructive: #ef4444;
-    --color-toast-text-destructive: #b91c1c;
-
     /* 일단 나온 Foundation */
     --radius-6: 6px;
     --radius-10: 10px;
@@ -120,69 +111,72 @@
   /* 글자 스타일 */
   /* title */
   .title1 {
-    @apply text-[16px] font-normal leading-[18px] font-[var(--font-pretendard)];
+    @apply text-[16px] font-normal leading-[18px];
   }
   .title2 {
-    @apply text-[16px] font-medium leading-[18px] font-[var(--font-pretendard)];
+    @apply text-[16px] font-medium leading-[18px];
   }
   .title3 {
-    @apply text-[16px] font-semibold leading-[18px] font-[var(--font-pretendard)];
+    @apply text-[16px] font-semibold leading-[18px];
   }
   .title4 {
-    @apply text-[18px] font-normal leading-[20px] font-[var(--font-pretendard)];
+    @apply text-[18px] font-normal leading-[20px];
   }
   .title5 {
-    @apply text-[18px] font-semibold leading-[20px] font-[var(--font-pretendard)];
+    @apply text-[18px] font-semibold leading-[20px];
   }
   .title6 {
     @apply text-[28px] font-semibold leading-[32px];
   }
   /* Body */
   .body1 {
-    @apply text-[14px] font-normal leading-[16px] font-[var(--font-pretendard)];
+    @apply text-[14px] font-normal leading-[16px];
   }
   .body2 {
-    @apply text-[16px] font-normal leading-[18px] font-[var(--font-pretendard)];
+    @apply text-[14px] font-semibold leading-[16px];
   }
   .body3 {
-    @apply text-[16px] font-medium leading-[18px] font-[var(--font-pretendard)];
+    @apply text-[16px] font-normal leading-[18px];
   }
   .body4 {
-    @apply text-[16px] font-semibold leading-[18px] font-[var(--font-pretendard)];
+    @apply text-[16px] font-medium leading-[18px];
   }
   .body5 {
-    @apply text-[18px] font-normal leading-[20px] font-[var(--font-pretendard)];
+    @apply text-[16px] font-semibold leading-[18px];
   }
   .body6 {
-    @apply text-[18px] font-semibold leading-[20px] font-[var(--font-pretendard)];
+    @apply text-[18px] font-normal leading-[20px];
   }
   .body7 {
-    @apply text-[18px] font-bold leading-[20px] font-[var(--font-pretendard)];
+    @apply text-[18px] font-semibold leading-[20px];
+  }
+  .body8 {
+    @apply text-[18px] font-bold leading-[20px];
   }
   /* caption */
   .caption1 {
-    @apply text-[10px] font-normal leading-[12x] font-[var(--font-pretendard)];
+    @apply text-[10px] font-normal leading-[12x];
   }
   .caption2 {
-    @apply text-[10px] font-normal leading-[14px] font-[var(--font-pretendard)];
+    @apply text-[10px] font-normal leading-[14px];
   }
   .caption3 {
-    @apply text-[12px] font-normal leading-[14px] font-[var(--font-pretendard)];
+    @apply text-[12px] font-normal leading-[14px];
   }
   .caption4 {
-    @apply text-[14px] font-normal leading-[16px] font-[var(--font-pretendard)];
+    @apply text-[14px] font-normal leading-[16px];
   }
   .caption5 {
-    @apply text-[16px] font-normal leading-[18px] font-[var(--font-pretendard)];
+    @apply text-[16px] font-normal leading-[18px];
   }
   .caption6 {
-    @apply text-[16px] font-medium leading-[18px] font-[var(--font-pretendard)];
+    @apply text-[16px] font-medium leading-[18px];
   }
   .caption7 {
-    @apply text-[16px] font-bold leading-[18px] font-[var(--font-pretendard)];
+    @apply text-[16px] font-bold leading-[18px];
   }
   .caption8 {
-    @apply text-[20px] font-bold leading-[24px] font-[var(--font-pretendard)];
+    @apply text-[20px] font-bold leading-[24px];
   }
   /* 그림자 스타일 */
   .shadow-1 {
@@ -190,6 +184,19 @@
   }
   .shadow-2 {
     @apply shadow-[0px_4px_32px_0px_rgba(0,0,0,0.15)];
+  }
+  /* icon 스타일 */
+  .icon-xs {
+    @apply w-[16px] h-[16px];
+  }
+  .icon-s {
+    @apply w-[18px] h-[18px];
+  }
+  .icon-m {
+    @apply w-[20px] h-[20px];
+  }
+  .icon-l {
+    @apply w-[24px] h-[24px];
   }
 }
 
