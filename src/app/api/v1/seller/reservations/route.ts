@@ -1,6 +1,7 @@
 // src/app/api/users/route.ts
 import { NextResponse, NextRequest } from 'next/server';
 import { mockReservations } from '@/mock/reservation'; // mock 데이터
+import serverApiClient from '@/services/ApiClient';
 
 // ✅ GET 요청: mockReservations 리턴 (쿼리 파라미터 포함)
 export async function GET(request: NextRequest) {
@@ -34,5 +35,36 @@ export async function GET(request: NextRequest) {
     );
   } catch (error: any) {
     return NextResponse.json({ error: error.message || 'Failed to fetch data' }, { status: 500 });
+  }
+}
+
+// POST 요청 - 노쇼 예약 생성
+export async function POST(request: NextRequest) {
+  try {
+    // 📌 POST 요청은 body에서 데이터 추출
+    const body = await request.json();
+    const { reservation } = body;
+
+    console.log('POST Body:', { reservation });
+
+    const result = await serverApiClient.post('/owner/no-show-posts/batch', {
+      items: reservation.items,
+      discountPercent: reservation.discountPercent,
+      expireAt: reservation.expireAfterMinutes,
+    });
+
+    // 받은 데이터 그대로 반환
+    return NextResponse.json(result);
+    // return NextResponse.json(
+    //   {
+    //     success: true,
+    //     message: '예약이 생성되었습니다.',
+    //     data: reservation,
+    //   },
+    //   { status: 201 }
+    // );
+  } catch (error: any) {
+    console.error('POST Error:', error);
+    return NextResponse.json({ error: error.message || 'Failed to create reservation' }, { status: 500 });
   }
 }

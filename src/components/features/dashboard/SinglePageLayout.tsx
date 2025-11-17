@@ -19,8 +19,8 @@ export default function SinglePageLayout({
 
   // 테이블
   columns,
-  reservations,
-  onSelectReservation,
+  data,
+  onSelected,
   isUpdating = false,
   emptyMessage,
   selectItemId,
@@ -31,7 +31,7 @@ export default function SinglePageLayout({
   onPageChange,
 
   // 기타
-  expiredReservations = [],
+  expiredData = [],
   sortState,
   onSort,
 }: // onBatchNoShow,
@@ -40,7 +40,7 @@ SingleColumnLayoutProps) {
     <>
       {/* 헤더 (title + 날짜) */}
       <PageHeader title={title} />
-      <div className='h-[758px] overflow-hidden border border-1 rounded-md'>
+      <div className='h-[758px] overflow-hidden border border-border-wrapper border-1 rounded-md'>
         <ContentDate showDate={showDate} dateString={dateString} />
         {/* 필터 (조건부) */}
         {showFilters && tabs.length > 0 && onTabChange && (
@@ -50,11 +50,11 @@ SingleColumnLayoutProps) {
         {/* 테이블 */}
         <ContentTable
           columns={columns}
-          data={reservations}
-          onSelectRow={onSelectReservation}
+          data={data}
+          onSelectRow={onSelected}
           selectItemId={selectItemId}
           emptyMessage={emptyMessage}
-          expiredReservations={expiredReservations}
+          expiredData={expiredData}
           sortState={sortState}
           onSort={onSort}
         />

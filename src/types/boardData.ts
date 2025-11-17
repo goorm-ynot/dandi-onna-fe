@@ -20,7 +20,7 @@ export interface Reservation {
   menus: MenuMini[]; // 메뉴
 }
 
-export interface SingleColumnLayoutProps {
+export interface SingleColumnLayoutProps<T = any> {
   title: string;
   showDate?: boolean;
   dateString?: string;
@@ -32,9 +32,9 @@ export interface SingleColumnLayoutProps {
   onTabChange?: (tabId: string) => void;
 
   // 테이블 관련
-  columns: { key: string; header: string }[];
-  reservations: Reservation[];
-  onSelectReservation?: (reservation: Reservation) => void;
+  columns: Column<T>[];
+  data: T[];
+  onSelected?: (item: T) => void;
   isUpdating?: boolean;
   emptyMessage?: string;
   selectItemId?: string;
@@ -48,12 +48,12 @@ export interface SingleColumnLayoutProps {
   onPageChange: (page: number) => void;
 
   // 기타
-  expiredReservations?: Reservation[];
-  onBatchNoShow?: (reservationIds: string[]) => void;
+  expiredData?: T[];
+  onBatchNoShow?: (ids: string[]) => void;
 }
 
 /** TwoColumnLayout의 props types */
-export interface TwoColumnLayoutProps {
+export interface TwoColumnLayoutProps<T = any> {
   leftTitle?: string;
   rightTitle?: string;
   leftContent: React.ReactNode;
@@ -61,12 +61,12 @@ export interface TwoColumnLayoutProps {
   // 오른쪽 패널 설정
   panelType: PanelType;
   panelMode: PanelMode;
-  selectedData: any;
+  selectedData: T;
 
   // 이벤트 핸들러들
   onBack?: () => void;
   onModeChange?: (mode: PanelMode) => void;
-  onDataUpdate?: (data: any) => void;
+  onDataUpdate?: (data: T) => void;
   onStatusUpdate?: (id: string, status: string) => void;
   onEditMode?: (active: boolean) => void;
 
@@ -84,6 +84,7 @@ export interface Column<T> {
   sortable?: boolean; // ✅ 정렬 가능한 컬럼인지
   sortKey?: string; // ✅ 실제 정렬에 사용할 키 (key와 다를 수 있음)
   render?: (item: T) => React.ReactNode;
+  location?: 'left' | 'center' | 'right'; // ✅ 텍스트 정렬 위치
 }
 
 export type SortOrder = 'asc' | 'desc' | null;
@@ -92,3 +93,99 @@ export interface SortState {
   key: string;
   order: SortOrder;
 }
+
+// 노쇼 등록 타입
+export interface NoShowCreate {
+  items: { menuId: string; quantity: number }[];
+  discountPercent: number;
+  expireAfterMinutes: Date;
+}
+
+// 노쇼 메뉴 데이터 타입
+export interface NoShowMenu {
+  noshowPostsId: number;
+  name: string;
+  quantity: number;
+  menuId: string;
+  visitTime: Date; // ISO 8601 형식 문자열
+  price: number;
+  discountPercent: number;
+}
+
+// ===== 사업자 노쇼 주문내역 관리 타입 =====
+export interface OrderItemList {
+  orderId: number;
+  visitTime: string;
+  status: OrderStatus;
+  menuNames: string;
+  consumerPhone: string;
+}
+
+export interface PaginationInfo {
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  hasNext: boolean;
+}
+
+export interface OrderListResponse {
+  success: boolean;
+  code: string;
+  message: string;
+  data: {
+    orders: OrderItem[];
+    pagination: PaginationInfo;
+  };
+}
+
+export interface OrderDetailResponse {
+  success: boolean;
+  code: string;
+  message: string;
+  data: OrderDetail;
+}
+
+export interface OrderDetail {
+  orderId: number;
+  consumerId: string;
+  storeId: string;
+  visitTime: string;
+  totalPrice: number;
+  paidAmount: number;
+  status: OrderStatus;
+  paymentStatus: PaymentStatus;
+  paymentMethod: string;
+  paymentTxId: string;
+  paymentMemo: string;
+  paidAt: string | null;
+  failedAt: string | null;
+  refundedAt: string | null;
+  storeMemo: string;
+  createdAt: string;
+  items: OrderItem[];
+}
+
+export interface OrderItem {
+  orderItemId: number;
+  menuName: string;
+  quantity: number;
+  unitPrice: number;
+  discountPercent: number;
+  visitTime: string;
+}
+
+// 상태 관련 타입들
+export type OrderStatus = 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED';
+
+export type PaymentStatus = 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED' | 'CANCELLED';
+
+// export type PaymentMethod = 'CARD' | 'TEST_CARD' | 'CASH' | 'KAKAO_PAY' | 'NAVER_PAY';
+
+// 선택적으로 사용할 수 있는 유틸리티 타입들
+export type OrderItemWithCalculatedPrice = OrderItem & {
+  discountedPrice: number;
+  totalItemPrice: number;
+};
+
+export type OrderSummary = Pick<OrderDetail, 'orderId' | 'visitTime' | 'status' | 'totalPrice' | 'paidAmount'>;

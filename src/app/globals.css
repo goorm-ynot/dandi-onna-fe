@@ -13,7 +13,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
 
-    --primary: 0 0% 22%;
+    --primary: '#8949fe';
     --primary-foreground: 0 0% 98%;
 
     --secondary: 0 0% 40%;
@@ -31,6 +31,20 @@
     --border: 0 0% 73%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
+
+    /* table status 혹은 그냥 stauts */
+    --status-pending: #ffd8e2;
+    --status-pending-foreground: #b5135d;
+    --status-completed: #c9eca8;
+    --status-completed-foreground: #428600;
+    --status-noshow: #eff6ff;
+    --status-disable: #e1e1e1;
+    --status-dark: #a3a3a3; /* 글자색 1 */
+
+    --label-default: #161616;
+    --label-semilight: #4c4c4c;
+    --label-bold: #262626;
+    --label-light: #8e8e8e;
 
     /* 일단 나온 Foundation */
     --radius-6: 6px;
@@ -82,11 +96,6 @@
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
   }
 }
 
@@ -106,7 +115,7 @@
 @layer components {
   /* 로고 스타일 */
   .logo {
-    @apply text-neutral-900 font-black font-[PartialSans];
+    @apply text-neutral-900 font-[PartialSans] text-primary;
   }
   /* 글자 스타일 */
   /* title */

@@ -9,9 +9,13 @@ import { TwoColumnLayout } from '@/components/layout/TwoCloumnLayout';
 import { reservationStatus } from '@/constants/sellerNavConstant';
 import { useReservationManager } from '@/hooks/useReservationManger';
 import { Reservation } from '@/types/boardData';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDialog';
 
 export default function RegistPage() {
+  const [isNoShowDialogOpen, setIsNoShowDialogOpen] = useState(false);
+  const [isVisitDoneDialogOpen, setIsVisitDoneDialogOpen] = useState(false);
+
   /**
    * ✅ 예약 상태 & 관리 훅
    * - 예약 목록 로드 (React Query)
@@ -32,7 +36,6 @@ export default function RegistPage() {
     activeEdit,
     setSelectedReservation,
     handleStatusUpdate,
-    handleBatchNoShow,
     forceCheck,
     handlePageChange,
     handleFilterChange,
@@ -71,14 +74,15 @@ export default function RegistPage() {
     {
       key: 'status',
       header: '예약관리',
+      location: 'center' as 'center',
       render: (res: Reservation) => (
         <span
           className={`px-3 py-1 rounded-full text-base font-normal ${
             res.status === 'PENDING'
-              ? 'bg-secondary text-secondary-foreground'
+              ? 'bg-status-pending text-status-pending-foreground'
               : res.status === 'NOSHOW'
-              ? 'bg-primary text-primary-foreground'
-              : 'bg-muted text-muted-foreground'
+              ? 'bg-status-noshow text-status-dark'
+              : 'bg-status-completed text-status-completed-foreground'
           }`}>
           {reservationStatus[res.status as keyof typeof reservationStatus] || res.status}
         </span>
@@ -90,6 +94,48 @@ export default function RegistPage() {
   useEffect(() => {
     forceCheck();
   }, [forceCheck]);
+
+  /** 노쇼 모드 전환 - Dialog로 확인 받기 */
+  const onChangeEdit = (active: boolean) => {
+    if (active) {
+      // 편집 모드 진입 시 확인 다이얼로그 표시
+      setIsNoShowDialogOpen(true);
+    } else {
+      // 취소 시 그냥 종료
+      setActiveEdit(false);
+    }
+  };
+
+  /** 노쇼 처리 확정 */
+  const handleNoShowConfirm = () => {
+    setActiveEdit(true);
+    // TODO: 실제 노쇼 처리 API 호출
+    // handleStatusUpdate(selectedReservation?.reservationNo, 'NOSHOW');
+  };
+
+  /** 노쇼 처리 취소 */
+  const handleNoShowCancel = () => {
+    setIsNoShowDialogOpen(false);
+    setActiveEdit(false);
+  };
+
+  /** 방문 완료 전환 요청 - Dialog 띄우기 */
+  const onDataUpdate = () => {
+    setIsVisitDoneDialogOpen(true);
+  };
+
+  /** 방문 완료 확정 */
+  const handleVisitDoneConfirm = () => {
+    if (selectedReservation?.reservationNo) {
+      handleStatusUpdate(selectedReservation.reservationNo, 'VISIT_DONE');
+      setSelectedReservation(null);
+    }
+  };
+
+  /** 방문 완료 취소 */
+  const handleVisitDoneCancel = () => {
+    setIsVisitDoneDialogOpen(false);
+  };
 
   /** 방문 완료 된 부분은 선택 안되게
    * (INFO: 당장은 mock데이터를 사용해서 그냥 다 넘기지만 API 호출 시, 이부분 수정 필요)
@@ -120,11 +166,10 @@ export default function RegistPage() {
         tabs={tabs}
         showFilters={true}
         columns={columns}
-        reservations={sortedReservations}
-        expiredReservations={expiredReservations}
-        onSelectReservation={onSelectReservation}
+        data={sortedReservations}
+        expiredData={expiredReservations}
+        onSelected={onSelectReservation}
         onTabChange={handleFilterChange}
-        onBatchNoShow={handleBatchNoShow}
         isUpdating={isUpdating}
         totalPages={Number(totalPage)}
         page={Number(cursor)}
@@ -140,41 +185,64 @@ export default function RegistPage() {
 
   /** 예약이 선택된 경우 — 두 개의 패널로 세부 정보 표시 */
   return (
-    <TwoColumnLayout
-      rightTitle={selectItemStatus === 'PENDING' ? '예약 상세정보를 확인해주세요' : '앗, 노쇼가 발생했나요?'}
-      leftContent={
-        <SinglePageLayout
-          title='오늘의 예약 내역이에요'
-          tabs={tabs}
-          showFilters={true}
-          columns={columns}
-          reservations={reservations}
-          expiredReservations={expiredReservations}
-          onSelectReservation={onSelectReservation}
-          onTabChange={handleFilterChange}
-          onBatchNoShow={handleBatchNoShow}
-          isUpdating={isUpdating}
-          totalPages={Number(totalPage)}
-          page={Number(cursor)}
-          onPageChange={handlePageChange}
-          emptyMessage='오늘 예약이 비어있습니다.'
-          activeTab={activeTab}
-          selectItemId={selectItemId}
-        />
-      }
-      // selectItemStatus 말고 다른 방법?
-      panelType={!activeEdit ? 'reservation-detail' : 'noshow-edit'}
-      // panelMode={'edit'}
-      panelMode={'noshow-form'}
-      selectedData={selectedReservation}
-      onBack={() => console.log('onBack')}
-      onModeChange={() => console.log('mode change')}
-      onDataUpdate={() => console.log('update')}
-      onStatusUpdate={() => console.log('update2')}
-      onEditMode={(active: boolean) => setActiveEdit?.(active)}
-      leftClassName='flex-1'
-      rightClassName='w-96'
-      showTitles={true}
-    />
+    <>
+      <TwoColumnLayout
+        rightTitle={selectItemStatus === 'PENDING' ? '예약 상세정보를 확인해주세요' : '앗, 노쇼가 발생했나요?'}
+        leftContent={
+          <SinglePageLayout
+            title='오늘의 예약 내역이에요'
+            tabs={tabs}
+            showFilters={true}
+            columns={columns}
+            data={reservations}
+            expiredData={expiredReservations}
+            onSelected={onSelectReservation}
+            onTabChange={handleFilterChange}
+            isUpdating={isUpdating}
+            totalPages={Number(totalPage)}
+            page={Number(cursor)}
+            onPageChange={handlePageChange}
+            emptyMessage='오늘 예약이 비어있습니다.'
+            activeTab={activeTab}
+            selectItemId={selectItemId}
+          />
+        }
+        // selectItemStatus 말고 다른 방법?
+        panelType={!activeEdit ? 'reservation-detail' : 'noshow-edit'}
+        // panelMode={'edit'}
+        panelMode={'noshow-form'}
+        selectedData={selectedReservation}
+        onBack={() => console.log('onBack')}
+        onModeChange={() => console.log('mode change')}
+        onDataUpdate={onDataUpdate}
+        onStatusUpdate={() => console.log('update2')}
+        onEditMode={onChangeEdit}
+        leftClassName='flex-1'
+        rightClassName='w-96'
+        showTitles={true}
+      />
+
+      {/* 노쇼 확인 다이얼로그 */}
+      <ConfirmDialog
+        open={isNoShowDialogOpen}
+        onOpenChange={setIsNoShowDialogOpen}
+        onConfirm={handleNoShowConfirm}
+        onCancel={handleNoShowCancel}
+        title='예약 상태 변경'
+        description='노쇼 상태로 전환하시겠습니까?'
+      />
+
+      {/* 방문 완료 확인 다이얼로그 */}
+      <ConfirmDialog
+        open={isVisitDoneDialogOpen}
+        onOpenChange={setIsVisitDoneDialogOpen}
+        onConfirm={handleVisitDoneConfirm}
+        onCancel={handleVisitDoneCancel}
+        title='고객 방문 완료'
+        description='고객 방문 완료로 전환하시겠습니까?'
+        confirmText='방문 완료'
+        cancelText='취소'
+      />
+    </>
   );
 }

@@ -8,8 +8,8 @@ export default function NoShowPanel({ mode, noShowData, onDataUpdate }: Imported
     return <NoShowCreatePanel noShowData={noShowData} onDataUpdate={onDataUpdate} />;
   }
 
-  if (mode === 'edit') {
-    return <NoShowEditPanel noShowData={noShowData} onDataUpdate={onDataUpdate} />;
+  if (mode === 'edit' && noShowData) {
+    return <NoShowEditPanel noShowData={noShowData as any} onDataUpdate={onDataUpdate} />;
   }
 
   return null;

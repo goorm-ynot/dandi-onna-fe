@@ -26,7 +26,7 @@ export default function Pagination({ totalPages, currentPage, onPageChange, clas
         <Button
           key={i}
           size='page'
-          variant={validPage === i + 1 ? 'secondary' : 'link'}
+          variant={validPage === i + 1 ? 'outline' : 'link'}
           onClick={() => onPageChange(i + 1)}>
           {i + 1}
         </Button>

@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useReservationStore } from '@/store/useReservationStore';
 import { useReservationTimer } from './useReservationTimer';
 import { useReservationApi } from './useReservationApi';
-import { SortState } from '@/types/boardData';
+import { Reservation, SortState } from '@/types/boardData';
 
 export const useReservationManager = () => {
   const {
@@ -69,10 +69,6 @@ export const useReservationManager = () => {
 
   const handleStatusUpdate = (reservationNo: string, status: 'NOSHOW' | 'VISIT_DONE') => {
     updateStatus({ reservationNo, status });
-  };
-
-  const handleBatchNoShow = (reservationIds: string[]) => {
-    batchNoShow(reservationIds);
   };
 
   // 페이지 변경 함수
@@ -158,7 +154,6 @@ export const useReservationManager = () => {
     // 액션
     setSelectedReservation,
     handleStatusUpdate,
-    handleBatchNoShow,
     forceCheck,
     handlePageChange,
     setPages,

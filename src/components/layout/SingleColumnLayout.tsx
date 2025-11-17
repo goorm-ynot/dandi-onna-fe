@@ -24,8 +24,8 @@ export default function SingleColumnLayout({
 
   // 테이블
   columns,
-  reservations,
-  onSelectReservation,
+  data,
+  onSelected,
   isUpdating = false,
   emptyMessage,
 
@@ -35,7 +35,7 @@ export default function SingleColumnLayout({
   onPageChange,
 
   // 기타
-  expiredReservations = [],
+  expiredData = [],
   sortState,
   onSort,
 }: SingleColumnLayoutProps) {
@@ -47,9 +47,9 @@ export default function SingleColumnLayout({
           tabs={tabs}
           showFilters={showFilters}
           columns={columns}
-          reservations={reservations}
-          expiredReservations={expiredReservations}
-          onSelectReservation={onSelectReservation}
+          data={data}
+          expiredData={expiredData}
+          onSelected={onSelected}
           onTabChange={onTabChange}
           isUpdating={isUpdating}
           totalPages={Number(totalPages)}

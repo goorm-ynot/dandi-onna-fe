@@ -41,8 +41,9 @@ export default function OnboardingPage() {
 
     try {
       const result = await handleLogin(userLoginData);
+      console.log(result);
       toast.success('로그인 성공!', {
-        description: '사장님 페이지로 이동합니다.',
+        description: result.message,
       });
       router.push('/seller');
     } catch (error) {

@@ -1,9 +1,15 @@
-const koDayString = ['월', '화', '수', '목', '금', '토', '일'];
+const koDayString = ['일', '월', '화', '수', '목', '금', '토'];
 
 // 날짜 세팅
 export const getNowDateString = () => {
   const newDate = new Date();
   return `${newDate.getFullYear()}. ${newDate.getMonth() + 1}. ${newDate.getDate()} (${koDayString[newDate.getDay()]})`;
+};
+
+// 날짜 세팅 (ex: 2025-11-11)
+export const getNowDateHyphenString = () => {
+  const newDate = new Date();
+  return `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`;
 };
 
 // 10분 단위 올림 처리 함수
@@ -21,4 +27,9 @@ export const roundToNext10Minutes = (date: Date): Date => {
   }
 
   return newDate;
+};
+
+// 시간 문자열 포맷팅
+export const formatTimeString = (date: Date, hours24 = false): string => {
+  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: !hours24 });
 };

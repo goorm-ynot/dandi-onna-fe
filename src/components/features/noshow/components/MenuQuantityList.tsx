@@ -1,23 +1,66 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { UseNoShowFormResult } from '@/types/noShowPanelType';
+import { UseNoShowFormResult, UseNoShowMenuFormResult } from '@/types/noShowPanelType';
 
 interface MenuQuantityListProps {
-  formResult: UseNoShowFormResult;
+  formResult: UseNoShowFormResult | UseNoShowMenuFormResult;
 }
 
 export default function MenuQuantityList({ formResult }: MenuQuantityListProps) {
-  const {
-    fields,
-    form: { control },
-    errors,
-    increment,
-    decrement,
-    deleteMenu,
-  } = formResult;
+  const { control } = useFormContext();
+
+  // ✅ 생성 폼인지 체크
+  const isCreateForm = 'fields' in formResult;
+
+  if (!isCreateForm) {
+    // 수정 폼: 단일 메뉴
+    const { errors, quantity, increment, decrement } = formResult;
+    const menu = control._formValues; // 현재 폼 값
+
+    return (
+      <div className='flex flex-col gap-24 px-20'>
+        <div className='grid grid-cols-2 gap-20 justify-items-stretch w-full'>
+          <Label className='body3 text-left'>{menu.name}</Label>
+          <Label className='body5 text-right'>{menu.price?.toLocaleString()}원</Label>
+
+          <div className='flex flex-row gap-2'>
+            <Button type='button' variant='outline' size='xs' onClick={decrement}>
+              -
+            </Button>
+
+            <Controller
+              control={control}
+              name='quantity'
+              render={({ field }) => (
+                <>
+                  <Input
+                    type='number'
+                    {...field}
+                    onChange={(e) => {
+                      const value = Number(e.target.value);
+                      if (value >= 1) field.onChange(value);
+                    }}
+                    className='w-[60px] h-[38px] rounded text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+                  />
+                  {errors.quantity && <p className='text-red-500 text-sm'>{errors.quantity?.message}</p>}
+                </>
+              )}
+            />
+
+            <Button type='button' size='xs' variant='outline' onClick={increment}>
+              +
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 생성 폼: 여러 메뉴
+  const { fields, errors, increment, decrement, deleteMenu } = formResult;
 
   return (
     <div className='flex flex-col gap-24 px-20  '>
@@ -27,7 +70,7 @@ export default function MenuQuantityList({ formResult }: MenuQuantityListProps) 
           <Label className='body5 text-right'>{menu.price.toLocaleString()}원</Label>
 
           <div className='flex flex-row gap-2'>
-            <Button type='button' size='xs' variant='default' onClick={() => decrement(index)}>
+            <Button type='button' size='xs' variant='outline' onClick={() => decrement(index)}>
               -
             </Button>
 
@@ -52,7 +95,7 @@ export default function MenuQuantityList({ formResult }: MenuQuantityListProps) 
               )}
             />
 
-            <Button type='button' size='xs' variant='secondary' onClick={() => increment(index)}>
+            <Button type='button' size='xs' variant='outline' onClick={() => increment(index)}>
               +
             </Button>
           </div>

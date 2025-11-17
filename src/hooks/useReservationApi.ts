@@ -2,6 +2,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useReservationStore } from '@/store/useReservationStore';
 import axios from 'axios';
+import { NoShowCreate, Reservation } from '@/types/boardData';
+import { redirect } from 'next/navigation';
 
 interface UpdateStatusParams {
   reservationNo: string;
@@ -32,16 +34,26 @@ export const useReservationApi = () => {
 
   // 배치 노쇼 처리
   const batchNoShowMutation = useMutation({
-    mutationFn: async (reservationIds: string[]) => {
-      const response = await fetch('/api/owner/no-show-posts:batch', {
+    mutationFn: async (reservation: NoShowCreate) => {
+      const response = await fetch('/api/v1/seller/reservations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reservationIds }),
+        body: JSON.stringify({ reservation }),
       });
+
+      if (!response.ok) {
+        throw new Error('노쇼 처리에 실패했습니다.');
+      }
+
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log('✅ 노쇼 처리 성공:', data);
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
+      redirect('/seller/no-show');
+    },
+    onError: (error) => {
+      console.error('❌ 노쇼 처리 실패:', error);
     },
   });
 
@@ -49,6 +61,10 @@ export const useReservationApi = () => {
     updateStatus: updateStatusMutation.mutate,
     batchNoShow: batchNoShowMutation.mutate,
     isUpdating: updateStatusMutation.isPending || batchNoShowMutation.isPending,
+    // 성공/실패 상태 추가
+    isSuccess: batchNoShowMutation.isSuccess,
+    isError: batchNoShowMutation.isError,
+    error: batchNoShowMutation.error,
   };
 };
 

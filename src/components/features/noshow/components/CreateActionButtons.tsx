@@ -1,9 +1,15 @@
 import { Button } from '@/components/ui/button';
+import { NoShowMenu } from '@/types/boardData';
 
-export default function EditActionButtons() {
+interface EditActionButtons {
+  noShowData: NoShowMenu;
+  onDataUpdate?: (data: any) => void;
+}
+
+export default function EditActionButtons({ noShowData, onDataUpdate }: EditActionButtons) {
   return (
-    <div className='grid grid-cols-2 gap-4 border-t border-line-foreground pb-20'>
-      <Button type='button' variant='outline' size='lg' className='w-full'>
+    <div className='grid grid-cols-2 gap-4 pt-10 pb-20 px-20'>
+      <Button type='button' variant='outline' size='lg' className='w-full' onClick={() => onDataUpdate?.(noShowData)}>
         노쇼메뉴 삭제
       </Button>
       <Button type='submit' variant='default' size='lg' className='w-full'>

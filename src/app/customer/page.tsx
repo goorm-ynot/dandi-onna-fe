@@ -3,7 +3,12 @@ import React from 'react';
 export default function customerPage() {
   return (
     <div className='h-screen flex flex-col max-w-full'>
-      {/* seller 헤더 */}
+      {/* seller 헤더 
+      
+lat      37.389858
+
+lon 127.096352
+*/}
       {/* seller 사이드 메뉴 */}
       {/* 아... 이건 레이아웃에 들어가야하지 */}
       <div className='flex-1 flex flex-col justify-center items-center p-6'>

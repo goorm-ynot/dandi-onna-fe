@@ -14,7 +14,9 @@ const buttonVariants = cva(
         outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline',
+        link: 'text-label underline-offset-4 hover:underline',
+        filterAct: 'bg-tableFilter-bg text-tableFilter-foreground ',
+        filterNone: 'border border-tableFilter-line text-tableFilter-text',
       },
       size: {
         default: 'h-[38px] px-5 py-2.5',
@@ -24,6 +26,7 @@ const buttonVariants = cva(
         page: 'px-2.5 py-1 rounded-md',
         xs: 'h-[38px] w-[38px] p-[7px] rounded-[6px]',
         custom: 'h-[38px]',
+        table: 'max-h-[26px]',
       },
     },
     defaultVariants: {

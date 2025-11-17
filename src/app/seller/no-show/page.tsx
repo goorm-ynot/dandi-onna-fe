@@ -1,10 +1,161 @@
-import React from 'react';
+'use client';
+import SinglePageLayout from '@/components/features/dashboard/SinglePageLayout';
+import SingleColumnLayout from '@/components/layout/SingleColumnLayout';
+import { TwoColumnLayout } from '@/components/layout/TwoCloumnLayout';
+import { AlertDialog } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDialog';
+import { useNoShowManage } from '@/hooks/useNoShowManage';
+import { NoShowMenuList } from '@/types/noShowPanelType';
+import { redirect } from 'next/navigation';
+import React, { useState } from 'react';
 
 export default function page() {
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+  const {
+    noShowList,
+    selectNoShowItem,
+    cursor,
+    totalPages,
+    activeEdit,
+    selectItemId,
+    isLoading,
+    // error
+    noShowListError,
+    detailError,
+    setSelectNoshowItem,
+    onSelected,
+    handleSort,
+    handlePageChange,
+    setActiveEdit,
+  } = useNoShowManage();
+
+  const handleSelectStatus = (item: string) => {
+    console.log(item);
+  };
+
+  /** 노쇼 메뉴 삭제 요청 - Dialog 띄우기 */
+  const onDataUpdate = () => {
+    setIsDeleteDialogOpen(true);
+  };
+
+  /** 노쇼 메뉴 삭제 확정 */
+  const handleDeleteConfirm = () => {
+    // TODO: 실제 삭제 API 호출
+    console.log('🗑️ 노쇼 메뉴 삭제 확정:', selectNoShowItem);
+    setActiveEdit(false);
+  };
+
+  /** 노쇼 메뉴 삭제 취소 */
+  const handleDeleteCancel = () => {
+    setIsDeleteDialogOpen(false);
+  };
+
+  /** 테이블 컬럼 (UI용) */
+  const columns = [
+    {
+      key: 'time',
+      header: '시간',
+      // sortable: true,
+      render: (res: { visitTime: string | number | Date }) =>
+        new Date(res.visitTime).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false }),
+    },
+    {
+      key: 'menu',
+      header: '메뉴명',
+      isWide: true, // ✅ 메뉴명 컬럼만 넓게
+      render: (res: { name: string | null; quantity: number }) => (
+        <p>
+          {res.name} ({res.quantity})
+        </p>
+      ),
+    },
+    {
+      key: 'status',
+      header: '메뉴관리',
+      location: 'center' as 'center',
+      render: (res: NoShowMenuList) => (
+        <Button
+          className='rounded-full max-w-[120px] w-full py-2 '
+          size='table'
+          variant='default'
+          onClick={(e) => {
+            e.stopPropagation(); // 행 클릭 이벤트 방지
+            onSelected(res.postId.toString());
+          }}>
+          수정
+        </Button>
+      ),
+    },
+  ];
+
+  /** 로딩 중 상태 표시 */
+  if (isLoading) {
+    return (
+      <div className='w-screen h-screen flex items-center justify-center'>
+        <p className='text-gray-500'>예약 데이터를 불러오는 중...</p>
+      </div>
+    );
+  }
+
+  if (noShowListError || detailError) {
+    alert('서버 오류가 발생했습니다. 다시 로그인을 시도해주세요.');
+    redirect('/');
+  }
+
+  if (!activeEdit) {
+    return (
+      <SingleColumnLayout
+        title='노쇼 메뉴 상태를 관리해요'
+        showFilters={false}
+        columns={columns}
+        data={noShowList || []}
+        expiredData={[]}
+        // onSelected={onSelected} // 행 클릭 비활성화
+        isUpdating={activeEdit}
+        totalPages={Number(totalPages)}
+        page={Number(cursor)}
+        onPageChange={handlePageChange}
+        emptyMessage={'노쇼가 없습니다.'} // TODO: 멘트 추천받기
+      />
+    );
+  }
+
   return (
-    <div className='w-screen h-screen'>
-      {/* adf */}
-      {/* adf */}
-    </div>
+    <>
+      <TwoColumnLayout
+        rightTitle='노쇼 주문내역 상세정보'
+        leftContent={
+          <SinglePageLayout
+            title='노쇼 메뉴 상태를 관리해요'
+            showFilters={false}
+            columns={columns}
+            data={noShowList || []}
+            expiredData={[]}
+            // onSelected={onSelected} // 행 클릭 비활성화
+            isUpdating={activeEdit}
+            totalPages={Number(totalPages)}
+            page={Number(cursor)}
+            onPageChange={handlePageChange}
+            emptyMessage='오늘 노쇼가 없습니다!' // TODO: 멘트 추천받기
+          />
+        }
+        panelType='noshow-edit'
+        panelMode={'edit'}
+        selectedData={selectNoShowItem}
+        onDataUpdate={onDataUpdate}
+      />
+
+      {/* 노쇼 메뉴 삭제 확인 Dialog */}
+      <ConfirmDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+        onConfirm={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+        title='삭제 전 확인'
+        description='노쇼 메뉴를 정말 삭제하시겠습니까?'
+      />
+    </>
   );
 }

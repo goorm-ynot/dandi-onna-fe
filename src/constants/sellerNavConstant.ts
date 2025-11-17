@@ -54,3 +54,8 @@ export const reservationStatus = {
   COMPLETED: '노쇼 주문 완료',
   CANCELLED: '노쇼 방문 완료',
 };
+
+export const orderStatus = {
+  PENDING: '노쇼 주문 완료',
+  COMPLETED: '노쇼 방문 완료',
+};

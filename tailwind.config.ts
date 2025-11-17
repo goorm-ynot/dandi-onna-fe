@@ -1,3 +1,4 @@
+import { table } from 'console';
 import type { Config } from 'tailwindcss';
 
 const config = {
@@ -17,14 +18,17 @@ const config = {
         partial: ['PartialSans', 'sans-serif'],
       },
       colors: {
-        border: 'hsl(var(--border))',
+        border: {
+          DEFAULT: '#8949fe',
+          wrapper: '#d0d0d0',
+        },
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+          DEFAULT: '#8949fe',
+          foreground: '#ffffff',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
@@ -68,18 +72,32 @@ const config = {
             text: '#b91c1c',
           },
         },
-        chart: {
-          1: 'hsl(var(--chart-1))',
-          2: 'hsl(var(--chart-2))',
-          3: 'hsl(var(--chart-3))',
-          4: 'hsl(var(--chart-4))',
-          5: 'hsl(var(--chart-5))',
-        },
         table: {
           bg: '#F5F5F5',
           hover: '#e2f2fe',
           secondary: '#abf2bf',
           expired: 'rgb(254 226 226)',
+        },
+        status: {
+          pending: 'var(--status-pending)',
+          'pending-foreground': 'var(--status-pending-foreground)',
+          completed: 'var(--status-completed)',
+          'completed-foreground': 'var(--status-completed-foreground)',
+          noshow: 'var(--status-noshow)',
+          disable: 'var(--status-disable)',
+          dark: 'var(--status-dark)',
+        },
+        tableFilter: {
+          bg: '#383838',
+          foreground: '#FFFFFF',
+          line: '#BABABA',
+          text: '#161616',
+        },
+        label: {
+          default: '(var(--label-default))',
+          semilight: 'var(--label-semilight)',
+          bold: 'var(--label-bold)',
+          light: 'var(--label-light)',
         },
       },
       borderRadius: {
@@ -87,6 +105,8 @@ const config = {
         lg: 'var(--radius-20)',
         md: 'var(--radius-10)',
         sm: 'var(--radius-6)',
+        16: '16px',
+        12: '12px',
       },
       spacing: {
         2: 'var(--spacing-2)',

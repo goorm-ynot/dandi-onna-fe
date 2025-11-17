@@ -1,6 +1,7 @@
 import { Reservation } from './boardData';
 import { PanelMode } from './PanleTypes';
 import { UseFormReturn } from 'react-hook-form';
+import { NoShowFormValues, NoShowEditFormValues } from './noShowFormZod';
 
 export interface NoShowFormData {
   menus: {
@@ -14,8 +15,9 @@ export interface NoShowFormData {
   visitTime: number;
 }
 
+// ✅ 생성 폼 결과 타입
 export interface UseNoShowFormResult {
-  form: UseFormReturn<NoShowFormData>;
+  form: UseFormReturn<NoShowFormValues>;
   fields: any[];
   originalTotal: number;
   discountTotal: number;
@@ -24,6 +26,20 @@ export interface UseNoShowFormResult {
   decrement: (index: number) => void;
   deleteMenu: (index: number) => void;
   onSubmit: () => void;
+  visitTime: Date; // 계산된 방문 시간
+}
+
+// ✅ 수정 폼 결과 타입
+export interface UseNoShowMenuFormResult {
+  form: UseFormReturn<NoShowEditFormValues>;
+  errors: any;
+  quantity: number;
+  originalTotal: number;
+  discountTotal: number;
+  increment: () => void;
+  decrement: () => void;
+  onSubmit: () => void;
+  visitTime: Date; // ISO 문자열 방문 시간
 }
 
 export interface NoShowPanel {
@@ -35,4 +51,20 @@ export interface NoShowPanel {
 export interface NoShowEditPanel {
   noShowData: Reservation;
   onDataUpdate?: (data: any) => void; // 입력값들 정리해야함
+}
+
+export interface NoShowMenuList {
+  postId: number;
+  menuId: string;
+  visitTime: Date;
+  quantity: number;
+  discountPercent: number;
+}
+
+export interface Pagination {
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  hasNext: boolean;
 }

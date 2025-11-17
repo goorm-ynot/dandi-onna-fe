@@ -35,7 +35,7 @@ export default function Header({ navList, hasNotification, userName }: HeaderPro
         {/* 왼쪽: 로고 + 네비게이션 */}
         <div className='flex items-center gap-12'>
           {/* 로고 */}
-          <div className='logo text-2xl'>단디온나</div>
+          <div className='logo text-2xl '>단디온나</div>
 
           {/* 네비게이션 */}
           <nav className='self-stretch inline-flex justify-center items-center '>

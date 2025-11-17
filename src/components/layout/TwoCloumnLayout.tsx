@@ -31,7 +31,7 @@ export function TwoColumnLayout({
         {/* 오른쪽 패널 - 동적 컨텐츠 */}
         <div className={`${rightClassName} flex flex-col`}>
           {showTitles && rightTitle && <PageHeader title={rightTitle} />}
-          <div className='flex-1 overflow-auto border rounded-md'>
+          <div className='flex-1 overflow-auto border border-border-wrapper rounded-md'>
             <RightPanelContent
               type={panelType}
               mode={panelMode}

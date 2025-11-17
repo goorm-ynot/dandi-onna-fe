@@ -11,6 +11,7 @@ interface ReservationDetailPanel {
   onStatusUpdate?: (id: string, status: string) => void;
   onClose?: () => void;
   onEditMode?: (editmode: boolean) => void;
+  onDataUpdate?: (data: any) => void;
 }
 
 export default function ReservationDetailPanel({
@@ -20,6 +21,7 @@ export default function ReservationDetailPanel({
   onStatusUpdate,
   onClose,
   onEditMode,
+  onDataUpdate,
 }: ReservationDetailPanel) {
   return (
     <div className='p-20 flex flex-col justify-between min-h-[758px]'>
@@ -43,7 +45,7 @@ export default function ReservationDetailPanel({
 
         {/* 구분선 1 */}
         <div className=''>
-          <hr className='w-full border border-1 bg-line' />
+          <hr className='w-full border border-1 border-line' />
         </div>
 
         <Label className='title5'>주문 메뉴</Label>
@@ -65,7 +67,7 @@ export default function ReservationDetailPanel({
         <Button variant={'outline'} size={'lg'} className='w-full' onClick={() => onEditMode?.(true)}>
           노쇼등록
         </Button>
-        <Button variant={'default'} size={'lg'} className='w-full'>
+        <Button variant={'default'} size={'lg'} className='w-full' onClick={() => onDataUpdate?.(reservation)}>
           방문완료
         </Button>
       </div>

@@ -2,6 +2,7 @@ import { PanelMode, PanelType } from '@/types/PanleTypes';
 import ReservationDetailPanel from '../features/reservation/ReservationDetailPanel';
 import NoShowEditPanel from '../features/noshow/NoShowEditPanel';
 import NoShowPanel from '../features/noshow';
+import NoShowOrderPanel from '../features/order/NoShowOrderPanel';
 
 interface RightPanelContentProps {
   type: PanelType;
@@ -34,14 +35,15 @@ export default function RightPanelContent({
           onStatusUpdate={onStatusUpdate}
           onClose={onClose}
           onEditMode={onEditMode}
+          onDataUpdate={onDataUpdate ? () => onDataUpdate(data) : undefined}
         />
       );
 
     case 'noshow-edit':
       return <NoShowPanel mode={mode} noShowData={data} onDataUpdate={onDataUpdate} />;
 
-    // case 'noshow-order-view':
-    //   return <NoShowOrderPanel orderData={data} onClose={onClose} />;
+    case 'noshow-order-view':
+      return <NoShowOrderPanel mode={mode} orderData={data} onStatusUpdate={onStatusUpdate} />;
 
     default:
       return <div>알 수 없는 패널 타입입니다.</div>;
