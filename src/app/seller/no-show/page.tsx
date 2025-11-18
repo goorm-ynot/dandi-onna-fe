@@ -10,7 +10,7 @@ import { NoShowMenuList } from '@/types/noShowPanelType';
 import { redirect } from 'next/navigation';
 import React, { useState } from 'react';
 
-export default function page() {
+export default function NoShowMenuPage() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const {

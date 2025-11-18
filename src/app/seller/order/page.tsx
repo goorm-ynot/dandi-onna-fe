@@ -9,7 +9,7 @@ import { formatTimeString } from '@/lib/dateParse';
 import { OrderDetail, OrderItem, OrderItemList } from '@/types/boardData';
 import React, { useState } from 'react';
 
-export default function page() {
+export default function NoShowOrderListPage() {
   const [isCompleteVisitDialogOpen, setIsCompleteVisitDialogOpen] = useState(false);
 
   const {
