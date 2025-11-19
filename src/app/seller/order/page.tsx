@@ -8,9 +8,11 @@ import { useSellerOrderManage } from '@/hooks/useSellerOrderManage';
 import { formatTimeString } from '@/lib/dateParse';
 import { OrderDetail, OrderItem, OrderItemList } from '@/types/boardData';
 import React, { useState } from 'react';
+import { useApiErrorHandler } from '@/hooks/useApiErrorHandler';
 
 export default function NoShowOrderListPage() {
   const [isCompleteVisitDialogOpen, setIsCompleteVisitDialogOpen] = useState(false);
+  const { handleApiError } = useApiErrorHandler();
 
   const {
     orders,
@@ -37,7 +39,11 @@ export default function NoShowOrderListPage() {
   /** 방문 완료 확정 */
   const handleCompleteVisitConfirm = () => {
     if (selectOrderItem) {
-      handleCompleteVisit(selectOrderItem.orderId.toString());
+      try {
+        handleCompleteVisit(selectOrderItem.orderId.toString());
+      } catch (error) {
+        handleApiError(error);
+      }
     }
   };
 

@@ -3,10 +3,10 @@
 import ImageSlider from '@/components/ui/imageSlider';
 import useFcmToken from '@/hooks/useFcmToken';
 import { useGeolocationConsent } from '@/hooks/useGeolocationConsent';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useUserHook } from '@/hooks/useUser';
 
 const USER_ROLE = ['CONSUMER', 'OWNER', 'ADMIN'];
@@ -14,43 +14,64 @@ export default function OnboardingPage() {
   const router = useRouter();
   const { token } = useFcmToken();
   const { permission, requestPermission } = useGeolocationConsent();
-  const { handleLogin } = useUserHook();
+  const { handleLogin, postFcmToken } = useUserHook();
   const isLocationAllowed = permission === 'granted';
+  const [deviceId, setDeviceId] = useState<string | null>(null);
 
   useEffect(() => {
     // 위치 권한 정보 수집
     requestPermission();
+    // deviceID 필요
+    let storedId = localStorage.getItem('deviceId');
+    if (!storedId) {
+      storedId = crypto.randomUUID();
+      localStorage.setItem('deviceId', storedId);
+    }
+    setDeviceId(storedId);
   }, []);
 
-  const onKakaoClick = () => {
+  const onKakaoClick = async () => {
     const userLoginData = {
-      loginId: 'owner@example.com',
-      password: 'pass123!',
+      loginId: 'Customer1',
+      password: '111111',
       role: USER_ROLE[0], // CUSTOMER
     };
-
-    // router.push('/customer');
-  };
-
-  const onSellerClick = async () => {
-    const userLoginData = {
-      loginId: 'CEO1',
-      password: '111111',
-      role: USER_ROLE[1], // OWNER
-    };
-
     try {
       const result = await handleLogin(userLoginData);
-      console.log(result);
+      if (result.success && token && deviceId) {
+        await postFcmToken(token, deviceId);
+      }
       toast.success('로그인 성공!', {
         description: result.message,
       });
-      router.push('/seller');
+      router.replace('/customer');
     } catch (error) {
       toast.error('로그인 실패', {
         description: '아이디 또는 비밀번호를 확인해주세요.',
       });
     }
+  };
+
+  const onSellerClick = async () => {
+    redirect('/test-page');
+    // const userLoginData = {
+    //   loginId: 'CEO1',
+    //   password: '111111',
+    //   role: USER_ROLE[1], // OWNER
+    // };
+
+    // try {
+    //   const result = await handleLogin(userLoginData);
+    //   console.log(result);
+    //   toast.success('로그인 성공!', {
+    //     description: result.message,
+    //   });
+    //   router.push('/seller');
+    // } catch (error) {
+    //   toast.error('로그인 실패', {
+    //     description: '아이디 또는 비밀번호를 확인해주세요.',
+    //   });
+    // }
   };
 
   const images = [
@@ -71,7 +92,11 @@ export default function OnboardingPage() {
         <ImageSlider images={images} interval={3000} />
 
         <div className='flex flex-col justify-start items-center gap-3 w-full mt-5'>
-          <Button onClick={onKakaoClick} size='default' className='w-full bg-yellow-400 hover:bg-yellow-500 text-black'>
+          <Button
+            onClick={onKakaoClick}
+            size='default'
+            className='w-full bg-yellow-400 hover:bg-yellow-500 text-black'
+            disabled={permission === 'granted' ? false : true}>
             카카오톡으로 로그인
           </Button>
 
@@ -79,6 +104,7 @@ export default function OnboardingPage() {
             onClick={onSellerClick}
             variant='outline'
             size='default'
+            disabled={permission === 'granted' ? false : true}
             className='w-full bg-white text-black hover:bg-gray-100 border border-gray-300'>
             사장님으로 로그인
           </Button>
@@ -87,7 +113,9 @@ export default function OnboardingPage() {
             variant='link'
             size='sm'
             className='text-xs text-black hover:underline'
-            onClick={() => router.push('/customer')}>
+            disabled={permission === 'granted' ? false : true}
+            // onClick={() => router.push('/customer')}
+          >
             비회원으로 둘러보기
           </Button>
         </div>

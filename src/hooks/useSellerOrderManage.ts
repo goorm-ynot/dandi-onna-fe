@@ -1,12 +1,15 @@
 import { getNowDateHyphenString } from '@/lib/dateParse';
 import { useSellerOrderStore } from '@/store/useSellerOrder';
+import { useAlarmStore } from '@/store/useAlarmStore';
 import { OrderDetail } from '@/types/boardData';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { set } from 'zod';
 
 export const useSellerOrderManage = () => {
+  const router = useRouter();
   const {
     orders,
     pagination,
@@ -19,6 +22,17 @@ export const useSellerOrderManage = () => {
     setFilterStatus,
     setSelectOrderItem,
   } = useSellerOrderStore();
+  const { showAlarm } = useAlarmStore();
+  const queryClient = useQueryClient();
+
+  // 에러 처리 핸들러
+  const handleQueryError = (error: any) => {
+    console.error('❌ API Error:', error);
+    if (error?.message === 'AUTH_FAILURE' || error?.response?.status === 401 || error?.response?.status === 403) {
+      alert('연결이 원활하지 않습니다. 다시 시도해주세요');
+      router.replace('/');
+    }
+  };
 
   // 판매자 주문내역 조회 쿼리
   const {
@@ -55,6 +69,19 @@ export const useSellerOrderManage = () => {
     },
     enabled: !!selectItemId, // selectItemId가 있을 때만 실행
   });
+
+  // 에러 감지 및 처리
+  useEffect(() => {
+    if (error) {
+      handleQueryError(error);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (orderDetailError) {
+      handleQueryError(orderDetailError);
+    }
+  }, [orderDetailError]);
 
   // 데이터 로드 시 스토어에 저장
   useEffect(() => {
@@ -96,10 +123,37 @@ export const useSellerOrderManage = () => {
     setSelectItem(item?.orderId.toString());
   };
 
-  // 방문 완료
+  // 방문 완료 뮤테이션
+  const completeVisitMutation = useMutation({
+    mutationFn: async (orderId: string) => {
+      const response = await fetch(`/api/v1/seller/order`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('방문 완료 처리에 실패했습니다.');
+      }
+
+      return response.json();
+    },
+    onSuccess: (data) => {
+      console.log('✅ 방문 완료 처리 성공:', data);
+      showAlarm('방문 완료 처리가 완료되었습니다.', 'success', '성공');
+      queryClient.invalidateQueries({ queryKey: ['seller-orders'] });
+      setSelectItem('');
+    },
+    onError: (error) => {
+      console.error('❌ 방문 완료 처리 실패:', error);
+      showAlarm('방문 완료 처리에 실패했습니다.', 'error', '실패');
+    },
+  });
+
+  // 방문 완료 핸들러
   const handleCompleteVisit = (orderId: string) => {
-    // 구현 필요 시 추가
     console.log('방문 완료 처리 주문ID:', orderId);
+    completeVisitMutation.mutate(orderId);
   };
 
   return {

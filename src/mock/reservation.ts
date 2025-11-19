@@ -3,7 +3,7 @@
 export const mockReservations = [
   {
     reservationNo: 'A00001',
-    time: '2025-11-26T12:30:00',
+    time: '2025-11-19T12:30:00',
     menus: [
       { menuId: 'bf09e054-f986-4a20-8993-cecd44008c85', name: '모둠초밥 10pcs', qty: 4, price: 28000 },
       { menuId: '8faac229-a50d-4403-8f72-bb09a663d4c6', name: '1인 숙성 모둠회', qty: 3, price: 50000 },
@@ -13,14 +13,14 @@ export const mockReservations = [
   },
   {
     reservationNo: 'A00002',
-    time: '2025-11-12T11:30:00',
+    time: '2025-11-19T11:30:00',
     menus: [{ menuId: '859726a7-c607-433c-9bdf-6a79c428a3cf', name: '저녁 정식', qty: 1, price: 70000 }],
     contact: '010-2233-4455',
     status: 'VISIT_DONE',
   },
   {
     reservationNo: 'A00003',
-    time: '2025-11-12T12:00:00',
+    time: '2025-11-19T12:00:00',
     menus: [
       { menuId: 'bf09e054-f986-4a20-8993-cecd44008c85', name: '모둠초밥 10pcs', qty: 4, price: 28000 },
       { menuId: '859726a7-c607-433c-9bdf-6a79c428a3cf', name: '저녁 정식', qty: 1, price: 70000 },
@@ -30,7 +30,7 @@ export const mockReservations = [
   },
   {
     reservationNo: 'A00004',
-    time: '2025-11-12T13:15:00',
+    time: '2025-11-19T13:15:00',
     menus: [
       { menuId: '8faac229-a50d-4403-8f72-bb09a663d4c6', name: '1인 숙성 모둠회', qty: 2, price: 50000 },
       { menuId: '859726a7-c607-433c-9bdf-6a79c428a3cf', name: '저녁 정식', qty: 2, price: 70000 },
@@ -40,14 +40,14 @@ export const mockReservations = [
   },
   {
     reservationNo: 'A00005',
-    time: '2025-11-12T14:45:00',
+    time: '2025-11-19T14:45:00',
     menus: [{ menuId: '859726a7-c607-433c-9bdf-6a79c428a3cf', name: '저녁 정식', qty: 5, price: 70000 }],
     contact: '010-3333-9999',
     status: 'VISIT_DONE',
   },
   {
     reservationNo: 'A00006',
-    time: '2025-11-12T15:28:00',
+    time: '2025-11-19T15:28:00',
     menus: [
       { menuId: '8faac229-a50d-4403-8f72-bb09a663d4c6', name: '1인 숙성 모둠회', qty: 6, price: 50000 },
       { menuId: '859726a7-c607-433c-9bdf-6a79c428a3cf', name: '저녁 정식', qty: 5, price: 70000 },
@@ -58,7 +58,7 @@ export const mockReservations = [
   },
   {
     reservationNo: 'A00007',
-    time: '2025-11-12T15:30:00',
+    time: '2025-11-19T15:30:00',
     menus: [
       { menuId: '859726a7-c607-433c-9bdf-6a79c428a3cf', name: '저녁 정식', qty: 5, price: 70000 },
       { menuId: 'bf09e054-f986-4a20-8993-cecd44008c85', name: '모둠초밥 10pcs', qty: 4, price: 28000 },

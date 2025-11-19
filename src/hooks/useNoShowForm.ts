@@ -257,7 +257,7 @@ export function useNoShowMenuForm(defaultData?: NoShowMenu) {
       ...pendingFormData,
       visitTime: calculatedVisitTime.toISOString(),
     });
-    // TODO: 실제 API 호출 로직 추가
+    // TODO: 실제 API 호출 로직 추가(필요시)
     setIsSubmitDialogOpen(false);
     setPendingFormData(null);
   }, [pendingFormData, calculatedVisitTime]);
@@ -291,4 +291,7 @@ export function useNoShowMenuForm(defaultData?: NoShowMenu) {
     handleCancelSubmit,
     pendingFormData,
   };
+}
+function setSelectedReservation(arg0: null) {
+  throw new Error('Function not implemented.');
 }

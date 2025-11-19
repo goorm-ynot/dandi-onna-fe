@@ -4,28 +4,30 @@ import React from 'react';
 
 export default function Footer() {
   return (
-    <footer className='w-full bg-white py-20'>
-      {/* ✅ 전체는 중앙 정렬 + 최대 1920px 제한 */}
-      <div className='max-w-[1920px] mx-auto px-6 sm:px-10 lg:px-20 py-20'>
-        {/* ✅ 내부 컨테이너: 중앙에 1280px 고정, 양쪽 여백 균등 */}
-        <div className='max-w-[1280px] mx-auto flex flex-col gap-5'>
+    <footer className='w-full bg-white py-20 border-t border-border-wrapper'>
+      {/* ✅ 전체는 중앙 정렬 */}
+      <div className='w-full px-6 max-[400px]:px-16 lg:px-20 py-20'>
+        {/* ✅ 내부 컨테이너 */}
+        <div className='w-full mx-auto flex flex-col gap-5'>
           {/* 상단: 로고 + 링크 + 고객센터 */}
-          <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 sm:gap-0'>
+          <div className='flex flex-row justify-between items-start max-[400px]:flex-col max-[400px]:items-left max-[400px]:gap-20'>
             {/* 왼쪽 */}
-            <div className='flex flex-col sm:flex-row items-start sm:items-center gap-5'>
-              <div className='logo text-2xl'>단디온나</div>
+            <div className='flex flex-col max-[400px]:flex-row items-start max-[400px]:items-center gap-5'>
+              <div className='logo title5 max-[400px]:title4'>단디온나</div>
 
-              <div className='flex flex-wrap items-center gap-4 text-xs text-neutral-900'>
-                <span className='cursor-pointer hover:underline'>브랜드 소개</span>
-                <span className='cursor-pointer hover:underline'>이용약관</span>
-                <span className='cursor-pointer font-bold hover:underline'>개인정보처리방침</span>
+              <div className='flex flex-wrap items-center gap-4 max-[400px]:gap-3 text-xs text-neutral-900'>
+                <span className='caption4 cursor-pointer hover:underline'>브랜드 소개</span>
+                <span className='caption4 cursor-pointer hover:underline'>이용약관</span>
+                <span className='caption4 font-bold max-[400px]:font-medium cursor-pointer hover:underline'>
+                  개인정보처리방침
+                </span>
               </div>
             </div>
 
             {/* 오른쪽 */}
-            <div className='flex flex-col sm:flex-row sm:items-center sm:gap-2 text-right sm:text-left'>
+            <div className='flex flex-col max-[400px]:flex-row max-[400px]:items-center max-[400px]:gap-2 text-right max-[400px]:text-left'>
               <span className='text-neutral-900 text-base font-medium'>고객센터</span>
-              <span className='text-neutral-900 text-xl font-bold sm:ml-1'>1500-0000</span>
+              <span className='text-neutral-900 text-xl font-bold max-[400px]:ml-1'>1500-0000</span>
             </div>
           </div>
 

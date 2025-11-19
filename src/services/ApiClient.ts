@@ -1,7 +1,6 @@
 // src/lib/serverApiClient.ts
 import axios, { AxiosHeaders, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 
 class ServerApiClient {
   private baseURL: string;
@@ -59,9 +58,15 @@ class ServerApiClient {
             callUrlWithBaseUrl: this.baseURL + error.config?.url,
           });
         }
+        // TODO: 500 에러페이지로 이동
 
-        // 403 에러 시 토큰 재발급 시도
-        if (error.response?.status === 403 && error.config && !error.config._retry) {
+        // 403/401 에러 시 토큰 재발급 시도
+        if (
+          // (error.response?.status === 403 || error.response?.status === 401) &&
+          error.response?.status === 403 &&
+          error.config &&
+          !error.config._retry
+        ) {
           error.config._retry = true; // 무한 루프 방지
 
           try {
@@ -99,6 +104,7 @@ class ServerApiClient {
             }
 
             // 쿠키에 새로운 access 토큰 저장
+            // 배포 시 secure: true 옵션 추가 고려
             console.log('🧾 [Interceptor] Storing new access token in cookies...');
             cookieStore.set('access-token', newAccessToken, {
               httpOnly: true,
@@ -120,7 +126,7 @@ class ServerApiClient {
         }
 
         // 🔧 직접적인 401 에러도 처리
-        if (error.response?.status === 401) {
+        if (error.response?.status === 401 || error.response?.status === 500) {
           const errorCode = error.response?.data?.code;
 
           // 특정 에러 코드들에 대해 메인으로 리다이렉트
@@ -128,7 +134,7 @@ class ServerApiClient {
             'AUTH_INVALID_TOKEN',
             'AUTH_TOKEN_EXPIRED',
             'AUTH_TOKEN_BLACKLISTED',
-            'AUTH_UNAUTHORIZED',
+            'AUTH_INVALID_TOKEN_SIGNATURE',
           ];
 
           if (authFailureCodes.includes(errorCode)) {
@@ -142,24 +148,24 @@ class ServerApiClient {
     );
   }
   /**
-   * 인증 실패 시 쿠키 삭제 및 메인 페이지로 리다이렉트
+   * 인증 실패 시 쿠키 삭제 및 에러 throw
    */
   private async handleAuthFailure() {
     try {
-      console.log('🧹 [Auth] Clearing cookies and redirecting to main...');
+      console.log('🧹 [Auth] Clearing cookies...');
 
       // 쿠키 삭제
       const cookieStore = await cookies();
       cookieStore.delete('access-token');
       cookieStore.delete('refresh-token');
 
-      console.log('✅ [Auth] Cookies cleared, redirecting...');
+      console.log('✅ [Auth] Cookies cleared');
     } catch (error) {
       console.error('❌ [Auth] Failed to clear cookies:', error);
-    } finally {
-      // 어떤 에러가 발생하더라도 무조건 리다이렉트
-      redirect('/');
     }
+
+    // 클라이언트에서 처리할 수 있도록 에러 throw
+    throw new Error('AUTH_FAILURE');
   }
 
   /** GET */

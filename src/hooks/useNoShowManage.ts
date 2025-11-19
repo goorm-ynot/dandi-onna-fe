@@ -5,8 +5,10 @@ import { useNoShowStore } from '@/store/useNoShowStore';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export const useNoShowManage = () => {
+  const router = useRouter();
   const {
     noShowList,
     pagination,
@@ -19,6 +21,15 @@ export const useNoShowManage = () => {
     setSelectItem,
     setActiveEdit,
   } = useNoShowStore();
+
+  // 에러 처리 핸들러
+  const handleQueryError = (error: any) => {
+    console.error('❌ API Error:', error);
+    if (error?.message === 'AUTH_FAILURE' || error?.response?.status === 401 || error?.response?.status === 403) {
+      alert('연결이 원활하지 않습니다. 다시 시도해주세요');
+      router.replace('/');
+    }
+  };
 
   const {
     data: noShowLists,
@@ -57,6 +68,19 @@ export const useNoShowManage = () => {
     },
     enabled: !!selectItemId && activeEdit, // selectItemId가 있고 수정 모드일 때만 실행
   });
+
+  // 에러 감지 및 처리
+  useEffect(() => {
+    if (noShowListError) {
+      handleQueryError(noShowListError);
+    }
+  }, [noShowListError]);
+
+  useEffect(() => {
+    if (detailError) {
+      handleQueryError(detailError);
+    }
+  }, [detailError]);
 
   // 데이터 로드 시 Zustand에 저장
   useEffect(() => {

@@ -10,6 +10,11 @@ const config = {
       center: true,
       padding: '2rem',
       screens: {
+        xs: '390px',
+        sm: '400px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
         '2xl': '1400px',
       },
     },
@@ -21,11 +26,30 @@ const config = {
         border: {
           DEFAULT: '#8949fe',
           wrapper: '#d0d0d0',
+          secondary: '#e1e1e1',
+          normal: '#c6c6c6',
+          tertiary: '#a3a3a3',
         },
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
+        background: {
+          DEFAULT: 'hsl(var(--background))',
+          normal: '#ffffff',
+          'badge-expected': '#c9eca8',
+          'badge-finished': '#e1e1e1',
+          'badge-noshow': '#ffd8e2',
+        },
+        foreground: {
+          DEFAULT: 'hsl(var(--foreground))',
+          normal: '#262626',
+          secondary: '#4c4c4c',
+          expected: '#428600',
+          finished: '#a3a3a3',
+          noshow: '#b5135d',
+          inverse: '#ffffff',
+          primary: '#8749fe',
+          'primary-emphasis': '#5929ba',
+        },
         primary: {
           DEFAULT: '#8949fe',
           foreground: '#ffffff',
@@ -61,6 +85,20 @@ const config = {
         error: {
           DEFAULT: '#da1717ff',
           foreground: '#fee2e2',
+        },
+        badge: {
+          expected: '#c9eca8',
+          finished: '#e1e1e1',
+          noshow: '#ffd8e2',
+        },
+        system: {
+          'mauve-light': '#f9f5ff',
+        },
+        primitives: {
+          brand3: '#8749fe',
+        },
+        state: {
+          disabled: '#e1e1e1',
         },
         toast: {
           bg: '#ffffff',

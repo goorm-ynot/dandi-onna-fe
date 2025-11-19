@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { formatTimeString } from '@/lib/dateParse';
+import { formatDateTimeString, formatTimeString } from '@/lib/dateParse';
 import { OrderDetail, PaymentStatus } from '@/types/boardData';
 import { PanelMode } from '@/types/PanleTypes';
 import React from 'react';
@@ -27,12 +27,17 @@ interface NoShowOrderPanel {
 export default function NoShowOrderPanel({ mode, orderData, onStatusUpdate }: NoShowOrderPanel) {
   // 결제 정보를 미리 파싱해서 배열로 생성
   const parsedPaymentInfo = [
-    { label: '결제 시간', value: orderData?.paidAt ? formatTimeString(new Date(orderData.paidAt), true) : '-' },
+    { label: '결제 시간', value: orderData?.paidAt ? formatTimeString(new Date(orderData.paidAt)) : '-' },
     { label: '결제 수단', value: orderData?.paymentMethod },
     { label: '결제 구분', value: '일시불' },
     { label: '승인번호', value: orderData?.paymentTxId || '-' },
     { label: '승인상태', value: getPaymentStatusLabel(orderData?.paymentStatus) },
   ];
+
+  const sumPrice = (price: number, amount: number) => {
+    const result = price * amount;
+    return result.toLocaleString();
+  };
 
   return (
     <div className='p-20 flex flex-col justify-between min-h-[758px]'>
@@ -54,22 +59,23 @@ export default function NoShowOrderPanel({ mode, orderData, onStatusUpdate }: No
           <hr className='w-full border border-1 border-line' />
         </div>
 
-        {/* 결제 정보  TODO: 값 계산하여 추가하기 */}
         <Label className='title5'>결제 정보</Label>
         <div className='flex flex-col gap-16'>
           <div className='flex flex-row justify-between items-center'>
             <Label className='title1 text-label-semilight'>기존 판매금액</Label>
-            <Label className='body3 text-label'>146,000원</Label>
+            <Label className='body3 text-label'>{orderData?.totalPrice}원</Label>
           </div>
           <div className='flex flex-row justify-between items-center'>
             <Label className='title1 text-label-semilight'>할인율</Label>
-            <Label className='body3 text-label'>50%</Label>
+            <Label className='body3 text-label'>{orderData?.items[0].discountPercent}%</Label>
           </div>
           <div className='flex flex-row justify-between items-center'>
             <Label className='body5 '>최종 결제금액</Label>
             <div className='flex items-center gap-2 flex-shrink-0 text-label-bold'>
-              <Label className='text-right body3 text-label-light line-through whitespace-nowrap'>146,000원</Label>
-              <Label className='text-right body7 whitespace-nowrap text-label-bold'>73,000원</Label>
+              <Label className='text-right body3 text-label-light line-through whitespace-nowrap'>
+                {orderData?.totalPrice}원
+              </Label>
+              <Label className='text-right body7 whitespace-nowrap text-label-bold'>{orderData?.paidAmount}원</Label>
             </div>
           </div>
         </div>
@@ -81,9 +87,9 @@ export default function NoShowOrderPanel({ mode, orderData, onStatusUpdate }: No
         {/* 결제 관련 정보 */}
         <div className='flex flex-col gap-16'>
           {parsedPaymentInfo.map((info) => (
-            <div key={info.label} className='flex flex-row justify-between items-center'>
-              <Label className='title1 text-label-semilight'>{info.label}</Label>
-              <Label className='body3 text-label'>{info.value}</Label>
+            <div key={info.label} className='flex flex-row justify-between items-center gap-8'>
+              <Label className='title1 text-label-semilight whitespace-nowrap flex-shrink-0'>{info.label}</Label>
+              <Label className='body3 text-label text-right flex-1'>{info.value}</Label>
             </div>
           ))}
         </div>
@@ -91,7 +97,12 @@ export default function NoShowOrderPanel({ mode, orderData, onStatusUpdate }: No
 
       {/* 버튼들 */}
       <div className='grid grid-cols-2 gap-10 w-full'>
-        <Button type='button' variant={'outline'} size={'lg'} className='w-full'>
+        <Button
+          type='button'
+          disabled={orderData?.status === 'COMPLETED' ? true : false}
+          variant={'outline'}
+          size={'lg'}
+          className='w-full'>
           결제 취소
         </Button>
         <Button type='button' variant={'outline'} size={'lg'} className='w-full'>
@@ -100,9 +111,10 @@ export default function NoShowOrderPanel({ mode, orderData, onStatusUpdate }: No
         <Button
           type='button'
           variant={'default'}
+          disabled={orderData?.status === 'COMPLETED' ? true : false}
           size={'lg'}
           className='w-full col-span-2'
-          onClick={() => onStatusUpdate?.(orderData.orderId.toString(), orderData.status)}>
+          onClick={() => onStatusUpdate?.(orderData?.orderId.toString(), orderData?.status)}>
           노쇼 방문 완료
         </Button>
       </div>

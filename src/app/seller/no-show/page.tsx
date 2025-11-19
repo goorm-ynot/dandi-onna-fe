@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDialog';
 import { useNoShowManage } from '@/hooks/useNoShowManage';
 import { NoShowMenuList } from '@/types/noShowPanelType';
-import { redirect } from 'next/navigation';
 import React, { useState } from 'react';
 
 export default function NoShowMenuPage() {
@@ -42,7 +41,7 @@ export default function NoShowMenuPage() {
 
   /** 노쇼 메뉴 삭제 확정 */
   const handleDeleteConfirm = () => {
-    // TODO: 실제 삭제 API 호출
+    // INFO: 실제 삭제 API 호출
     console.log('🗑️ 노쇼 메뉴 삭제 확정:', selectNoShowItem);
     setActiveEdit(false);
   };
@@ -99,11 +98,6 @@ export default function NoShowMenuPage() {
     );
   }
 
-  if (noShowListError || detailError) {
-    alert('서버 오류가 발생했습니다. 다시 로그인을 시도해주세요.');
-    redirect('/');
-  }
-
   if (!activeEdit) {
     return (
       <SingleColumnLayout
@@ -124,6 +118,7 @@ export default function NoShowMenuPage() {
 
   return (
     <>
+      {/* TODO: rightTitle 수정하기 */}
       <TwoColumnLayout
         rightTitle='노쇼 주문내역 상세정보'
         leftContent={

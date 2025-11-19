@@ -80,7 +80,6 @@ export async function POST(req: Request) {
 
     // 실제로 이렇게 날라오는게 맞는지 확인 필요
     const responseData = await res.json();
-    //...
     const { accessToken, refreshToken } = responseData.data;
 
     // 토큰이 없는 경우

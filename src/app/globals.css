@@ -135,6 +135,9 @@
     @apply text-[18px] font-semibold leading-[20px];
   }
   .title6 {
+    @apply text-[20px] font-semibold leading-[22px];
+  }
+  .title7 {
     @apply text-[28px] font-semibold leading-[32px];
   }
   /* Body */

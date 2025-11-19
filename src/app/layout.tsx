@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${pretendard.variable} bg-gray-100 min-h-screen flex flex-col justify-center items-center`}>
+      <body className={`${pretendard.variable} bg-white min-h-screen flex flex-col justify-center items-center`}>
         <Providers>
           <div className='mx-auto bg-white'>
             <Toaster position='top-right' />

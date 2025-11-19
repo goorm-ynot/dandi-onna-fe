@@ -1,15 +1,18 @@
 // app/login/page.tsx
 'use client'; // ✅ 파일 최상단에 추가
 
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { LoginForm } from '@/components/features/auth/LoginForm';
 import { toast } from 'sonner'; // 또는 다른 toast 라이브러리
 import useFcmToken from '@/hooks/useFcmToken';
 import { useEffect, useState } from 'react';
+import { useUserHook } from '@/hooks/useUser';
 
 export default function LoginPage() {
   const router = useRouter();
   const { token, notificationPermissionStatus } = useFcmToken();
+  const { handleLogin: loginHook, postFcmToken } = useUserHook();
+
   const [deviceId, setDeviceId] = useState<string | null>(null);
 
   // ✅ localStorage 접근
@@ -24,49 +27,19 @@ export default function LoginPage() {
 
   const handleLogin = async (data: { userId: string; password: string; role: 'CUSTOMER' | 'OWNER' }) => {
     try {
-      const response = await fetch('/api/v1/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error('로그인에 실패했습니다');
+      const result = await loginHook({ loginId: data.userId, password: data.password, role: data.role });
+      // result 성공 시, fcm 토큰도 전송
+      if (result.success && token && deviceId) {
+        await postFcmToken(token, deviceId);
       }
-
-      const result = await response.json();
-
-      // 성공 시 대시보드로 리다이렉트
-      toast.success('로그인에 성공했습니다!');
-      // console.log(result);
-      putToken();
-      // router.push('/register');
-    } catch (error) {
-      toast.error('로그인에 실패했습니다. 다시 시도해주세요.');
-      console.error(error);
-      throw error;
-    }
-  };
-
-  const putToken = async () => {
-    // console.log('토큰 발급: ', token);
-    try {
-      const response = await fetch('/api/v1/push/tokens', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token, deviceId }),
+      toast.success('로그인 성공!', {
+        description: '로그인 성공했습니다.',
       });
-
-      toast.success('토큰이 저장되었습니다.');
-      // console.log(response);
+      router.replace('/seller');
     } catch (error) {
-      toast.error('토큰 저장에 실패했습니다. 다시 시도해주세요.');
-      console.error(error);
-      throw error;
+      toast.error('로그인 실패', {
+        description: '아이디 또는 비밀번호를 확인해주세요.',
+      });
     }
   };
 

@@ -15,18 +15,18 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'orderId is required' }, { status: 400 });
     }
 
-    // // ✅ await 추가 및 백엔드 API 호출
-    // const response = await serverApiClient.get(`/owner/orders/${orderId}`);
+    // ✅ await 추가 및 백엔드 API 호출
+    const response = await serverApiClient.get(`/owner/orders/${orderId}`);
 
-    // if (process.env.NODE_ENV === 'development') {
-    //   console.log('✅ Response from serverApiClient:', response);
-    // }
+    if (process.env.NODE_ENV === 'development') {
+      console.log('✅ Response from serverApiClient:', response);
+    }
 
-    // // ✅ 백엔드 응답을 그대로 반환
-    // return NextResponse.json(response, { status: 200 });
+    // ✅ 백엔드 응답을 그대로 반환
+    return NextResponse.json(response, { status: 200 });
 
     // 임시응답
-    return NextResponse.json(mockOrderDetailResponse, { status: 200 });
+    // return NextResponse.json(mockOrderDetailResponse, { status: 200 });
   } catch (error: any) {
     console.error('❌ Error fetching order data:', error);
 

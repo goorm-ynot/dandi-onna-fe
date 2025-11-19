@@ -124,7 +124,7 @@ const useFcmToken = () => {
               onClick: () => {
                 const link = payload.fcmOptions?.link || payload.data?.link;
                 if (link) {
-                  router.push(link);
+                  router.replace(link);
                 }
               },
             },
@@ -146,7 +146,7 @@ const useFcmToken = () => {
           const link = (event.target as any)?.data?.url;
           if (link) {
             console.log('onMessage link: ', link);
-            router.push(link);
+            router.replace(link);
           } else {
             console.log('No link found in the notification payload');
           }

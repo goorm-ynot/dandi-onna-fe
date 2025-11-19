@@ -1,9 +1,10 @@
 // hooks/useReservationApi.ts
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useReservationStore } from '@/store/useReservationStore';
+import { useAlarmStore } from '@/store/useAlarmStore';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { NoShowCreate, Reservation } from '@/types/boardData';
-import { redirect } from 'next/navigation';
 
 interface UpdateStatusParams {
   reservationNo: string;
@@ -12,7 +13,9 @@ interface UpdateStatusParams {
 
 export const useReservationApi = () => {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const { updateReservationStatus } = useReservationStore();
+  const { showAlarm } = useAlarmStore();
 
   // 단일 상태 업데이트
   const updateStatusMutation = useMutation({
@@ -49,11 +52,12 @@ export const useReservationApi = () => {
     },
     onSuccess: (data) => {
       console.log('✅ 노쇼 처리 성공:', data);
+      showAlarm('노쇼 메뉴 처리가 완료되었습니다.', 'success', '성공');
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
-      redirect('/seller/no-show');
     },
     onError: (error) => {
       console.error('❌ 노쇼 처리 실패:', error);
+      showAlarm('노쇼 메뉴 처리에 실패했습니다.', 'error', '실패');
     },
   });
 

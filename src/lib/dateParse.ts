@@ -1,8 +1,8 @@
 const koDayString = ['일', '월', '화', '수', '목', '금', '토'];
 
 // 날짜 세팅
-export const getNowDateString = () => {
-  const newDate = new Date();
+export const getNowDateString = (date?: Date) => {
+  const newDate = date || new Date();
   return `${newDate.getFullYear()}. ${newDate.getMonth() + 1}. ${newDate.getDate()} (${koDayString[newDate.getDay()]})`;
 };
 
@@ -32,4 +32,9 @@ export const roundToNext10Minutes = (date: Date): Date => {
 // 시간 문자열 포맷팅
 export const formatTimeString = (date: Date, hours24 = false): string => {
   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: !hours24 });
+};
+
+// 일시 문자열 포맷팅
+export const formatDateTimeString = (date: Date): string => {
+  return getNowDateString(date) + ' ' + formatTimeString(date, true);
 };
