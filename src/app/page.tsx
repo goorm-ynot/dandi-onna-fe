@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import React, { useEffect, useState } from 'react';
 import { useUserHook } from '@/hooks/useUser';
+import { useNavigation } from '@/hooks/useNavigation';
 
 const USER_ROLE = ['CONSUMER', 'OWNER', 'ADMIN'];
 export default function OnboardingPage() {
@@ -15,6 +16,7 @@ export default function OnboardingPage() {
   const { token } = useFcmToken();
   const { permission, requestPermission } = useGeolocationConsent();
   const { handleLogin, postFcmToken } = useUserHook();
+  const { goCustomerHome, goSellerHome } = useNavigation();
   const isLocationAllowed = permission === 'granted';
   const [deviceId, setDeviceId] = useState<string | null>(null);
 
@@ -44,7 +46,7 @@ export default function OnboardingPage() {
       toast.success('로그인 성공!', {
         description: result.message,
       });
-      router.replace('/customer');
+      goCustomerHome();
     } catch (error) {
       toast.error('로그인 실패', {
         description: '아이디 또는 비밀번호를 확인해주세요.',
@@ -74,12 +76,7 @@ export default function OnboardingPage() {
     // }
   };
 
-  const images = [
-    'https://placehold.co/304x293/FF6B6B/ffffff?text=Image+1',
-    'https://placehold.co/304x293/4ECDC4/ffffff?text=Image+2',
-    'https://placehold.co/304x293/45B7D1/ffffff?text=Image+3',
-    'https://placehold.co/304x293/96CEB4/ffffff?text=Image+4',
-  ];
+  const images = ['/images/onboarding1.png'];
 
   return (
     <div className='w-screen h-screen flex flex-col max-w-full justify-center items-center'>
@@ -114,8 +111,7 @@ export default function OnboardingPage() {
             size='sm'
             className='text-xs text-black hover:underline'
             disabled={permission === 'granted' ? false : true}
-            // onClick={() => router.push('/customer')}
-          >
+            onClick={() => alert('현재 비회원은 서비스하고 있지 않습니다.')}>
             비회원으로 둘러보기
           </Button>
         </div>

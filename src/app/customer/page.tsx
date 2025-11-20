@@ -3,13 +3,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import StoreProfile from '@/components/features/customer/StoreProfile';
 import ReservedMenu from '@/components/features/customer/ReservedMenu';
+import ReservedMenuSkeleton from '@/components/features/customer/ReservedMenuSkeleton';
+import StoreProfileSkeleton from '@/components/features/customer/StoreProfileSkeleton';
 import { Chip } from '@/components/features/ui/Chip';
 import CustomerHeader from '@/components/layout/CustomerHeader';
 import { useStoresActions } from '@/hooks/customer/useStoresManage';
 import { formatStatusText, formatTimeWithoutSeconds } from '@/lib/utils';
-import { useTimeRemaining } from '@/hooks/useTimeRemaining';
+import { useGlobalTimer } from '@/hooks/useGlobalTimer';
 import { ChevronDown, MapPin } from 'lucide-react';
 import { useNavigation } from '@/hooks/useNavigation';
+import Image from 'next/image';
 
 export default function CustomerPage() {
   const {
@@ -64,19 +67,30 @@ export default function CustomerPage() {
   };
 
   // ReservedMenu를 감싸는 컴포넌트 - 각 order마다 훅 사용
-  const ReservedMenuWrapper = ({ order }: { order: (typeof orderList)[0] }) => {
-    const timeRemaining = useTimeRemaining(order.visitTime);
-    return (
-      <ReservedMenu
-        image={order.storeImageKey}
-        storeName={order.storeName}
-        badge={'노쇼'}
-        menuItems={order.menuSummary}
-        totalPrice={formatPrice(order.totalPrice)}
-        timeRemaining={timeRemaining}
-      />
-    );
-  };
+  const ReservedMenuWrapper = React.memo(
+    ({ order, isPriority }: { order: (typeof orderList)[0]; isPriority?: boolean }) => {
+      const timeRemaining = useGlobalTimer(order.visitTime);
+      return (
+        <ReservedMenu
+          image={order.storeImageKey}
+          storeName={order.storeName}
+          badge={'노쇼'}
+          menuItems={order.menuSummary}
+          totalPrice={formatPrice(order.totalPrice)}
+          timeRemaining={timeRemaining}
+          status={order.status}
+          isPriority={isPriority}
+        />
+      );
+    },
+    (prevProps, nextProps) => {
+      return (
+        prevProps.order.orderId === nextProps.order.orderId &&
+        prevProps.order.status === nextProps.order.status &&
+        prevProps.isPriority === nextProps.isPriority
+      );
+    }
+  );
 
   return (
     <div className='w-full flex flex-col pb-20'>
@@ -100,14 +114,25 @@ export default function CustomerPage() {
 
         {/* 예약 메뉴 카드 */}
         <div className='flex gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 px-4 '>
-          {orderList && orderList.length > 0 ? (
+          {myOrdersLoading ? (
+            // 로딩 스켈레톤
+            [...Array(2)].map((_, index) => (
+              <div
+                key={`skeleton-${index}`}
+                className='bg-white rounded-lg shadow-sm overflow-hidden flex-shrink-0 
+                   w-72 min-[400px]:w-80 
+                   snap-start first:ml-0 last:mr-4'>
+                <ReservedMenuSkeleton />
+              </div>
+            ))
+          ) : orderList && orderList.length > 0 ? (
             orderList.map((order, index) => (
               <div
                 key={order.orderId}
                 className='bg-white rounded-lg shadow-sm overflow-hidden flex-shrink-0 
                    w-72 min-[400px]:w-80 
                    snap-start first:ml-0 last:mr-4'>
-                <ReservedMenuWrapper order={order} />
+                <ReservedMenuWrapper order={order} isPriority={index < 2} />
               </div>
             ))
           ) : (
@@ -118,11 +143,14 @@ export default function CustomerPage() {
 
       {/* 공지사항 배너 */}
       <section className='bg-neutral-100 w-full px-4 py-4 flex items-center gap-4'>
-        <div className='flex-1'>
-          <p className='text-[12px] text-gray-600'>매일 만나는 기분 좋은 혜택</p>
-          <p className='text-[15px] font-bold text-[#161616]'>단디온나 알림받고 혜택까지 단디 챙기자!</p>
-        </div>
-        <div className='w-[53px] h-[53px] bg-gray-300 rounded-lg flex-shrink-0' />
+        <Image
+          src='/images/adNotices1.png'
+          alt='공지사항 배너'
+          width={358}
+          height={80}
+          priority={true} // LCP 이미지에 우선순위
+          className='w-full rounded-lg'
+        />
       </section>
 
       {/* 주문 가능한 가게 섹션 */}
@@ -148,15 +176,19 @@ export default function CustomerPage() {
           />
         </div>
 
-        {/* 로딩 상태 */}
-        {storesLoading && <div className='text-center py-4 text-gray-500'>가게 목록을 불러오는 중...</div>}
-
         {/* 에러 상태 */}
         {storesError && <div className='text-center py-4 text-red-500'>가게 목록을 불러올 수 없습니다.</div>}
 
         {/* 가게 목록 */}
         <div className='flex flex-col gap-6'>
-          {displayStores && displayStores.length > 0 ? (
+          {storesLoading && displayStores.length === 0 ? (
+            // 초기 로딩 스켈레톤
+            [...Array(5)].map((_, index) => (
+              <div key={`store-skeleton-${index}`} className='flex gap-2.5'>
+                <StoreProfileSkeleton />
+              </div>
+            ))
+          ) : displayStores && displayStores.length > 0 ? (
             displayStores.map((store) => (
               <div key={store.storeId} className='flex gap-2.5' onClick={() => goToStoreDetail(store.storeId)}>
                 <StoreProfile

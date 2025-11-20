@@ -65,6 +65,15 @@ export async function POST(request: NextRequest) {
     // );
   } catch (error: any) {
     console.error('POST Error:', error);
+
+    // Axios 에러 응답에서 상세 정보 추출
+    if (error.response) {
+      return NextResponse.json(error.response.data || { error: error.message || 'Failed to create reservation' }, {
+        status: error.response.status || 500,
+      });
+    }
+
+    // 네트워크 에러 등 response가 없는 경우
     return NextResponse.json({ error: error.message || 'Failed to create reservation' }, { status: 500 });
   }
 }

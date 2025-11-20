@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { Button } from './button';
 
 interface ImageSliderProps {
@@ -147,8 +148,8 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, autoPlay = true, inte
             width: `${images.length * 304}px`,
           }}>
           {images.map((image, index) => (
-            <div key={index} className='w-[304px] h-[293px] flex-shrink-0'>
-              <img src={image} alt={`Slide ${index + 1}`} className='w-full h-full object-cover' draggable={false} />
+            <div key={index} className='w-[304px] h-[293px] flex-shrink-0 relative'>
+              <Image src={image} alt={`Slide ${index + 1}`} fill className='object-contain' draggable={false} />
             </div>
           ))}
         </div>

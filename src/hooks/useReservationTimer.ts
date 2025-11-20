@@ -24,21 +24,26 @@ export const useReservationTimer = () => {
     });
   }, [reservations, markAsExpired]);
 
+  // Cleanup function
+  const cleanUpTimer = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
   useEffect(() => {
     // 즉시 한 번 체크
     checkExpiredReservations();
-
-    // 1분마다 체크
-    timerRef.current = setInterval(checkExpiredReservations, 60000);
+    cleanUpTimer();
+    // 1분마다 체크 > 30초
+    timerRef.current = setInterval(checkExpiredReservations, 3000);
 
     // Cleanup: 언마운트 또는 의존성 변경 시 interval 제거
     return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
+      cleanUpTimer();
     };
-  }, [checkExpiredReservations]);
+  }, [reservations]);
 
   // 수동으로 체크하는 함수
   const forceCheck = useCallback(() => {

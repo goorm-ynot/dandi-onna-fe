@@ -69,7 +69,7 @@ export const useFavoriteMutation = () => {
 
   return useMutation({
     mutationFn: async ({ storeId, isLiked }: { storeId: string; isLiked: boolean }) => {
-      const response = await fetch(`/api/stores/${storeId}/favorite`, {
+      const response = await fetch(`/api/v1/home/stores/${storeId}/favorite`, {
         method: isLiked ? 'DELETE' : 'POST',
       });
       if (!response.ok) throw new Error('Failed to update favorite');

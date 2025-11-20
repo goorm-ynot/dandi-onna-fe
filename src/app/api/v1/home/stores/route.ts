@@ -8,8 +8,10 @@ export async function GET(request: NextRequest) {
   try {
     const requestParams = request.nextUrl.searchParams;
     // 필요한 쿼리 파라미터가 있다면 여기에 추가
-    const lat = requestParams.get('lat') || 37.389858;
-    const lon = requestParams.get('lng') || 127.096352;
+    // const lat = requestParams.get('lat') || 37.389858;
+    // const lon = requestParams.get('lng') || 127.096352;
+    const lat = 37.389858;
+    const lon = 127.096352;
     const page = requestParams.get('page') || 0;
     const size = requestParams.get('size') || 10;
 

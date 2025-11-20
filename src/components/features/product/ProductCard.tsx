@@ -76,9 +76,9 @@ export default function ProductCard({
         </div>
 
         {/* Stock */}
-        <div className='flex flex-col items-end gap-[2px] shrink-0 whitespace-nowrap'>
+        <div className='flex flex-row items-end gap-[2px] shrink-0 whitespace-nowrap'>
           <span className='body1 text-[#4c4c4c]'>남은수량</span>
-          <span className='body2 text-[#8749fe]'>{stock}</span>
+          <span className='body2 text-[#8749fe]'>{stock}개</span>
         </div>
       </div>
 

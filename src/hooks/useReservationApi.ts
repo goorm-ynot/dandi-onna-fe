@@ -44,20 +44,26 @@ export const useReservationApi = () => {
         body: JSON.stringify({ reservation }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error('노쇼 처리에 실패했습니다.');
+        // 에러 응답 데이터를 포함한 Error 객체 생성
+        const error: any = new Error(data.message || '노쇼 처리에 실패했습니다.');
+        error.response = { data }; // response.data 형태로 저장
+        throw error;
       }
 
-      return response.json();
+      return data;
     },
     onSuccess: (data) => {
       console.log('✅ 노쇼 처리 성공:', data);
       showAlarm('노쇼 메뉴 처리가 완료되었습니다.', 'success', '성공');
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error('❌ 노쇼 처리 실패:', error);
-      showAlarm('노쇼 메뉴 처리에 실패했습니다.', 'error', '실패');
+      const errorMessage = error.response?.data?.message || error.message || '노쇼 메뉴 처리에 실패했습니다.';
+      showAlarm(errorMessage, 'error', '실패');
     },
   });
 

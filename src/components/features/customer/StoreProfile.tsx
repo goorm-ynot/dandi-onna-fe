@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 
 interface StoreProfileProps {
   name: string;
@@ -10,12 +11,18 @@ interface StoreProfileProps {
   distance: number;
 }
 
-export default function StoreProfile({ name, image, openTime, closeTime, distance }: StoreProfileProps) {
+const StoreProfile = React.memo(function StoreProfile({
+  name,
+  image,
+  openTime,
+  closeTime,
+  distance,
+}: StoreProfileProps) {
   return (
     <div className='flex gap-[10px] items-start w-full'>
       {/* Image */}
       <div className='bg-neutral-100 rounded-[10px] overflow-hidden shrink-0 w-[86px] h-[86px] relative'>
-        <img src={image} alt={name} className='object-cover w-full h-full' />
+        <Image src={image} alt={name} fill className='object-cover' sizes='86px' loading='lazy' />
       </div>
 
       {/* Text Area */}
@@ -69,4 +76,6 @@ export default function StoreProfile({ name, image, openTime, closeTime, distanc
       </div>
     </div>
   );
-}
+});
+
+export default StoreProfile;

@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 import nextPWA from '@ducanh2912/next-pwa';
-
+// 없이도 pwa 가능
 const withPWA = nextPWA({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development',

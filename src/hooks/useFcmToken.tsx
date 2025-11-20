@@ -139,6 +139,7 @@ const useFcmToken = () => {
           body: payload.notification?.body || 'This is a new message',
           data: link ? { url: link } : undefined,
         });
+        console.log('debugged useFcmToken: ', n);
 
         // Step 10: Handle notification click event to navigate to a link if present.
         n.onclick = (event) => {

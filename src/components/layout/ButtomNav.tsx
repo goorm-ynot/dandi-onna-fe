@@ -43,7 +43,11 @@ export default function ButtomNav() {
   const pathname = usePathname();
 
   // 특정 페이지에서만 ButtomNav 표시
-  const showBottomNav = pathname.startsWith('/customer');
+  // /customer/store로 시작하는 경로에서는 숨김
+  const showBottomNav =
+    pathname.startsWith('/customer') &&
+    !pathname.startsWith('/customer/store') &&
+    !pathname.startsWith('/customer/payment');
 
   const handleNavClick = (path: string) => {
     router.push(path);

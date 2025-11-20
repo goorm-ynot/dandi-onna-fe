@@ -28,3 +28,19 @@ export function formatTimeWithoutSeconds(time: string): string {
   // "22:00:00" -> "22:00"
   return time.split(':').slice(0, 2).join(':');
 }
+
+// 결제 수단 한글 변환
+export const getPaymentMethodText = (method: string) => {
+  switch (method) {
+    case 'CARD':
+      return '신용/체크카드';
+    case 'KAKAO_PAY':
+      return '카카오페이';
+    case 'NAVER_PAY':
+      return '네이버페이';
+    case 'TOSS_PAY':
+      return '토스페이';
+    default:
+      return method;
+  }
+};

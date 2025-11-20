@@ -88,6 +88,8 @@ export const useReservationManager = () => {
 
   const handleStatusUpdate = (reservationNo: string, status: 'NOSHOW' | 'VISIT_DONE') => {
     updateStatus({ reservationNo, status });
+    // 업데이트 후 선택한거 clear
+    setSelectedReservation(null);
   };
 
   // 페이지 변경 함수

@@ -56,3 +56,9 @@ export interface StoreDetailResponse {
     page: PaginationInfo;
   };
 }
+
+// 가게 요약 타입
+export interface StoreSummary {
+  storeName: string;
+  addressRoad: string;
+}

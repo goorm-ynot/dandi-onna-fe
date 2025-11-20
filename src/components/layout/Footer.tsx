@@ -27,7 +27,7 @@ export default function Footer() {
             {/* 오른쪽 */}
             <div className='flex flex-col max-[400px]:flex-row max-[400px]:items-center max-[400px]:gap-2 text-right max-[400px]:text-left'>
               <span className='text-neutral-900 text-base font-medium'>고객센터</span>
-              <span className='text-neutral-900 text-xl font-bold max-[400px]:ml-1'>1500-0000</span>
+              <span className='text-primary text-xl font-bold max-[400px]:ml-1'>1500-0000</span>
             </div>
           </div>
 

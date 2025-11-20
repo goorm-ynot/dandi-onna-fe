@@ -1,0 +1,34 @@
+// 찜하기
+import { serverApiClient } from '@/services/ApiClient';
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { storeId } = body;
+
+    const response = await serverApiClient.post('/favorites', {
+      storeId,
+    });
+
+    return NextResponse.json((response as any).data, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error?.message || 'Failed to add favorite' }, { status: error.status || 500 });
+  }
+}
+
+// 찜 해제하기
+export async function DELETE(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { storeId } = body;
+
+    const response = await serverApiClient.delete('/favorites', {
+      data: { storeId },
+    });
+
+    return NextResponse.json((response as any).data, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error?.message || 'Failed to remove favorite' }, { status: error.status || 500 });
+  }
+}

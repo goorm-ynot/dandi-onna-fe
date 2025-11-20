@@ -210,6 +210,9 @@
   .icon-l {
     @apply w-[24px] h-[24px];
   }
+  .whitespace-pre-line {
+    white-space: pre-line;
+  }
 }
 
 @font-face {

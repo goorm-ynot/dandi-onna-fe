@@ -1,5 +1,6 @@
 // hooks/useNavigation.ts
 // hooks/useNavigation.ts
+import { StoreSummary } from '@/types/storeType';
 import { useRouter } from 'next/navigation';
 
 export const useNavigation = () => {
@@ -11,14 +12,20 @@ export const useNavigation = () => {
   };
 
   // 결제 페이지
-  const goToPayment = (storeId: string, menuIds?: string[]) => {
-    const params = menuIds ? `?menus=${menuIds.join(',')}` : '';
+  const goToPayment = (storeId: string, storeInfo?: StoreSummary) => {
+    const params = storeInfo
+      ? `?storeName=${encodeURIComponent(storeInfo.storeName)}&addressRoad=${encodeURIComponent(storeInfo.addressRoad)}`
+      : '';
     router.push(`/customer/payment/${storeId}${params}`);
   };
 
   // 결제 완료 페이지
-  const goToPaymentComplete = (orderId: string) => {
-    router.replace(`/customer/payment/complete/${orderId}`);
+  const goToPaymentComplete = (orderId: string, storeInfo?: StoreSummary) => {
+    const params = storeInfo
+      ? `?storeName=${encodeURIComponent(storeInfo.storeName)}&addressRoad=${encodeURIComponent(storeInfo.addressRoad)}`
+      : '';
+    // router.replace(`/customer/payment/complete/${orderId}${params}`);
+    router.replace(`/customer/payment/complete/${orderId}${params}`);
   };
 
   // 뒤로가기
@@ -26,10 +33,32 @@ export const useNavigation = () => {
     router.back();
   };
 
+  // 히스토리 기록 남김
+  const goCustomerHome = () => {
+    router.push('/customer');
+  };
+
+  const goSellerHome = () => {
+    router.push('/seller');
+  };
+
+  // 히스토리 기록 남기지 않고 이동
+  const replaceCustomerHome = () => {
+    router.replace('/customer');
+  };
+
+  const replaceSellerHome = () => {
+    router.replace('/seller');
+  };
+
   return {
     goToStoreDetail,
     goToPayment,
     goToPaymentComplete,
     goBack,
+    goCustomerHome,
+    replaceCustomerHome,
+    goSellerHome,
+    replaceSellerHome,
   };
 };

@@ -37,7 +37,7 @@ export function ConfirmDialog({
       <DialogContent className='sm:max-w-md p-[12px] min-w-[280px] min-h-[142px] rounded-16'>
         <DialogHeader className='flex flex-col justify-center items-center gap-3 pt-20'>
           <DialogTitle className='title5'>{title}</DialogTitle>
-          <DialogDescription className='title4'>{description}</DialogDescription>
+          <DialogDescription className='title4 whitespace-pre-line'>{description}</DialogDescription>
         </DialogHeader>
 
         {content && <div className='py-4'>{content}</div>}

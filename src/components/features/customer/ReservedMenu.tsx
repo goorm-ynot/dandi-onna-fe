@@ -1,7 +1,9 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { Badge } from '../ui/Badge';
+import { stat } from 'fs';
 
 interface MenuItem {
   name: string;
@@ -14,6 +16,8 @@ interface ReservedMenuProps {
   badge?: string;
   menuItems: string;
   totalPrice: string;
+  status: string;
+  isPriority?: boolean;
   timeRemaining: {
     hours: number;
     minutes: number;
@@ -21,13 +25,15 @@ interface ReservedMenuProps {
   };
 }
 
-export default function ReservedMenu({
+const ReservedMenu = React.memo(function ReservedMenu({
   image,
   storeName,
   badge,
   menuItems,
   totalPrice,
   timeRemaining,
+  status,
+  isPriority = false,
 }: ReservedMenuProps) {
   const formatTime = (num: number) => String(num).padStart(2, '0');
 
@@ -35,11 +41,20 @@ export default function ReservedMenu({
     <div className='bg-white rounded-[10px] shadow-[0px_2px_6px_0px_rgba(0,0,0,0.1)] flex flex-col gap-3 w-full'>
       {/* Image with Timer */}
       <div className='relative bg-neutral-100 rounded-t-[10px] overflow-hidden h-[160px] w-full'>
-        <img src={image} alt={storeName} className='object-cover w-full h-full' />
+        <Image
+          src={image}
+          alt={storeName}
+          fill
+          className='object-cover'
+          sizes='(max-width: 400px) 288px, 320px'
+          priority={isPriority}
+          loading={isPriority ? undefined : 'lazy'}
+        />
 
         {/* Timer Overlay */}
         <div className='absolute bottom-0 left-1/2 -translate-x-1/2 bg-[rgba(38,38,38,0.6)] w-full px-[10px] py-[10px] flex items-center justify-center gap-1'>
-          {timeRemaining.hours === 0 && timeRemaining.minutes === 0 && timeRemaining.seconds === 0 ? (
+          {status === 'COMPLETED' ||
+          (timeRemaining.hours === 0 && timeRemaining.minutes === 0 && timeRemaining.seconds === 0) ? (
             <span className='title3 text-white'>방문하셨나요?</span>
           ) : (
             <>
@@ -96,4 +111,6 @@ export default function ReservedMenu({
       </div>
     </div>
   );
-}
+});
+
+export default ReservedMenu;
