@@ -33,24 +33,24 @@ const Alarm = ({ type = 'info', title, message, onClose, autoClose = false, dura
       case 'warning':
         return 'border-yellow-200 bg-yellow-50 text-yellow-800';
       default:
-        return 'border-border-wrapper bg-white';
+        return 'border-none ';
     }
   };
 
   return (
-    <Alert className={`relative ${getTypeStyles()} shadow-lg`}>
+    <Alert className={`relative ${getTypeStyles()} shadow-lg min-w-[300px] max-w-[400px] p-20`}>
       <AlertDescription>
         {title && (
           <div className='flex items-center justify-between mb-1'>
             <div className='title5'>{title}</div>
             {onClose && (
               <Button variant='ghost' size='icon' className='h-6 w-6 -mt-1' onClick={onClose}>
-                <X className='h-4 w-4' />
+                <X className='icon-l' />
               </Button>
             )}
           </div>
         )}
-        <div className='title1'>{message}</div>
+        <div className='title1 pt-12 whitespace-pre-wrap break-words'>{message}</div>
       </AlertDescription>
     </Alert>
   );

@@ -5,11 +5,17 @@ export interface AlarmState {
   title?: string;
   message: string;
   isVisible: boolean;
+  autoClose?: boolean;
 }
 
 interface AlarmStore {
   alarm: AlarmState;
-  showAlarm: (message: string, type?: 'success' | 'error' | 'warning' | 'info', title?: string) => void;
+  showAlarm: (
+    message: string,
+    type?: 'success' | 'error' | 'warning' | 'info',
+    title?: string,
+    autoClose?: boolean
+  ) => void;
   hideAlarm: () => void;
 }
 
@@ -18,14 +24,16 @@ export const useAlarmStore = create<AlarmStore>((set) => ({
     type: 'info',
     message: '',
     isVisible: false,
+    autoClose: true,
   },
-  showAlarm: (message, type = 'info', title) =>
+  showAlarm: (message, type = 'info', title, autoClose = true) =>
     set({
       alarm: {
         type,
         title,
         message,
         isVisible: true,
+        autoClose,
       },
     }),
   hideAlarm: () =>
