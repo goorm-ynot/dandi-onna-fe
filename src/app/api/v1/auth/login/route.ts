@@ -1,53 +1,12 @@
-// import { NextResponse } from 'next/server';
-
-// export async function POST(req: Request) {
-
-//   const { loginId, password, role } = await req.json();
-
-//   // ✅ 실제 로그인 로직 (API 호출 or DB 검증)
-//   const res = await fetch(`${process.env.BACKEND_URL}/${process.env.API_BASE}/auth/login`, {
-//     method: 'POST',
-//     body: JSON.stringify({ loginId, password }),
-//     headers: { 'Content-Type': 'application/json' },
-//   });
-
-//   if (process.env.NODE_ENV === 'development') {
-//     console.log('개발 환경에서만 보이는 로그');
-//     console.log('🔧 [DEV] Headers:', res);
-//   }
-
-//   const { accessJWE: accessToken, refreshJWE: refreshToken } = await res.json();
-
-//   const response = NextResponse.json({ role });
-
-//   // ✅ 쿠키 설정 (HTTP-Only)
-//   response.cookies.set('access-token', accessToken, {
-//     httpOnly: true,
-//     secure: process.env.NODE_ENV === 'production',
-//     sameSite: 'lax',
-//     maxAge: 60 * 30, // 30분
-//   });
-
-//   response.cookies.set('refresh-token', refreshToken, {
-//     httpOnly: true,
-//     secure: process.env.NODE_ENV === 'production',
-//     sameSite: 'lax',
-//     maxAge: 60 * 60 * 24 * 7, // 7일
-//   });
-
-//   response.cookies.set('user-role', role, { sameSite: 'lax' });
-
-//   return response;
-// }
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
     const { loginId, password, role } = await req.json();
 
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🔧 [DEV] Login request:', { loginId, password, role });
-    }
+    // if (process.env.NODE_ENV === 'development') {
+    //   console.log('🔧 [DEV] Login request:', { loginId, password, role });
+    // }
 
     // 백엔드 API 호출
     const res = await fetch(`${process.env.BACKEND_URL}/${process.env.API_BASE}/auth/login`, {
@@ -56,19 +15,9 @@ export async function POST(req: Request) {
       headers: { 'Content-Type': 'application/json' },
     });
 
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🔧 [DEV] Backend response status:', res.status);
-      console.log('🔧 [DEV] Backend response headers:', res.headers);
-    }
-
     // 백엔드에서 에러 응답이 온 경우
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({ message: res }));
-
-      if (process.env.NODE_ENV === 'development') {
-        console.log('🚨 [DEV] Backend error response:', errorData);
-      }
-
       return NextResponse.json(
         {
           error: errorData.message || '로그인에 실패했습니다',
@@ -98,6 +47,7 @@ export async function POST(req: Request) {
     const response = NextResponse.json({
       success: true,
       role,
+      loginId,
       message: '로그인에 성공했습니다',
     });
 

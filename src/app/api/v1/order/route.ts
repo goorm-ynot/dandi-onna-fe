@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json((response as any).data, { status: 200 });
   } catch (error: any) {
+    console.error('route에서 바라본 에러:', error);
     return NextResponse.json({ error: error?.message || 'Failed to create order' }, { status: error.status || 500 });
   }
 }

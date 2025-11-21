@@ -5,6 +5,7 @@ import { useCartStore } from '@/store/useCartStore';
 import { useFavoriteMutation } from './useStoresQueries';
 import { useThrottle } from '@/hooks/useThrottle';
 import { Post } from '@/types/storeType';
+import { useFavoriteStore } from '@/store/useFavorite';
 
 export const useStoreDetailManage = (storeId: string) => {
   const {
@@ -35,6 +36,8 @@ export const useStoreDetailManage = (storeId: string) => {
     getTotalCartItems,
     getTotalCartPrice,
   } = useCartStore();
+  // 찜하기 상태
+  const { favorite, setFavorite } = useFavoriteStore();
 
   // React Query 무한스크롤 데이터
   const {
@@ -69,6 +72,11 @@ export const useStoreDetailManage = (storeId: string) => {
     return infiniteData.pages[infiniteData.pages.length - 1]?.page || null;
   }, [infiniteData]);
 
+  // favorite 상태
+  const like = useMemo(() => {
+    return infiniteData?.favorited || true;
+  }, [infiniteData]);
+
   // 🔥 하나의 useEffect로 통합 + 의존성 최소화
   useEffect(() => {
     // 로딩/에러 상태만 zustand에 동기화
@@ -78,6 +86,12 @@ export const useStoreDetailManage = (storeId: string) => {
     // store 정보만 zustand에 저장
     if (store && store.storeId !== currentStore?.storeId) {
       setCurrentStore(store);
+    }
+
+    // favorite 정보 zustand에 저장
+    if (like !== undefined) {
+      // Assuming you have a zustand action like setFavorite
+      setFavorite(like);
     }
   }, [
     queryLoading,
@@ -146,6 +160,7 @@ export const useStoreDetailManage = (storeId: string) => {
   }, 1000);
 
   const toggleFavorite = (isLiked: boolean) => {
+    // console.log('Toggling favorite from useStoreDetailManage:', !isLiked);
     throttledToggleFavorite(isLiked);
   };
   // =============== 찜하기 액션 end ==================
@@ -176,6 +191,8 @@ export const useStoreDetailManage = (storeId: string) => {
     updateQuantityInCart,
     clearCartItems,
 
+    // favorite state
+    favorite,
     // favorite actions
     toggleFavorite,
     isFavoriteLoading: favoriteMutation.isPending, // 찜하기 로딩 상태

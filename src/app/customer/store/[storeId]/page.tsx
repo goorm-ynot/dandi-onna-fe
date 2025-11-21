@@ -38,6 +38,7 @@ export default function StorePage({ params }: Props) {
     addToCart,
     createPaymentSnapshot,
 
+    favorite,
     // favorite actions
     toggleFavorite,
     isFavoriteLoading, // 찜하기 로딩 상태
@@ -126,7 +127,7 @@ export default function StorePage({ params }: Props) {
 
   const handleToggleFavorite = () => {
     if (store) {
-      toggleFavorite(store.favorite);
+      toggleFavorite(favorite);
     }
   };
 
@@ -160,7 +161,7 @@ export default function StorePage({ params }: Props) {
         address={store.addressRoad}
         distance={300} // You can calculate this or get it from the store data
         imageUrl={store.imageUrl}
-        isFavorite={false} // You need to track this in your state
+        isFavorite={favorite} // You need to track this in your state
         onToggleFavorite={handleToggleFavorite}
         onShowMap={() => {
           // Handle map view

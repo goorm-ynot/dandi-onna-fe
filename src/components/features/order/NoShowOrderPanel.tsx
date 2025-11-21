@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { formatDateTimeString, formatTimeString } from '@/lib/dateParse';
+import { getPaymentMethodText } from '@/lib/utils';
 import { OrderDetail, PaymentStatus } from '@/types/boardData';
 import { PanelMode } from '@/types/PanleTypes';
 import React from 'react';
@@ -28,7 +29,7 @@ export default function NoShowOrderPanel({ mode, orderData, onStatusUpdate }: No
   // 결제 정보를 미리 파싱해서 배열로 생성
   const parsedPaymentInfo = [
     { label: '결제 시간', value: orderData?.paidAt ? formatTimeString(new Date(orderData.paidAt)) : '-' },
-    { label: '결제 수단', value: orderData?.paymentMethod },
+    { label: '결제 수단', value: getPaymentMethodText(orderData?.paymentMethod) },
     { label: '결제 구분', value: '일시불' },
     { label: '승인번호', value: orderData?.paymentTxId || '-' },
     { label: '승인상태', value: getPaymentStatusLabel(orderData?.paymentStatus) },

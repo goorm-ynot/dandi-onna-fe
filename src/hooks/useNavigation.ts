@@ -24,7 +24,7 @@ export const useNavigation = () => {
     const params = storeInfo
       ? `?storeName=${encodeURIComponent(storeInfo.storeName)}&addressRoad=${encodeURIComponent(storeInfo.addressRoad)}`
       : '';
-    // router.replace(`/customer/payment/complete/${orderId}${params}`);
+    // router.push(`/customer/payment/complete/${orderId}${params}`);
     router.replace(`/customer/payment/complete/${orderId}${params}`);
   };
 
@@ -40,6 +40,13 @@ export const useNavigation = () => {
 
   const goSellerHome = () => {
     router.push('/seller');
+  };
+
+  // query params
+  const goSellerHomeParams = (loginId: string) => {
+    // loginId를 Base64로 인코딩
+    const encodedLoginId = btoa(loginId);
+    router.push(`/seller?token=${encodeURIComponent(encodedLoginId)}`);
   };
 
   // 히스토리 기록 남기지 않고 이동
@@ -60,5 +67,6 @@ export const useNavigation = () => {
     replaceCustomerHome,
     goSellerHome,
     replaceSellerHome,
+    goSellerHomeParams, //임시라서 추후 삭제 예정
   };
 };

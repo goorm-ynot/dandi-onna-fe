@@ -69,11 +69,11 @@ export const useFavoriteMutation = () => {
 
   return useMutation({
     mutationFn: async ({ storeId, isLiked }: { storeId: string; isLiked: boolean }) => {
-      const response = await fetch(`/api/v1/home/stores/${storeId}/favorite`, {
+      const response = await axios(`/api/v1/home/stores/${storeId}/favorites`, {
         method: isLiked ? 'DELETE' : 'POST',
       });
-      if (!response.ok) throw new Error('Failed to update favorite');
-      return response.json();
+      if (response.status !== 200) throw new Error('Failed to update favorite');
+      return response.data;
     },
     onMutate: ({ storeId }) => {
       // 낙관적 업데이트

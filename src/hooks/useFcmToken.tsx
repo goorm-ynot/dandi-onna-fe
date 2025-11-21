@@ -179,6 +179,7 @@ const useFcmToken = () => {
         // 토스트 알림만 원하는 경우 이 부분을 비활성화하세요.
         const n = new Notification(payload.data?.title || 'New message', {
           body: payload.data?.body || 'This is a new message',
+          icon: './images/logo/apple-touch-icon.png',
           data: link ? { url: link } : undefined,
         });
         console.log('debugged useFcmToken: ', n);

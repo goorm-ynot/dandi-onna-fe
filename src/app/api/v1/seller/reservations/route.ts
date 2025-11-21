@@ -13,14 +13,15 @@ export async function GET(request: NextRequest) {
     const sort = searchParams.get('sort');
     const cursor = searchParams.get('cursor');
     const size = searchParams.get('size');
+    const loginId = searchParams.get('userId') || 'CEO1';
 
-    console.log('Query Params:', { date, status, sort, cursor, size });
-    const filterMockReservations = mockReservations.filter((value) => {
+    // console.log('Query Params:', { date, status, sort, cursor, size, userId });
+    const reservations = mockReservations[loginId as keyof typeof mockReservations] || [];
+    const filterMockReservations = reservations.filter((value) => {
       // status가 'all'이거나 null/undefined인 경우 모든 데이터 반환
       if (status === 'all' || !status) {
         return true;
       }
-
       // 나머지 경우는 status와 비교
       return value.status === status;
     });
@@ -28,7 +29,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         data: filterMockReservations,
-        total: mockReservations.length / 10,
+        total: reservations.length / 10,
         cursor: 1,
       },
       { status: 200 }

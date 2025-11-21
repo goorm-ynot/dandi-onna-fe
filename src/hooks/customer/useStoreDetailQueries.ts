@@ -6,7 +6,7 @@ export const useStorePostsInfinite = (storeId: string) => {
   return useInfiniteQuery({
     queryKey: ['store-posts', storeId],
     queryFn: async ({ pageParam = 0 }) => {
-      console.log('🔍 API 요청:', { storeId, pageParam });
+      // console.log('🔍 API 요청:', { storeId, pageParam });
 
       try {
         const response = await axios.get(`/api/v1/home/stores/${storeId}`, {

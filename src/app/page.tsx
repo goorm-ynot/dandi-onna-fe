@@ -82,8 +82,8 @@ export default function OnboardingPage() {
     <div className='w-screen h-screen flex flex-col max-w-full justify-center items-center'>
       <div className='flex-1 flex flex-col justify-center items-center gap-8 p-3'>
         <div className='w-96 inline-flex flex-col justify-center items-center gap-3'>
-          <p className='text-black text-lg font-normal'>모두가 신뢰할 수 있는 경험</p>
-          <h1 className='text-black text-4xl font-black mb-4'>단디온나</h1>
+          <h1 className='logo text-[40px] font-black '>단디온나</h1>
+          <p className='text-black text-lg font-normal mb-4'>모두가 신뢰할 수 있는 경험</p>
         </div>
 
         <ImageSlider images={images} interval={3000} />

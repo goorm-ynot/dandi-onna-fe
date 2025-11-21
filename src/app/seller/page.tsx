@@ -11,8 +11,12 @@ import { useReservationManager } from '@/hooks/useReservationManger';
 import { Reservation } from '@/types/boardData';
 import { useEffect, useState } from 'react';
 import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDialog';
+import { useSearchParams } from 'next/navigation';
 
 export default function RegistPage() {
+  const searchParams = useSearchParams();
+  const token = searchParams.get('token');
+  const loginId = token ? atob(token) : '';
   const [isNoShowDialogOpen, setIsNoShowDialogOpen] = useState(false);
   const [isVisitDoneDialogOpen, setIsVisitDoneDialogOpen] = useState(false);
 
@@ -44,7 +48,7 @@ export default function RegistPage() {
     sortState,
     sortedReservations,
     handleSort,
-  } = useReservationManager();
+  } = useReservationManager({ userId: loginId });
 
   /** 예시 탭 목록 (UI용) */
   const tabs = [

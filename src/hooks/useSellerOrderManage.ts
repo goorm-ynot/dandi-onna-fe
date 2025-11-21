@@ -41,13 +41,13 @@ export const useSellerOrderManage = () => {
     refetch,
     error,
   } = useQuery({
-    queryKey: ['seller-orders'],
+    queryKey: ['seller-orders', pagination.page], // 페이지를 queryKey에 포함
     queryFn: async () => {
       const response = await axios.get('/api/v1/seller/order', {
         params: {
           date: getNowDateHyphenString(),
-          page: 0,
-          size: 10,
+          page: pagination.page, // 0부터 시작하는 페이지 인덱스
+          size: pagination.size || 10,
         },
       });
       return response.data;
@@ -87,16 +87,16 @@ export const useSellerOrderManage = () => {
   useEffect(() => {
     if (orderList) {
       const order = orderList.data?.orders || orderList?.orders || [];
-      const pagination = orderList.data?.pagination ||
+      const paginationData = orderList.data?.pagination ||
         orderList?.pagination || {
-          page: 0,
+          page: pagination.page, // 현재 페이지 유지
           size: 10,
           totalElements: 0,
           totalPages: 0,
           hasNext: false,
         };
       setOrders(order);
-      setPages(pagination);
+      setPages(paginationData);
     }
     if (orderDetail) {
       setSelectOrderItem(orderDetail.data || null);
@@ -105,6 +105,7 @@ export const useSellerOrderManage = () => {
 
   // 페이지 변경 함수
   const handlePageChange = (newPage: number) => {
+    console.log('📄 페이지 변경:', newPage);
     setPages({ ...pagination, page: newPage });
   };
 

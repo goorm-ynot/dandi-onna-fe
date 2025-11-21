@@ -1,18 +1,19 @@
 // app/login/page.tsx
 'use client'; // ✅ 파일 최상단에 추가
 
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { LoginForm } from '@/components/features/auth/LoginForm';
 import { toast } from 'sonner'; // 또는 다른 toast 라이브러리
 import useFcmToken from '@/hooks/useFcmToken';
 import { useEffect, useState } from 'react';
 import { useUserHook } from '@/hooks/useUser';
+import { useNavigation } from '@/hooks/useNavigation';
 
 export default function LoginPage() {
   const router = useRouter();
   const { token, notificationPermissionStatus } = useFcmToken();
   const { handleLogin: loginHook, postFcmToken } = useUserHook();
-
+  const { goSellerHomeParams } = useNavigation();
   const [deviceId, setDeviceId] = useState<string | null>(null);
 
   // ✅ localStorage 접근
@@ -35,7 +36,7 @@ export default function LoginPage() {
       toast.success('로그인 성공!', {
         description: '로그인 성공했습니다.',
       });
-      router.replace('/seller');
+      goSellerHomeParams(data.userId);
     } catch (error) {
       toast.error('로그인 실패', {
         description: '아이디 또는 비밀번호를 확인해주세요.',

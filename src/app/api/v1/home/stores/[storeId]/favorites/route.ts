@@ -1,4 +1,5 @@
 // 찜하기
+// /api/v1/home/stores/[storeId]/favorites
 import { serverApiClient } from '@/services/ApiClient';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -7,7 +8,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { storeId } = body;
 
-    const response = await serverApiClient.post('/favorites', {
+    const response = await serverApiClient.post(`/favorites`, {
       storeId,
     });
 

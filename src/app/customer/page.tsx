@@ -6,13 +6,15 @@ import ReservedMenu from '@/components/features/customer/ReservedMenu';
 import ReservedMenuSkeleton from '@/components/features/customer/ReservedMenuSkeleton';
 import StoreProfileSkeleton from '@/components/features/customer/StoreProfileSkeleton';
 import { Chip } from '@/components/features/ui/Chip';
-import CustomerHeader from '@/components/layout/CustomerHeader';
+// import CustomerHeader from '@/components/layout/CustomerHeader';
 import { useStoresActions } from '@/hooks/customer/useStoresManage';
-import { formatStatusText, formatTimeWithoutSeconds } from '@/lib/utils';
+import { formatTimeWithoutSeconds } from '@/lib/utils';
 import { useGlobalTimer } from '@/hooks/useGlobalTimer';
 import { ChevronDown, MapPin } from 'lucide-react';
 import { useNavigation } from '@/hooks/useNavigation';
 import Image from 'next/image';
+import Alarm from '@/components/features/alarm/Alarm';
+import { useAlarmStore } from '@/store/useAlarmStore';
 
 export default function CustomerPage() {
   const {
@@ -33,6 +35,7 @@ export default function CustomerPage() {
     setParams,
   } = useStoresActions();
   const { goToStoreDetail } = useNavigation();
+  const { alarm, hideAlarm } = useAlarmStore();
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'noshow'>('noshow');
   const observerTarget = useRef<HTMLDivElement>(null);
 
@@ -142,15 +145,20 @@ export default function CustomerPage() {
       </section>
 
       {/* 공지사항 배너 */}
-      <section className='bg-neutral-100 w-full px-4 py-4 flex items-center gap-4'>
-        <Image
-          src='/images/adNotices1.png'
-          alt='공지사항 배너'
-          width={358}
-          height={80}
-          priority={true} // LCP 이미지에 우선순위
-          className='w-full rounded-lg'
-        />
+      <section className='relative bg-neutral-100 w-full flex items-center gap-4'>
+        <div className='relative w-full h-[92px]'>
+          {' '}
+          {/* 명시적 크기 지정 */}
+          <Image
+            src='/images/adNotices1.png'
+            alt='공지사항 배너'
+            fill
+            quality={100}
+            unoptimized={true}
+            className='object-cover'
+            priority={true} // LCP 이미지에 우선순위
+          />
+        </div>
       </section>
 
       {/* 주문 가능한 가게 섹션 */}
@@ -212,6 +220,19 @@ export default function CustomerPage() {
           </div>
         )}
       </section>
+      {/* 알림 */}
+      {alarm.isVisible && (
+        <div className='fixed top-20 right-10 z-50'>
+          <Alarm
+            type={alarm.type}
+            title={alarm.title}
+            message={alarm.message}
+            onClose={hideAlarm}
+            autoClose={alarm.autoClose ?? true}
+            duration={3000}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -7,13 +7,14 @@ import { Button } from '@/components/ui/button';
 import { formatTimeString } from '@/lib/dateParse';
 import { getPaymentMethodText } from '@/lib/utils';
 import { useNavigation } from '@/hooks/useNavigation';
+import { StoreSummary } from '@/types/storeType';
 
 interface Props {
-  params: Promise<{ orderId: string }>;
+  params: Promise<{ storeId: string; storeInfo?: StoreSummary }>;
 }
 
 export default function PaymentCompletePage({ params }: Props) {
-  const { orderId } = use(params);
+  const { storeId, storeInfo } = use(params);
   const { replaceCustomerHome } = useNavigation();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -72,7 +73,9 @@ export default function PaymentCompletePage({ params }: Props) {
               {/* 매장명 */}
               <div className='grid grid-cols-[100px_1fr] gap-[10px] h-[19px]'>
                 <p className='title1 text-[#4c4c4c]'>매장명</p>
-                <p className='body3 text-[#262626] text-right'>{storeName || paymentSnapshot.storeName || '-'}</p>
+                <p className='body3 text-[#262626] text-right'>
+                  {storeInfo?.storeName || paymentSnapshot.storeName || '-'}
+                </p>
               </div>
 
               {/* 방문일시 */}

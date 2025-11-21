@@ -7,9 +7,9 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const orderId = searchParams.get('orderId');
 
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Query Params:', { orderId });
-    }
+    // if (process.env.NODE_ENV === 'development') {
+    //   console.log('Query Params:', { orderId });
+    // }
 
     if (!orderId) {
       return NextResponse.json({ error: 'orderId is required' }, { status: 400 });
@@ -18,9 +18,9 @@ export async function GET(request: NextRequest) {
     // ✅ await 추가 및 백엔드 API 호출
     const response = await serverApiClient.get(`/owner/orders/${orderId}`);
 
-    if (process.env.NODE_ENV === 'development') {
-      console.log('✅ Response from serverApiClient:', response);
-    }
+    // if (process.env.NODE_ENV === 'development') {
+    //   console.log('✅ Response from serverApiClient:', response);
+    // }
 
     // ✅ 백엔드 응답을 그대로 반환
     return NextResponse.json(response, { status: 200 });
