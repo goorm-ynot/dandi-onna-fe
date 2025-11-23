@@ -20,7 +20,7 @@ export default function Header({ navList, hasNotification, userName }: HeaderPro
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const menuRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const { pos, updatePosition } = useDropdownPosition();
-  const { goSellerHome } = useNavigation();
+  const { goSellerHomeParams } = useNavigation();
   const openMenu = (id: string) => {
     const target = menuRefs.current[id];
     if (target) updatePosition(target);
@@ -36,7 +36,7 @@ export default function Header({ navList, hasNotification, userName }: HeaderPro
         {/* 왼쪽: 로고 + 네비게이션 */}
         <div className='flex items-center gap-12'>
           {/* 로고 */}
-          <div className='logo text-2xl cursor-pointer' onClick={goSellerHome}>
+          <div className='logo text-2xl cursor-pointer' onClick={() => goSellerHomeParams}>
             단디온나
           </div>
 
