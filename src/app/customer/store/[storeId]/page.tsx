@@ -7,6 +7,7 @@ import TimeSlotHeader from '@/components/features/customer/TimeSlotHeader';
 import ProductCard from '@/components/features/product/ProductCard';
 import { StickyFooter } from '@/components/features/customer/StickyFooter';
 import OrderBottomSheet from '@/components/features/customer/OrderBottomSheet';
+import StoreDetailSkeleton from '@/components/features/customer/StoreDetailSkeleton';
 import { useNavigation } from '@/hooks/useNavigation';
 
 // app/store/[storeId]/page.tsx
@@ -131,11 +132,7 @@ export default function StorePage({ params }: Props) {
   };
 
   if (storeLoading) {
-    return (
-      <div className='min-h-screen flex items-center justify-center'>
-        <p className='body3 text-[#4c4c4c]'>로딩 중...</p>
-      </div>
-    );
+    return <StoreDetailSkeleton />;
   }
 
   if (storeError || !store) {
