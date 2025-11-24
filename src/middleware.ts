@@ -37,7 +37,10 @@ export async function middleware(request: NextRequest) {
   let allowedRoles: string[] = [];
 
   for (const [routePrefix, roles] of Object.entries(ROUTE_PERMISSIONS)) {
-    if (pathname.startsWith(routePrefix)) {
+    if (
+      pathname === routePrefix ||
+      pathname.startsWith(routePrefix + '/')
+    ) {
       allowedRoles = roles;
       break;
     }
