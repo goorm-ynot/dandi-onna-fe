@@ -2,6 +2,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { mockReservations } from '@/mock/reservation'; // mock 데이터
 import serverApiClient from '@/services/ApiClient';
+import { cookies } from 'next/headers';
 
 // ✅ GET 요청: mockReservations 리턴 (쿼리 파라미터 포함)
 export async function GET(request: NextRequest) {
@@ -15,8 +16,11 @@ export async function GET(request: NextRequest) {
     const size = searchParams.get('size');
     const loginId = searchParams.get('userId') || 'CEO1';
 
+    const cookieStore = await cookies();
+    const storedLoginId = cookieStore.get('login-id')?.value || loginId;
+
     // console.log('Query Params:', { date, status, sort, cursor, size, userId });
-    const reservations = mockReservations[loginId as keyof typeof mockReservations] || [];
+    const reservations = mockReservations[storedLoginId as keyof typeof mockReservations] || [];
     const filterMockReservations = reservations.filter((value) => {
       // status가 'all'이거나 null/undefined인 경우 모든 데이터 반환
       if (status === 'all' || !status) {

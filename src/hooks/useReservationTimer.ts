@@ -37,7 +37,7 @@ export const useReservationTimer = () => {
     checkExpiredReservations();
     cleanUpTimer();
     // 1분마다 체크 > 30초
-    timerRef.current = setInterval(checkExpiredReservations, 3000);
+    timerRef.current = setInterval(checkExpiredReservations, 30000);
 
     // Cleanup: 언마운트 또는 의존성 변경 시 interval 제거
     return () => {

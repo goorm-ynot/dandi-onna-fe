@@ -29,8 +29,6 @@ export default function CustomerPage() {
     myOrdersLoading,
     myOrdersError,
     // actions
-    addToFavorites,
-    removeFromFavorites,
     setOrderList,
     setParams,
   } = useStoresActions();
@@ -229,7 +227,7 @@ export default function CustomerPage() {
             message={alarm.message}
             onClose={hideAlarm}
             autoClose={alarm.autoClose ?? true}
-            duration={3000}
+            duration={30000}
           />
         </div>
       )}

@@ -17,7 +17,7 @@ export default function OnboardingPage() {
   const { permission, requestPermission } = useGeolocationConsent();
   const { handleLogin, postFcmToken } = useUserHook();
   const { goCustomerHome, goSellerHome, goSellerHomeParams } = useNavigation();
-  const isLocationAllowed = permission === 'granted';
+
   const [deviceId, setDeviceId] = useState<string | null>(null);
 
   useEffect(() => {
