@@ -52,7 +52,7 @@ export const useSellerOrderManage = () => {
       });
       return response.data;
     },
-    staleTime: 1000 * 60 * 10, // 10분간 캐시 유지
+    staleTime: 1000 * 30 * 1, // 30초간 캐시 유지
     refetchOnWindowFocus: false, // 윈도우 포커스시 refetch 비활성화
   });
 

@@ -65,7 +65,7 @@ export const useReservationManager = ({ userId = null }: { userId?: string | nul
       // console.log('response: ', response.data);
       return response.data;
     },
-    staleTime: 1000 * 60 * 5, // 5분간 캐시 유지
+    staleTime: 1000 * 60 * 1, // 1분간 캐시 유지
     refetchOnWindowFocus: false, // 윈도우 포커스시 refetch 비활성화
   });
 

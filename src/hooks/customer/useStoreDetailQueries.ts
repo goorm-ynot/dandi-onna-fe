@@ -39,7 +39,7 @@ export const useStorePostsInfinite = (storeId: string) => {
     },
     initialPageParam: 0,
     enabled: !!storeId,
-    staleTime: 3 * 60 * 1000,
+    staleTime: 1 * 60 * 1000,
   });
 };
 
