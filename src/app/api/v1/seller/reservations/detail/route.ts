@@ -4,12 +4,12 @@ import { NextRequest, NextResponse } from 'next/server';
 // ✅ GET 요청: mockReservations에서 특정 데이터 리턴 (쿼리 파라미터 포함)
 export async function GET(request: NextRequest) {
   try {
-    // 📌 URL에서 쿼리 파라미터 추출
     const searchParams = request.nextUrl.searchParams;
-    const date = searchParams.get('date');
     const reservationNo = searchParams.get('reservationNo');
 
-    const searchDatainMock = mockReservations.filter((data) => data.reservationNo === reservationNo);
+    // 🔧 객체를 배열로 변환하여 검색
+    const allReservations = Object.values(mockReservations).flat();
+    const searchDatainMock = allReservations.filter((data) => data.reservationNo === reservationNo);
 
     return NextResponse.json(
       {
