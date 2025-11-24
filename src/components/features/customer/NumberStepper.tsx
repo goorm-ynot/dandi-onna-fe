@@ -10,7 +10,7 @@ interface NumberStepperProps {
   onChange: (value: number) => void;
 }
 
-export default function NumberStepper({ value, min = 0, max = 10, onChange }: NumberStepperProps) {
+export default function NumberStepper({ value = 1, min = 0, max = 10, onChange }: NumberStepperProps) {
   const handleDecrement = () => {
     if (value > min) {
       onChange(value - 1);

@@ -46,7 +46,7 @@ export default function StorePage({ params }: Props) {
   const { goToPayment, goBack } = useNavigation();
 
   const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [hasItemsInCart, setHasItemsInCart] = useState(selectedMenus.length > 0);
 
   // 컴포넌트 마운트 시 만료된 장바구니 확인
@@ -93,7 +93,7 @@ export default function StorePage({ params }: Props) {
 
   const handleProductClick = (postId: number) => {
     setSelectedProduct(postId);
-    setQuantity(0);
+    setQuantity(1);
   };
 
   const handleAddToCart = () => {
@@ -102,7 +102,7 @@ export default function StorePage({ params }: Props) {
       // console.log('선택한거: ', post);
       if (post) {
         setSelectedProduct(null);
-        setQuantity(0);
+        setQuantity(1);
         setHasItemsInCart(true);
         addToCart(post, quantity);
       }

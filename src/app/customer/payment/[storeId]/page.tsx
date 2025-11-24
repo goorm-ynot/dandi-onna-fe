@@ -169,7 +169,8 @@ export default function PaymentPage({ params }: Props) {
         onConfirm={handlePaymentConfirm}
         onCancel={handlePaymentCancel}
         title='확인해주세요'
-        description='예약 및 환불 규정을 모두 읽었으며\n 이에 동의합니다'
+        description={`예약 및 환불 규정을 모두 읽었으며
+이에 동의합니다`}
         confirmText='네, 결제할게요'
         cancelText='아니요'
       />
