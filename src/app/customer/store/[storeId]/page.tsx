@@ -46,7 +46,7 @@ export default function StorePage({ params }: Props) {
   const { goToPayment, goBack } = useNavigation();
 
   const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [hasItemsInCart, setHasItemsInCart] = useState(selectedMenus.length > 0);
 
   // 컴포넌트 마운트 시 만료된 장바구니 확인
@@ -76,13 +76,11 @@ export default function StorePage({ params }: Props) {
 
   // Group posts by expireAt time
   const groupedPosts = posts.reduce((acc, post) => {
-    const expireTime = new Date(post.expireAt)
-      .toLocaleTimeString('ko-KR', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      })
-      .split(':')[0]; // Get only the hour
+    const expireTime = new Date(post.expireAt).toLocaleTimeString('ko-KR', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
 
     if (!acc[expireTime]) {
       acc[expireTime] = [];
@@ -93,7 +91,7 @@ export default function StorePage({ params }: Props) {
 
   const handleProductClick = (postId: number) => {
     setSelectedProduct(postId);
-    setQuantity(0);
+    setQuantity(1);
   };
 
   const handleAddToCart = () => {
@@ -102,7 +100,7 @@ export default function StorePage({ params }: Props) {
       // console.log('선택한거: ', post);
       if (post) {
         setSelectedProduct(null);
-        setQuantity(0);
+        setQuantity(1);
         setHasItemsInCart(true);
         addToCart(post, quantity);
       }
