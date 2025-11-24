@@ -16,8 +16,8 @@ export default function OnboardingPage() {
   const { token } = useFcmToken();
   const { permission, requestPermission } = useGeolocationConsent();
   const { handleLogin, postFcmToken } = useUserHook();
-  const { goCustomerHome, goSellerHome } = useNavigation();
-  const isLocationAllowed = permission === 'granted';
+  const { goCustomerHome, goSellerHome, goSellerHomeParams } = useNavigation();
+
   const [deviceId, setDeviceId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -62,13 +62,16 @@ export default function OnboardingPage() {
     //   role: USER_ROLE[1], // OWNER
     // };
 
-    // try {
-    //   const result = await handleLogin(userLoginData);
-    //   console.log(result);
+    //  try {
+    //   const result = await handleLogin({ loginId: data.userId, password: data.password, role: data.role });
+    //   // result 성공 시, fcm 토큰도 전송
+    //   if (result.success && token && deviceId) {
+    //     await postFcmToken(token, deviceId);
+    //   }
     //   toast.success('로그인 성공!', {
-    //     description: result.message,
+    //     description: '로그인 성공했습니다.',
     //   });
-    //   router.push('/seller');
+    //   goSellerHomeParams(data.userId);
     // } catch (error) {
     //   toast.error('로그인 실패', {
     //     description: '아이디 또는 비밀번호를 확인해주세요.',
@@ -82,8 +85,8 @@ export default function OnboardingPage() {
     <div className='w-screen h-screen flex flex-col max-w-full justify-center items-center'>
       <div className='flex-1 flex flex-col justify-center items-center gap-8 p-3'>
         <div className='w-96 inline-flex flex-col justify-center items-center gap-3'>
-          <p className='text-black text-lg font-normal'>모두가 신뢰할 수 있는 경험</p>
-          <h1 className='text-black text-4xl font-black mb-4'>단디온나</h1>
+          <h1 className='logo text-[40px] font-black '>단디온나</h1>
+          <p className='text-black text-lg font-normal mb-4'>모두가 신뢰할 수 있는 경험</p>
         </div>
 
         <ImageSlider images={images} interval={3000} />

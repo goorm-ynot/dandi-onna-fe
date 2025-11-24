@@ -50,9 +50,6 @@ export const usePaymentActions = (storeInfo?: StoreSummary) => {
       setPaymentResult(result as any);
       completePayment(result as any);
       setPaymentError(null);
-
-      // 결제 완료 페이지로 이동
-      goToPaymentComplete(result.orderId.toString(), storeInfo);
     },
     onError: (error: any) => {
       const errorMessage = error.response?.data?.message || error.message || '결제에 실패했습니다.';

@@ -13,8 +13,6 @@ interface CustomerStore {
   setError: (error: string | null) => void;
   setPage: (page: number) => void;
   setParams: (params: { lat: number; lon: number }) => void;
-  addToFavorites: (storeId: string) => void;
-  removeFromFavorites: (storeId: string) => void;
 }
 
 interface MyOrderStores {
@@ -38,14 +36,6 @@ export const useCustomerStore = create<CustomerStore>((set) => ({
   setError: (error) => set({ error }),
   setPage: (page) => set({ page }),
   setParams: (params) => set({ params }),
-  addToFavorites: (storeId) =>
-    set((state) => ({
-      stores: state.stores.map((store) => (store.storeId === storeId ? { ...store, isLiked: true } : store)),
-    })),
-  removeFromFavorites: (storeId) =>
-    set((state) => ({
-      stores: state.stores.map((store) => (store.storeId === storeId ? { ...store, isLiked: false } : store)),
-    })),
 }));
 
 export const useMyOrderStore = create<MyOrderStores>((set) => ({

@@ -13,6 +13,7 @@ import KakaoPayIcon from '@/components/icons/KakaoPayIcon';
 import NaverPayIcon from '@/components/icons/NaverPayIcon';
 import { formatTimeString } from '@/lib/dateParse';
 import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDialog';
+import { useNavigation } from '@/hooks/useNavigation';
 
 interface Props {
   params: Promise<{ storeId: string; storeInfo?: StoreSummary }>;
@@ -23,6 +24,7 @@ export default function PaymentPage({ params }: Props) {
   const { updateCartQuantity, removeMenuFromCart, selectedMenus } = useCartStore();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<'CARD' | 'KAKAO_PAY' | 'NAVER_PAY' | null>(null);
   const [isPaymentConfirmDialogOpen, setIsPaymentConfirmDialogOpen] = useState(false);
+  const { goToPaymentComplete } = useNavigation();
 
   const { paymentSnapshot, isProcessing, paymentError, processPayment, changePaymentMethod, getPaymentSummary } =
     usePaymentActions(storeInfo);
@@ -42,7 +44,8 @@ export default function PaymentPage({ params }: Props) {
     setIsPaymentConfirmDialogOpen(false);
     const success = await processPayment();
     if (success) {
-      // 결제 성공 - 자동으로 완료 페이지로 이동됨
+      // 결제 성공 - 완료 페이지로 이동됨
+      goToPaymentComplete(storeId, storeInfo);
     }
   };
 

@@ -5,10 +5,13 @@ import { NoShowMenu, Reservation } from '@/types/boardData';
 import { noShowEditFormSchema, NoShowEditFormValues, noShowFormSchema, NoShowFormValues } from '@/types/noShowFormZod';
 import { roundToNext10Minutes } from '@/lib/dateParse';
 import { useReservationApi } from './useReservationApi';
+import { useReservationStore } from '@/store/useReservationStore';
+import { useNoShowStore } from '@/store/useNoShowStore';
 
 // 노쇼 발생 폼
 export function useNoShowForm(defaultData?: Reservation) {
   const { batchNoShow } = useReservationApi();
+  const { setSelectedReservation } = useReservationStore();
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
   const [pendingFormData, setPendingFormData] = useState<NoShowFormValues | null>(null);
 
@@ -22,6 +25,8 @@ export function useNoShowForm(defaultData?: Reservation) {
           price: menu.price,
           quantity: menu.qty, // 초기값
           maxQty: menu.qty, // 원래 예약된 수량
+          discount: 50, // 기본 할인율 50%
+          duringTime: 30, // 기본 소요 시간 30분
         })) || [],
     },
   });
@@ -63,7 +68,7 @@ export function useNoShowForm(defaultData?: Reservation) {
   const discountTotal = originalTotal * (1 - (watchedDiscount || 0) / 100);
 
   // ✅ duringTime 기반으로 visitTime 계산 (생성 모드)
-  const calculatedVisitTime = watchedDuringTime
+  const calculatedVisitTime = Number(watchedDuringTime)
     ? roundToNext10Minutes(new Date(new Date().getTime() + watchedDuringTime * 60 * 1000))
     : new Date();
 
@@ -86,10 +91,11 @@ export function useNoShowForm(defaultData?: Reservation) {
       expireAfterMinutes: visitAt,
     };
 
-    console.log('✅ 확정된 제출 데이터:', finalData);
+    // console.log('✅ 확정된 제출 데이터:', finalData);
     batchNoShow(finalData);
     setIsSubmitDialogOpen(false);
     setPendingFormData(null);
+    setSelectedReservation(null);
   }, [pendingFormData, batchNoShow]);
 
   // ✅ Dialog 취소
@@ -128,7 +134,7 @@ export function useNoShowForm(defaultData?: Reservation) {
 export function useNoShowMenuForm(defaultData?: NoShowMenu) {
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
   const [pendingFormData, setPendingFormData] = useState<NoShowEditFormValues | null>(null);
-
+  const { setSelectNoshowItem, setActiveEdit } = useNoShowStore();
   const form = useForm<NoShowEditFormValues>({
     resolver: zodResolver(noShowEditFormSchema),
     defaultValues: {
@@ -137,7 +143,7 @@ export function useNoShowMenuForm(defaultData?: NoShowMenu) {
       name: '',
       quantity: 1,
       price: 0,
-      discountPercent: 0,
+      discountPercent: 50,
       visitTime: new Date().toISOString(),
     },
   });
@@ -183,7 +189,6 @@ export function useNoShowMenuForm(defaultData?: NoShowMenu) {
         }
       }
 
-      console.log('✅ 파싱된 visitTime:', serverVisitTime.toISOString());
       setOriginalVisitTime(serverVisitTime); // 원본 시간 저장
 
       reset({
@@ -260,6 +265,9 @@ export function useNoShowMenuForm(defaultData?: NoShowMenu) {
     // TODO: 실제 API 호출 로직 추가(필요시)
     setIsSubmitDialogOpen(false);
     setPendingFormData(null);
+    // 폼 초기화
+    setSelectNoshowItem(null);
+    setActiveEdit(false);
   }, [pendingFormData, calculatedVisitTime]);
 
   // ✅ Dialog 취소
@@ -291,7 +299,4 @@ export function useNoShowMenuForm(defaultData?: NoShowMenu) {
     handleCancelSubmit,
     pendingFormData,
   };
-}
-function setSelectedReservation(arg0: null) {
-  throw new Error('Function not implemented.');
 }

@@ -19,7 +19,7 @@ export async function GET(
         size: size,
       },
     });
-    console.log('API Response:', response);
+    // console.log('API Response:', response);
     return NextResponse.json(response, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message || 'Failed to fetch data' }, { status: error.status || 500 });

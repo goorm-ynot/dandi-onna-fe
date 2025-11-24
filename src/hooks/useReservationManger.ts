@@ -9,7 +9,7 @@ import { useReservationTimer } from './useReservationTimer';
 import { useReservationApi } from './useReservationApi';
 import { Reservation, SortState } from '@/types/boardData';
 
-export const useReservationManager = () => {
+export const useReservationManager = ({ userId = null }: { userId?: string | null }) => {
   const router = useRouter();
   const {
     reservations,
@@ -59,6 +59,7 @@ export const useReservationManager = () => {
           sort: 'time_desc',
           cursor: Number(cursor),
           size: 10,
+          userId, // 임시 추가
         },
       });
       // console.log('response: ', response.data);

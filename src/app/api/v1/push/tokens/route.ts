@@ -2,6 +2,7 @@
 import { serverApiClient } from '@/services/ApiClient';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { env } from 'process';
 
 export async function POST(req: Request) {
   try {

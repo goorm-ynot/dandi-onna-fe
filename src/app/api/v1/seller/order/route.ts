@@ -11,9 +11,9 @@ export async function GET(request: NextRequest) {
     const size = searchParams.get('size') || '10';
     const page = searchParams.get('page') || '0';
 
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Query Params:', { date, page, size });
-    }
+    // if (process.env.NODE_ENV === 'development') {
+    //   console.log('Query Params:', { date, page, size });
+    // }
 
     // ✅ await 추가 및 백엔드 API 호출
     const response = await serverApiClient.get('/owner/orders', {
@@ -24,9 +24,9 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    if (process.env.NODE_ENV === 'development') {
-      console.log('✅ Response from serverApiClient:', response);
-    }
+    // if (process.env.NODE_ENV === 'development') {
+    //   console.log('✅ Response from serverApiClient:', response);
+    // }
 
     // ✅ 백엔드 응답을 그대로 반환
     return NextResponse.json(response, { status: 200 });
@@ -64,9 +64,9 @@ export async function POST(request: NextRequest) {
       storeMemo: '테스트 메모',
     });
 
-    if (process.env.NODE_ENV === 'development') {
-      console.log('✅ Response from serverApiClient:', response);
-    }
+    // if (process.env.NODE_ENV === 'development') {
+    //   console.log('✅ Response from serverApiClient:', response);
+    // }
 
     // ✅ 백엔드 응답을 그대로 반환
     return NextResponse.json(response, { status: 200 });

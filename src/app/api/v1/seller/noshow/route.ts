@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     const size = searchParams.get('size') || '10';
     const page = searchParams.get('page') || '0';
 
-    console.log('Query Params:', { date, page, size });
+    // console.log('Query Params:', { date, page, size });
 
     // ✅ await 추가 및 백엔드 API 호출
     const response = await serverApiClient.get('/owner/no-show-posts', {
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    console.log('✅ Response from serverApiClient:', response);
+    // console.log('✅ Response from serverApiClient:', response);
 
     // ✅ 백엔드 응답을 그대로 반환
     return NextResponse.json(response, { status: 200 });

@@ -30,9 +30,9 @@ export default function NoShowMenuPage() {
     setActiveEdit,
   } = useNoShowManage();
 
-  const handleSelectStatus = (item: string) => {
-    console.log(item);
-  };
+  // const handleSelectStatus = (item: string) => {
+  //   console.log(item);
+  // };
 
   /** 노쇼 메뉴 삭제 요청 - Dialog 띄우기 */
   const onDataUpdate = () => {
@@ -44,6 +44,8 @@ export default function NoShowMenuPage() {
     // INFO: 실제 삭제 API 호출
     console.log('🗑️ 노쇼 메뉴 삭제 확정:', selectNoShowItem);
     setActiveEdit(false);
+    // 선택한 데이터도 빈값으로 설정
+    setSelectNoshowItem(null);
   };
 
   /** 노쇼 메뉴 삭제 취소 */
@@ -81,7 +83,9 @@ export default function NoShowMenuPage() {
           variant='default'
           onClick={(e) => {
             e.stopPropagation(); // 행 클릭 이벤트 방지
-            onSelected(res.postId.toString());
+            // TODO: 개수가 0일 땐 안열리게 하기
+            if (res.quantity > 0) onSelected(res.postId.toString());
+            else alert('품절된 상품입니다');
           }}>
           수정
         </Button>

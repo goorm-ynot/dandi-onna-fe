@@ -149,7 +149,16 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, autoPlay = true, inte
           }}>
           {images.map((image, index) => (
             <div key={index} className='w-[304px] h-[293px] flex-shrink-0 relative'>
-              <Image src={image} alt={`Slide ${index + 1}`} fill className='object-contain' draggable={false} />
+              <Image
+                src={image}
+                alt={`Slide ${index + 1}`}
+                fill
+                sizes='100vw'
+                quality={100}
+                unoptimized={true} // Next.js 최적화 비활성화
+                className='object-contain'
+                draggable={false}
+              />
             </div>
           ))}
         </div>
