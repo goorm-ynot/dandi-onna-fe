@@ -64,7 +64,7 @@ export default function NoShowOrderPanel({ mode, orderData, onStatusUpdate }: No
         <div className='flex flex-col gap-16'>
           <div className='flex flex-row justify-between items-center'>
             <Label className='title1 text-label-semilight'>기존 판매금액</Label>
-            <Label className='body3 text-label'>{orderData?.totalPrice}원</Label>
+            <Label className='body3 text-label'>{orderData?.totalPrice.toLocaleString()}원</Label>
           </div>
           <div className='flex flex-row justify-between items-center'>
             <Label className='title1 text-label-semilight'>할인율</Label>
@@ -74,9 +74,11 @@ export default function NoShowOrderPanel({ mode, orderData, onStatusUpdate }: No
             <Label className='body5 '>최종 결제금액</Label>
             <div className='flex items-center gap-2 flex-shrink-0 text-label-bold'>
               <Label className='text-right body3 text-label-light line-through whitespace-nowrap'>
-                {orderData?.totalPrice}원
+                {orderData?.totalPrice.toLocaleString()}원
               </Label>
-              <Label className='text-right body7 whitespace-nowrap text-label-bold'>{orderData?.paidAmount}원</Label>
+              <Label className='text-right body7 whitespace-nowrap text-label-bold'>
+                {orderData?.paidAmount.toLocaleString()}원
+              </Label>
             </div>
           </div>
         </div>

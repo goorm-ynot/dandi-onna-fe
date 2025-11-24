@@ -3,6 +3,7 @@ import { PanelMode, PanelType } from '@/types/PanleTypes';
 import { Reservation } from '@/types/boardData';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { formatTimeString } from '@/lib/dateParse';
 
 interface ReservationDetailPanel {
   mode: PanelMode;
@@ -35,7 +36,7 @@ export default function ReservationDetailPanel({
           </div>
           <div className='flex flex-row justify-between items-center'>
             <Label className='title1  text-secondary'>시간</Label>
-            <Label className='body3'>{reservation.time}</Label>
+            <Label className='body3'>{formatTimeString(new Date(reservation.time))}</Label>
           </div>
           <div className='flex flex-row justify-between items-center'>
             <Label className='title1  text-secondary'>연락처</Label>

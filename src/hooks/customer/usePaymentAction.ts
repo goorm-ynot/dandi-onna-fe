@@ -35,7 +35,6 @@ export const usePaymentActions = (storeInfo?: StoreSummary) => {
   const paymentMutation = useMutation({
     mutationFn: async (paymentData: PaymentDataType) => {
       const response = await axios.post('/api/v1/order', paymentData);
-      console.log('paymentMutation: ', response);
       if (response.status !== 200) {
         throw new Error('결제 처리 중 오류가 발생했습니다.');
       }

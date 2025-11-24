@@ -121,6 +121,7 @@ export default function StorePage({ params }: Props) {
       storeName: store.name,
       addressRoad: store.addressRoad,
     };
+
     createPaymentSnapshot(storeInfo, posts, store.visitTime);
     goToPayment(storeId, storeInfo);
   };
