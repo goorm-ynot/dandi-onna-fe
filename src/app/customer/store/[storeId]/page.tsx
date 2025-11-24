@@ -121,6 +121,7 @@ export default function StorePage({ params }: Props) {
       storeName: store.name,
       addressRoad: store.addressRoad,
     };
+    console.log('주문하기눌렷을 때: ', storeInfo);
     createPaymentSnapshot(storeInfo, posts, store.visitTime);
     goToPayment(storeId, storeInfo);
   };

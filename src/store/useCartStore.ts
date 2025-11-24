@@ -208,11 +208,12 @@ export const useCartStore = create<CartState>()(
 
         // visitTime이 없으면 selectedMenus의 첫 번째 항목의 visitTime 사용
         const finalVisitTime = visitTime || selectedMenus[0]?.visitTime || '';
-
+        console.log('store 받아오는지 체크:', storeData);
+        console.log('store에서 name 받아오는지 체크:', storeData.storeName);
         set({
           paymentSnapshot: {
             storeId: storeData.storeId,
-            storeName: storeData.name,
+            storeName: storeData.storeName, // 가게 이름 추가
             storeAddress: storeData.addressRoad,
             visitTime: finalVisitTime,
             paymentMethod: 'CARD', // 기본값
