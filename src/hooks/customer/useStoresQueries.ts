@@ -57,7 +57,6 @@ export const useMyOrders = () => {
     queryFn: async () => {
       const response = await axios.get('/api/v1/home');
       if (response.status !== 200) throw new Error('Failed to fetch my orders');
-      console.log('[useMyOrders] API Response:', response.data);
       return response.data;
     },
     staleTime: 5 * 60 * 1000, // 5분

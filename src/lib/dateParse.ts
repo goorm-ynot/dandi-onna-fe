@@ -21,10 +21,10 @@ export const roundToNext10Minutes = (date: Date): Date => {
   newDate.setMinutes(roundedMinutes, 0, 0);
 
   // 60분을 넘어가면 시간 증가 처리
-  if (roundedMinutes >= 60) {
-    newDate.setHours(newDate.getHours() + 1);
-    newDate.setMinutes(0, 0, 0);
-  }
+  // if (roundedMinutes >= 60) {
+  //   newDate.setHours(newDate.getHours() + 1);
+  //   newDate.setMinutes(0, 0, 0);
+  // }
 
   return newDate;
 };

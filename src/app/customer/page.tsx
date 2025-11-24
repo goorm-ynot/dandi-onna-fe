@@ -199,7 +199,7 @@ export default function CustomerPage() {
                   image={store.imageUrl}
                   openTime={formatTimeWithoutSeconds(store.openTime)}
                   closeTime={formatTimeWithoutSeconds(store.closeTime)}
-                  distance={Math.round(store.distanceMeters / 1000)}
+                  distance={parseFloat((store.distanceMeters / 1000).toFixed(1))}
                 />
               </div>
             ))

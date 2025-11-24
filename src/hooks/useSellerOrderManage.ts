@@ -105,7 +105,7 @@ export const useSellerOrderManage = () => {
 
   // 페이지 변경 함수
   const handlePageChange = (newPage: number) => {
-    console.log('📄 페이지 변경:', newPage);
+    // console.log('📄 페이지 변경:', newPage);
     setPages({ ...pagination, page: newPage });
   };
 
@@ -140,7 +140,7 @@ export const useSellerOrderManage = () => {
       return response.json();
     },
     onSuccess: (data) => {
-      console.log('✅ 방문 완료 처리 성공:', data);
+      // console.log('✅ 방문 완료 처리 성공:', data);
       showAlarm('방문 완료 처리가 완료되었습니다.', 'success', '성공');
       queryClient.invalidateQueries({ queryKey: ['seller-orders'] });
       setSelectItem('');
@@ -153,7 +153,7 @@ export const useSellerOrderManage = () => {
 
   // 방문 완료 핸들러
   const handleCompleteVisit = (orderId: string) => {
-    console.log('방문 완료 처리 주문ID:', orderId);
+    // console.log('방문 완료 처리 주문ID:', orderId);
     completeVisitMutation.mutate(orderId);
   };
 
