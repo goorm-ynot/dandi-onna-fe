@@ -5,7 +5,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const date = searchParams.get('date');
     const reservationNo = searchParams.get('reservationNo');
 
     // 🔧 객체를 배열로 변환하여 검색
