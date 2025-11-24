@@ -76,13 +76,11 @@ export default function StorePage({ params }: Props) {
 
   // Group posts by expireAt time
   const groupedPosts = posts.reduce((acc, post) => {
-    const expireTime = new Date(post.expireAt)
-      .toLocaleTimeString('ko-KR', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      })
-      .split(':')[0]; // Get only the hour
+    const expireTime = new Date(post.expireAt).toLocaleTimeString('ko-KR', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
 
     if (!acc[expireTime]) {
       acc[expireTime] = [];
