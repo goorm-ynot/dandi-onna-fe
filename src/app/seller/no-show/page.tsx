@@ -42,7 +42,7 @@ export default function NoShowMenuPage() {
   /** 노쇼 메뉴 삭제 확정 */
   const handleDeleteConfirm = () => {
     // INFO: 실제 삭제 API 호출
-    console.log('🗑️ 노쇼 메뉴 삭제 확정:', selectNoShowItem);
+    // console.log('🗑️ 노쇼 메뉴 삭제 확정:', selectNoShowItem);
     setActiveEdit(false);
     // 선택한 데이터도 빈값으로 설정
     setSelectNoshowItem(null);

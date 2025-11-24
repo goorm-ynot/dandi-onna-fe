@@ -13,7 +13,7 @@ export default function TestAPI() {
     try {
       const response = await fetch('/api/v1/home');
       const data = await response.json();
-      console.log('Store API:', data);
+
       setStoreData(data);
     } catch (error) {
       console.error('Store API Error:', error);
@@ -27,7 +27,6 @@ export default function TestAPI() {
     try {
       const response = await fetch('/api/v1/home/stores');
       const data = await response.json();
-      console.log('Reservation API:', data);
       setReservationData(data);
     } catch (error) {
       console.error('Reservation API Error:', error);
