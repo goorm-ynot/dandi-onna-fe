@@ -15,14 +15,28 @@ export default function DiscountSelector({ formResult, mode }: DiscountSelectorP
   const { register, setValue, watch } = useFormContext();
   const { errors } = formResult;
   const discountOptions = ['30', '40', '50'];
-  const [selectedDiscount, setSelectedDiscount] = React.useState('');
-  const [customDiscount, setCustomDiscount] = React.useState('');
 
   // ✅ 생성/수정에 따라 필드명이 다름
   const discountFieldName = mode === 'create' ? 'discount' : 'discountPercent';
 
   // ✅ 현재 폼의 할인율 값 감시
   const currentDiscount = watch(discountFieldName);
+
+  // ✅ 초기값 설정: 폼의 디폴트 값을 기반으로 버튼 선택 상태 결정
+  const getInitialState = () => {
+    if (currentDiscount !== undefined && currentDiscount !== null) {
+      const discountStr = String(currentDiscount);
+      if (discountOptions.includes(discountStr)) {
+        return { selected: discountStr, custom: '' };
+      } else if (currentDiscount > 0) {
+        return { selected: 'custom', custom: discountStr };
+      }
+    }
+    return { selected: '', custom: '' };
+  };
+
+  const [selectedDiscount, setSelectedDiscount] = React.useState(() => getInitialState().selected);
+  const [customDiscount, setCustomDiscount] = React.useState(() => getInitialState().custom);
 
   // ✅ 폼 값이 변경되면 버튼 선택 상태 동기화
   React.useEffect(() => {
