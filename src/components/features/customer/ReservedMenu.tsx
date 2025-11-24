@@ -49,6 +49,7 @@ const ReservedMenu = React.memo(function ReservedMenu({
           sizes='(max-width: 400px) 288px, 320px'
           priority={isPriority}
           loading={isPriority ? undefined : 'lazy'}
+          fetchPriority={isPriority ? 'high' : 'auto'}
         />
 
         {/* Timer Overlay */}

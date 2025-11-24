@@ -16,8 +16,39 @@ export default function VisitTimeSelector({ formResult, mode }: VisitTimeSelecto
   const { register, setValue, watch } = useFormContext();
   const { errors } = formResult;
   const timeOptions = ['10', '20', '30'];
-  const [selectedTime, setSelectedTime] = React.useState('');
-  const [customTime, setCustomTime] = React.useState('');
+
+  // ✅ 현재 폼의 방문 시간 값 감시
+  const currentDuringTime = watch('duringTime');
+
+  // ✅ 초기값 설정: 폼의 디폴트 값을 기반으로 버튼 선택 상태 결정
+  const getInitialState = () => {
+    if (currentDuringTime !== undefined && currentDuringTime !== null) {
+      const timeStr = String(currentDuringTime);
+      if (timeOptions.includes(timeStr)) {
+        return { selected: timeStr, custom: '' };
+      } else if (currentDuringTime > 0) {
+        return { selected: 'custom', custom: timeStr };
+      }
+    }
+    return { selected: '', custom: '' };
+  };
+
+  const [selectedTime, setSelectedTime] = React.useState(() => getInitialState().selected);
+  const [customTime, setCustomTime] = React.useState(() => getInitialState().custom);
+
+  // ✅ 폼 값이 변경되면 버튼 선택 상태 동기화
+  React.useEffect(() => {
+    if (currentDuringTime !== undefined && currentDuringTime !== null) {
+      const timeStr = String(currentDuringTime);
+      if (timeOptions.includes(timeStr)) {
+        setSelectedTime(timeStr);
+        setCustomTime('');
+      } else if (currentDuringTime > 0) {
+        setSelectedTime('custom');
+        setCustomTime(timeStr);
+      }
+    }
+  }, [currentDuringTime]);
 
   return (
     <div className='flex flex-col gap-1 px-20'>

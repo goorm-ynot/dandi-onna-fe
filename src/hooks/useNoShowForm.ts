@@ -25,9 +25,9 @@ export function useNoShowForm(defaultData?: Reservation) {
           price: menu.price,
           quantity: menu.qty, // 초기값
           maxQty: menu.qty, // 원래 예약된 수량
-          discount: 50, // 기본 할인율 50%
-          duringTime: 30, // 기본 소요 시간 30분
         })) || [],
+      discount: 50, // 기본 할인율 50%
+      duringTime: 30, // 기본 소요 시간 30분
     },
   });
 
