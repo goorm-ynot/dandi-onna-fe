@@ -109,11 +109,11 @@ npm run dev
 📜tsconfig.json
 ```
 
-자세한 구조는 [여기를](https://www.notion.so/goormkdx/FE-29bc0ff4ce3180afbe42f444005afb5c) 확인해주세요.
+> 자세한 구조 Wiki 작성
 
 ### API 엔드포인트
 
-> 정리 필요
+> wiki 작성
 
 ## 📄 라이선스
 
