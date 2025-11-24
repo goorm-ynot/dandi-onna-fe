@@ -71,6 +71,12 @@ export async function POST(req: Request) {
       maxAge: 60 * 60 * 24 * 7, // 7일
     });
 
+    // 임시 아이디 저장(예약에서만 사용을 해서 role과 무관하게 저장)
+    response.cookies.set('login-id', loginId, {
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7, // 7일
+    });
+
     return response;
   } catch (error) {
     // 모든 예외 처리

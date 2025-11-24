@@ -3,7 +3,7 @@ import { useInfiniteStores, useMyOrders } from '@/hooks/customer/useStoresQuerie
 import { useEffect, useMemo } from 'react';
 
 export const useStoresActions = () => {
-  const { addToFavorites, removeFromFavorites, setParams } = useCustomerStore();
+  const { setParams } = useCustomerStore();
   const { orderList, setOrderList } = useMyOrderStore();
 
   // 무한스크롤 쿼리
@@ -58,8 +58,6 @@ export const useStoresActions = () => {
     myOrdersError,
 
     // actions
-    addToFavorites,
-    removeFromFavorites,
     setOrderList,
     setParams,
   };

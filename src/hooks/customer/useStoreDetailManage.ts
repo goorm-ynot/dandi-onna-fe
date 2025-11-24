@@ -50,6 +50,7 @@ export const useStoreDetailManage = (storeId: string) => {
     refetch,
   } = useStorePostsInfinite(storeId || '');
 
+  // ================= 데이터 동기화 ===================
   // 🔥 computed values (zustand에 저장하지 않고 계산)
   const allPosts = useMemo(() => {
     return infiniteData?.pages?.flatMap((page) => page.posts || []) || [];
@@ -74,7 +75,7 @@ export const useStoreDetailManage = (storeId: string) => {
 
   // favorite 상태
   const like = useMemo(() => {
-    return infiniteData?.favorited || true;
+    return infiniteData?.pages[0]?.favorited || false;
   }, [infiniteData]);
 
   // 🔥 하나의 useEffect로 통합 + 의존성 최소화
@@ -101,6 +102,8 @@ export const useStoreDetailManage = (storeId: string) => {
     setError,
     setCurrentStore,
   ]);
+  // ================= 데이터 동기화 end ===================
+
   //=============== cart utilities ===============
   // 카트 만료 체크
   const checkCartExpiration = () => {
@@ -156,7 +159,7 @@ export const useStoreDetailManage = (storeId: string) => {
   // 쓰로틀링 적용 (1초에 1번만 실행)
   const throttledToggleFavorite = useThrottle((isLiked: boolean) => {
     if (favoriteMutation.isPending) return;
-    favoriteMutation.mutate({ storeId, isLiked });
+    const result = favoriteMutation.mutate({ storeId, isLiked });
   }, 1000);
 
   const toggleFavorite = (isLiked: boolean) => {

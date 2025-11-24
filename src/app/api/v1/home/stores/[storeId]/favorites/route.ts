@@ -3,10 +3,9 @@
 import { serverApiClient } from '@/services/ApiClient';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ storeId: string }> }) {
   try {
-    const body = await req.json();
-    const { storeId } = body;
+    const { storeId } = await params;
 
     const response = await serverApiClient.post(`/favorites`, {
       storeId,
@@ -19,10 +18,9 @@ export async function POST(req: NextRequest) {
 }
 
 // 찜 해제하기
-export async function DELETE(req: NextRequest) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ storeId: string }> }) {
   try {
-    const body = await req.json();
-    const { storeId } = body;
+    const { storeId } = await params;
 
     const response = await serverApiClient.delete('/favorites', {
       data: { storeId },

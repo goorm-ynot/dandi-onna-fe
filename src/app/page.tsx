@@ -16,8 +16,8 @@ export default function OnboardingPage() {
   const { token } = useFcmToken();
   const { permission, requestPermission } = useGeolocationConsent();
   const { handleLogin, postFcmToken } = useUserHook();
-  const { goCustomerHome, goSellerHome } = useNavigation();
-  const isLocationAllowed = permission === 'granted';
+  const { goCustomerHome, goSellerHome, goSellerHomeParams } = useNavigation();
+
   const [deviceId, setDeviceId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -62,13 +62,16 @@ export default function OnboardingPage() {
     //   role: USER_ROLE[1], // OWNER
     // };
 
-    // try {
-    //   const result = await handleLogin(userLoginData);
-    //   console.log(result);
+    //  try {
+    //   const result = await handleLogin({ loginId: data.userId, password: data.password, role: data.role });
+    //   // result 성공 시, fcm 토큰도 전송
+    //   if (result.success && token && deviceId) {
+    //     await postFcmToken(token, deviceId);
+    //   }
     //   toast.success('로그인 성공!', {
-    //     description: result.message,
+    //     description: '로그인 성공했습니다.',
     //   });
-    //   router.push('/seller');
+    //   goSellerHomeParams(data.userId);
     // } catch (error) {
     //   toast.error('로그인 실패', {
     //     description: '아이디 또는 비밀번호를 확인해주세요.',

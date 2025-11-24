@@ -7,7 +7,7 @@ import { useAlarmStore } from '@/store/useAlarmStore';
 import useFcmToken from '@/hooks/useFcmToken';
 import React from 'react';
 
-export default function layout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
   const { alarm, hideAlarm } = useAlarmStore();
   useFcmToken(); // FCM 토큰 초기화 및 메시지 리스너 등록
 
@@ -28,7 +28,7 @@ export default function layout({ children }: Readonly<{ children: React.ReactNod
               message={alarm.message}
               onClose={hideAlarm}
               autoClose={alarm.autoClose ?? true}
-              duration={3000}
+              duration={30000}
             />
           </div>
         )}

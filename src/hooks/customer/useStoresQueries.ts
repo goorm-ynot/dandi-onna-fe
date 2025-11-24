@@ -1,6 +1,8 @@
 import { useCustomerStore } from '@/store/useCustomerStore';
+import { useFavoriteStore } from '@/store/useFavorite';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { toast } from 'sonner';
 
 // 무한스크롤용 가게 목록 조회
 export const useInfiniteStores = ({ lat, lon, size }: { lat: number; lon: number; size: number }) => {
@@ -65,7 +67,7 @@ export const useMyOrders = () => {
 // 찜하기 뮤테이션 -> 상세에서 사용
 export const useFavoriteMutation = () => {
   const queryClient = useQueryClient();
-  const { addToFavorites, removeFromFavorites } = useCustomerStore();
+  const { setFavorite } = useFavoriteStore();
 
   return useMutation({
     mutationFn: async ({ storeId, isLiked }: { storeId: string; isLiked: boolean }) => {
@@ -75,17 +77,29 @@ export const useFavoriteMutation = () => {
       if (response.status !== 200) throw new Error('Failed to update favorite');
       return response.data;
     },
-    onMutate: ({ storeId }) => {
-      // 낙관적 업데이트
-      addToFavorites(storeId);
+    onMutate: ({ storeId, isLiked }) => {
+      // 낙관적 업데이트: API 응답을 기다리지 않고 미리 UI 업데이트
+      setFavorite(!isLiked);
+
+      // 에러 발생시 롤백을 위해 이전 상태 반환
+      return { previousState: isLiked };
     },
-    onError: (error, { storeId }) => {
-      // 에러시 되돌리기
-      removeFromFavorites(storeId);
+    onSuccess: (data) => {
+      // 서버 응답의 메시지를 alert로 표시
+      if (data?.message) {
+        toast.success('', { description: data.message });
+      }
     },
-    onSettled: () => {
-      // 쿼리 다시 불러오기
-      queryClient.invalidateQueries({ queryKey: ['stores'] });
+    onError: (error, { storeId }, context) => {
+      // 에러시 이전 상태로 되돌리기
+      setFavorite(context?.previousState || false);
+
+      // 에러 메시지 표시
+      toast.error('', { description: '찜하기 처리 중 오류가 발생했습니다.' });
+    },
+    onSettled: (data, error, { storeId }) => {
+      // 성공/실패 관계없이 최신 데이터로 다시 불러오기
+      queryClient.invalidateQueries({ queryKey: ['store-posts', storeId] });
     },
   });
 };

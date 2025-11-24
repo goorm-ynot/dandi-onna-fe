@@ -7,7 +7,7 @@ import Footer from '@/components/layout/Footer';
 import ConditionalFooter from '@/components/layout/ConditionalFooter';
 import useFcmToken from '@/hooks/useFcmToken';
 
-export default function layout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;

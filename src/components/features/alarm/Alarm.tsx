@@ -15,7 +15,7 @@ interface AlarmProps {
   duration?: number; // ms
 }
 
-const Alarm = ({ type = 'info', title, message, onClose, autoClose = false, duration = 3000 }: AlarmProps) => {
+const Alarm = ({ type = 'info', title, message, onClose, autoClose = false, duration = 30000 }: AlarmProps) => {
   // 자동 닫기
   React.useEffect(() => {
     if (autoClose && onClose) {

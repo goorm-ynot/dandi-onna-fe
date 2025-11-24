@@ -6,7 +6,6 @@ import ReservedMenu from '@/components/features/customer/ReservedMenu';
 import ReservedMenuSkeleton from '@/components/features/customer/ReservedMenuSkeleton';
 import StoreProfileSkeleton from '@/components/features/customer/StoreProfileSkeleton';
 import { Chip } from '@/components/features/ui/Chip';
-// import CustomerHeader from '@/components/layout/CustomerHeader';
 import { useStoresActions } from '@/hooks/customer/useStoresManage';
 import { formatTimeWithoutSeconds } from '@/lib/utils';
 import { useGlobalTimer } from '@/hooks/useGlobalTimer';
@@ -18,19 +17,15 @@ import { useAlarmStore } from '@/store/useAlarmStore';
 
 export default function CustomerPage() {
   const {
-    stores, // 평탄화된 전체 가게 목록
+    stores,
     storesLoading,
     storesError,
     loadMoreStores,
     hasNextPage,
     isFetchingNextPage,
-    // 기존 states
     orderList,
     myOrdersLoading,
     myOrdersError,
-    // actions
-    addToFavorites,
-    removeFromFavorites,
     setOrderList,
     setParams,
   } = useStoresActions();
@@ -39,11 +34,12 @@ export default function CustomerPage() {
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'noshow'>('noshow');
   const observerTarget = useRef<HTMLDivElement>(null);
 
-  // 가게 데이터 - API에서 받아온 stores 데이터 사용
   const displayStores = stores.length > 0 ? stores : [];
 
-  // 무한스크롤 Intersection Observer
+  // 🔧 1. useEffect ref 문제 해결 - 변수에 미리 저장
   useEffect(() => {
+    const currentTarget = observerTarget.current; // 변수에 저장
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
@@ -53,23 +49,23 @@ export default function CustomerPage() {
       { threshold: 0.1 }
     );
 
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current);
+    if (currentTarget) {
+      observer.observe(currentTarget);
     }
 
     return () => {
-      if (observerTarget.current) {
-        observer.unobserve(observerTarget.current);
+      if (currentTarget) {
+        // cleanup에서 저장된 변수 사용
+        observer.unobserve(currentTarget);
       }
     };
   }, [hasNextPage, isFetchingNextPage, loadMoreStores]);
 
-  // 가격 포맷 함수
   const formatPrice = (price: number) => {
     return price.toLocaleString('ko-KR');
   };
 
-  // ReservedMenu를 감싸는 컴포넌트 - 각 order마다 훅 사용
+  // 🔧 2. ReservedMenuWrapper 컴포넌트 displayName 추가
   const ReservedMenuWrapper = React.memo(
     ({ order, isPriority }: { order: (typeof orderList)[0]; isPriority?: boolean }) => {
       const timeRemaining = useGlobalTimer(order.visitTime);
@@ -95,17 +91,18 @@ export default function CustomerPage() {
     }
   );
 
+  // displayName 추가
+  ReservedMenuWrapper.displayName = 'ReservedMenuWrapper';
+
   return (
     <div className='w-full flex flex-col pb-20'>
       {/* 위치 정보 섹션 */}
       <div className='bg-neutral-100 w-full px-4 py-3.5 flex items-center justify-between gap-2'>
         <div className='flex items-center gap-1.5 flex-1'>
-          {/* icon add */}
           <span className='text-[16px] text-[#161616] flex items-center gap-1'>
             <MapPin size={16} /> 분당구 내정로165번길 35 <ChevronDown size={16} />
           </span>
         </div>
-        {/* <button className='text-[14px] text-[#656565] underline'>위치 변경</button> */}
       </div>
 
       {/* 내가 주문한 가게 섹션 */}
@@ -147,8 +144,6 @@ export default function CustomerPage() {
       {/* 공지사항 배너 */}
       <section className='relative bg-neutral-100 w-full flex items-center gap-4'>
         <div className='relative w-full h-[92px]'>
-          {' '}
-          {/* 명시적 크기 지정 */}
           <Image
             src='/images/adNotices1.png'
             alt='공지사항 배너'
@@ -156,7 +151,7 @@ export default function CustomerPage() {
             quality={100}
             unoptimized={true}
             className='object-cover'
-            priority={true} // LCP 이미지에 우선순위
+            priority={true}
           />
         </div>
       </section>
@@ -220,6 +215,7 @@ export default function CustomerPage() {
           </div>
         )}
       </section>
+
       {/* 알림 */}
       {alarm.isVisible && (
         <div className='fixed top-20 right-10 z-50'>
@@ -229,7 +225,7 @@ export default function CustomerPage() {
             message={alarm.message}
             onClose={hideAlarm}
             autoClose={alarm.autoClose ?? true}
-            duration={3000}
+            duration={30000}
           />
         </div>
       )}

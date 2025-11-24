@@ -9,11 +9,11 @@ import { TwoColumnLayout } from '@/components/layout/TwoCloumnLayout';
 import { reservationStatus } from '@/constants/sellerNavConstant';
 import { useReservationManager } from '@/hooks/useReservationManger';
 import { Reservation } from '@/types/boardData';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDialog';
 import { useSearchParams } from 'next/navigation';
 
-export default function RegistPage() {
+function SellerPageContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
   const loginId = token ? atob(token) : '';
@@ -248,5 +248,18 @@ export default function RegistPage() {
         cancelText='취소'
       />
     </>
+  );
+}
+
+export default function RegistPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className='w-screen h-screen flex items-center justify-center'>
+          <p className='text-gray-500'>로딩 중...</p>
+        </div>
+      }>
+      <SellerPageContent />
+    </Suspense>
   );
 }
