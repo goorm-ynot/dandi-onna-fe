@@ -89,58 +89,48 @@ const nextConfig = {
     ];
   },
 
+  // next.config.mjs의 webpack 설정 강화
   webpack: (config, { dev, isServer }) => {
-    // 카카오 맵 SDK를 위한 웹팩 설정
-    config.module.rules.push({
-      test: /\.js$/,
-      use: ['babel-loader'],
-      exclude: /node_modules\/(?!(react-kakao-maps-sdk)\/).*/,
-    });
-
-    // ✅ production 최적화 (더 안전하게)
     if (!dev && !isServer) {
-      // 번들 분할 최적화
       config.optimization.splitChunks = {
         ...config.optimization.splitChunks,
         cacheGroups: {
           ...config.optimization.splitChunks.cacheGroups,
-          // 벤더 라이브러리 분리
+
+          // 🎯 React Query 별도 청크
+          reactQuery: {
+            test: /[\\/]node_modules[\\/]@tanstack[\\/]/,
+            name: 'react-query',
+            chunks: 'all',
+            priority: 20,
+          },
+
+          // 🎯 Radix UI 별도 청크
+          radixUI: {
+            test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
+            name: 'radix-ui',
+            chunks: 'all',
+            priority: 20,
+          },
+
+          // 🎯 Firebase 별도 청크
+          firebase: {
+            test: /[\\/]node_modules[\\/]firebase[\\/]/,
+            name: 'firebase',
+            chunks: 'all',
+            priority: 20,
+          },
+
+          // 🎯 기본 vendor 청크
           vendor: {
             test: /[\\/]node_modules[\\/]/,
             name: 'vendors',
             chunks: 'all',
             priority: 10,
           },
-          // 폰트 파일 분리
-          fonts: {
-            test: /\.(woff|woff2|eot|ttf|otf)$/,
-            name: 'fonts',
-            chunks: 'all',
-            priority: 15,
-          },
-          // 이미지 파일 분리
-          images: {
-            test: /\.(jpg|jpeg|png|webp|avif|gif|svg)$/,
-            name: 'images',
-            chunks: 'all',
-            priority: 15,
-          },
         },
       };
-
-      // ⚠️ 문제가 있었던 부분을 더 안전하게 수정
-      const alias = config.resolve.alias || {};
-      config.resolve.alias = {
-        ...alias,
-        // 특정 polyfill만 제거 (더 안전함)
-        'core-js/modules/es.array.at.js': false,
-        'core-js/modules/es.array.flat.js': false,
-        'core-js/modules/es.array.flat-map.js': false,
-        'core-js/modules/es.object.from-entries.js': false,
-        'core-js/modules/es.object.has-own.js': false,
-      };
     }
-
     return config;
   },
 };

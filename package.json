@@ -45,10 +45,15 @@
     "zustand": "^4.5.7"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.5",
+    "@babel/preset-env": "^7.28.5",
+    "@babel/preset-react": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
     "@next/bundle-analyzer": "^16.0.4",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "babel-loader": "^10.0.0",
     "eslint": "^8",
     "eslint-config-next": "^15.5.2",
     "postcss": "^8",
