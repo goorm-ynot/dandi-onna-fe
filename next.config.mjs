@@ -92,7 +92,7 @@ const nextConfig = {
     config.module.rules.push({
       test: /\.js$/,
       use: ['babel-loader'],
-      exclude: /node_modules\/(?!(react-kaka-maps-sdk)\/).*/,
+      exclude: /node_modules\/(?!(react-kakao-maps-sdk)\/).*/,
     });
 
     // ✅ production 최적화 (더 안전하게)
