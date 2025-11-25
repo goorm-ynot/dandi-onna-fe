@@ -66,7 +66,7 @@ const nextConfig = {
       },
       {
         // 이미지 캐싱 - 수정된 패턴
-        source: '/:path*\\.(jpg|jpeg|png|webp|avif|ico|svg)',
+        source: '/:path*\\\\.(jpg|jpeg|png|webp|avif|ico|svg)',
         headers: [
           {
             key: 'Cache-Control',
