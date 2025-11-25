@@ -214,7 +214,7 @@ export default function StorePage({ params }: Props) {
                 title={post.menuName}
                 description={post.menuDescription}
                 originalPrice={post.originalPrice}
-                discountRate={post.discountRate}
+                discountRate={post.discountRate || post.discountPercent}
                 salePrice={post.discountedPrice}
                 stock={post.qtyRemaining}
                 state={getProductState(post.postId)}
