@@ -11,7 +11,7 @@ import { formatTimeWithoutSeconds } from '@/lib/utils';
 import { useGlobalTimer } from '@/hooks/useGlobalTimer';
 import { ChevronDown, MapPin } from 'lucide-react';
 import { useNavigation } from '@/hooks/useNavigation';
-import Image from 'next/image';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 import Alarm from '@/components/features/alarm/Alarm';
 import { useAlarmStore } from '@/store/useAlarmStore';
 
@@ -144,12 +144,11 @@ export default function CustomerPage() {
       {/* 공지사항 배너 */}
       <section className='relative bg-neutral-100 w-full flex items-center gap-4'>
         <div className='relative w-full h-[92px]'>
-          <Image
+          <OptimizedImage
             src='/images/adNotices1.png'
             alt='공지사항 배너'
             fill
             quality={100}
-            unoptimized={true}
             className='object-cover'
             priority={true}
           />
