@@ -25,6 +25,17 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
 
+  // 🎯 SWC 미니파이 설정 (모던 브라우저 대상)
+  swcMinify: true,
+
+  // 🎯 Polyfill 최적화 (레거시 polyfill 제거)
+  targets: {
+    chrome: '90',
+    firefox: '88',
+    safari: '14',
+    edge: '90',
+  },
+
   // ✅ 이미지 최적화 강화
   images: {
     domains: ['placehold.co', 'dandi-pre.s3.ap-northeast-2.amazonaws.com'],
@@ -37,6 +48,9 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 31536000, // 1년 캐시
+
+    // 🎯 Vercel 이미지 최적화 캐시 (모든 이미지)
+    maximumCacheTTL: 31536000, // 1년
 
     // 🎯 S3 이미지는 최적화 스킵 (Query String 때문에 502 오류 방지)
     unoptimized: false, // 기본값
@@ -80,7 +94,7 @@ const nextConfig = {
       },
       {
         // 이미지 캐싱 - 수정된 패턴
-        source: '/:path*\\\\.(jpg|jpeg|png|webp|avif|ico|svg)',
+        source: '/:path*\\.(jpg|jpeg|png|webp|avif|ico|svg)',
         headers: [
           {
             key: 'Cache-Control',
@@ -98,11 +112,36 @@ const nextConfig = {
           },
         ],
       },
+      {
+        // 🎯 S3 이미지 캐싱 (Vercel에서 프록시될 때)
+        source: 'https://dandi-pre.s3.ap-northeast-2.amazonaws.com/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
     ];
   },
 
   // next.config.mjs의 webpack 설정 강화
   webpack: (config, { dev, isServer }) => {
+    // 🎯 Browserslist 설정 (레거시 polyfill 제거)
+    config.module.rules.forEach((rule) => {
+      if (rule.loader === 'babel-loader' || rule.use?.some?.((u) => u.loader === 'babel-loader')) {
+        // Babel에서 모던 브라우저 대상으로 설정
+        if (rule.options) {
+          rule.options.targets = {
+            chrome: '90',
+            firefox: '88',
+            safari: '14',
+            edge: '90',
+          };
+        }
+      }
+    });
+
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
         ...config.optimization.splitChunks,

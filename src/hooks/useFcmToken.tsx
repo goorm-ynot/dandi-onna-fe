@@ -161,7 +161,8 @@ const useFcmToken = () => {
             `${payload.data?.body || 'This is a new message'}`,
             'info',
             payload.data?.title || 'New message',
-            isConsumer
+            isConsumer,
+            link
           );
 
           // Navigate to link after showing alarm
@@ -176,7 +177,8 @@ const useFcmToken = () => {
             `${payload.data?.body || 'This is a new message'}`,
             'info',
             payload.data?.title || 'New message',
-            isConsumer
+            isConsumer,
+            link
           );
         } // --------------------------------------------
         // Disable this if you only want toast notifications.

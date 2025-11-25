@@ -1,12 +1,10 @@
-'use client';
-
 import React from 'react';
 
 export default function Footer() {
   return (
-    <footer className='w-full bg-white py-20 border-t border-border-wrapper'>
+    <footer className='w-full bg-white py-16 border-t border-border-wrapper'>
       {/* ✅ 전체는 중앙 정렬 */}
-      <div className='w-full px-6 max-[400px]:px-16 lg:px-20 py-20'>
+      <div className='w-full px-16 max-[400px]:px-16 lg:px-20 py-40'>
         {/* ✅ 내부 컨테이너 */}
         <div className='w-full mx-auto flex flex-col gap-5'>
           {/* 상단: 로고 + 링크 + 고객센터 */}
