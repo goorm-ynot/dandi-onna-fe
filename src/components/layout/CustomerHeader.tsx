@@ -16,7 +16,7 @@ export default function CustomerHeader() {
 
         {/* 알람 + 배찌 */}
         <div className='flex items-center'>
-          <Button variant='ghost' size='icon' className='relative'>
+          <Button aria-label='알람확인' variant='ghost' size='icon' className='relative'>
             <BellIcon hasNotification={true} />
           </Button>
         </div>
