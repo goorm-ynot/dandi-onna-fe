@@ -41,7 +41,9 @@ const nextConfig = {
 
   // ✅ polyfill 최적화 설정
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    removeConsole: process.env.NODE_ENV === 'production'
+      ? { exclude: ['error', 'warn'] }
+      : false,
   },
 
   // ✅ 실험적 기능 (안전한 것들만)
