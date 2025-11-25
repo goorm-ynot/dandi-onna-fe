@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     // "types": ["kakao.map.d.ts"],
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["DOM", "DOM.Iterable", "ES2020"], // 🎯 최신 lib 사용
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -21,7 +21,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "target": "ES2017"
+    "target": "ES2020"
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]

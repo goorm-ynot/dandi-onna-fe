@@ -142,17 +142,17 @@ export default function CustomerPage() {
       </section>
 
       {/* 공지사항 배너 */}
-      <section className='relative bg-neutral-100 w-full flex items-center gap-4'>
-        <div className='relative w-full h-[92px]'>
-          <OptimizedImage
-            src='/images/adNotices1.png'
-            alt='공지사항 배너'
-            fill
-            quality={100}
-            className='object-cover'
-            priority={true}
-          />
-        </div>
+      <section className='relative w-full h-[92px] bg-neutral-100'>
+        <OptimizedImage
+          src='/images/adNotices1.png'
+          alt='공지사항 배너'
+          fill
+          quality={85}
+          className='object-cover'
+          priority={true}
+          isLCP={true} // 🎯 LCP 표시
+          fetchPriority='high' // 🎯 명시적 우선순위
+        />
       </section>
 
       {/* 주문 가능한 가게 섹션 */}

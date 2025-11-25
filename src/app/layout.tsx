@@ -9,8 +9,8 @@ const pretendard = localFont({
   display: 'swap',
   weight: '100 900',
   variable: '--font-pretendard',
-  preload: true, // 🎯 폰트 preload 활성화
-  fallback: ['system-ui', '-apple-system', 'sans-serif'], // 🎯 Fallback 폰트 명시
+  preload: false, // 🎯 LCP 최적화: 초기 로드에서 폰트 제외 (SPA 진입 후 동적 로드)
+  fallback: ['system-ui', '-apple-system', 'sans-serif'], // 🎯 초기 렌더링용 Fallback 폰트
 });
 
 // 🎯 SEO 최적화된 메타데이터
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     description: '단디온나 - 스마트한 온보딩 서비스로 더 나은 경험을 시작하세요.',
     images: [
       {
-        url: '/og-image.jpg', // 1200x630 권장
+        url: '/image/logo/favicon-32x32.png', // 1200x630 권장
         width: 1200,
         height: 630,
         alt: '단디온나 로고',
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '단디온나',
     description: '단디온나 - 스마트한 온보딩 서비스',
-    images: ['/twitter-image.jpg'], // 1200x600 권장
+    images: ['/image/logo/favicon-32x32.png'], // 1200x600 권장
     creator: '@dandi_onna',
   },
 
@@ -98,9 +98,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ko'>
-      {' '}
-      {/* 🎯 한국어로 변경 */}
       <head>
+        {/* 🎯 한국어로 변경 */}
         {/* 🎯 Critical preconnects (Document latency 개선) */}
         <link rel='preconnect' href='https://cdn.jsdelivr.net' crossOrigin='anonymous' />
         <link rel='preconnect' href='https://dandi-pre.s3.ap-northeast-2.amazonaws.com' crossOrigin='anonymous' />
@@ -111,15 +110,6 @@ export default function RootLayout({
         <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png' />
         <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png' />
         <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#000000' />
-
-        {/* 🎯 성능 최적화를 위한 리소스 힌트 - manifest 제거 (Critical Path에서 제외) */}
-        <link
-          rel='preload'
-          href='/fonts/pretendard/PretendardVariable.woff2'
-          as='font'
-          type='font/woff2'
-          crossOrigin='anonymous'
-        />
 
         {/* 🎯 Manifest는 defer로 로드 (Critical Request Chain 최적화) */}
         <link rel='manifest' href='/manifest.json' />

@@ -41,16 +41,12 @@ const nextConfig = {
 
   // ✅ polyfill 최적화 설정
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production'
-      ? { exclude: ['error', 'warn'] }
-      : false,
+    removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false,
   },
 
   // ✅ 실험적 기능 (안전한 것들만)
   experimental: {
     esmExternals: 'loose',
-    browsersListForSwc: true,
-    legacyBrowsers: false,
   },
 
   // ✅ 캐시 헤더 최적화 (Document latency 개선) - 수정됨
