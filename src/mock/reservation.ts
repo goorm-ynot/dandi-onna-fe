@@ -207,7 +207,7 @@ export const mockReservations = {
     },
     {
       reservationNo: 'D00004',
-      time: '2025-11-25T14:00:00',
+      time: '2025-11-25T15:00:00',
       menus: [
         { menuId: '4588a6a4-3d9a-4cdb-899b-f42d6b52fcf2', name: '이시가리', qty: 1, price: 39000 },
         { menuId: '7d09d348-67dd-4f26-8b43-2a909dfc34d6', name: '이든스시', qty: 3, price: 11500 },
