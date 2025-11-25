@@ -33,11 +33,12 @@
     --ring: 0 0% 3.9%;
 
     /* table status 혹은 그냥 stauts */
-    --status-pending: #ffd8e2;
-    --status-pending-foreground: #b5135d;
-    --status-completed: #c9eca8;
-    --status-completed-foreground: #428600;
-    --status-noshow: #eff6ff;
+    --status-pending: 91 64% 79%;
+    --status-pending-foreground: 90 100% 26%;
+    --status-completed: 0 0% 88%;
+    --status-completed-foreground: 0 0% 64%;
+    --status-noshow: 345 100% 92%; /*hsla(345, 100%, 92%, 1)*/
+    --status-noshow-foreground: 333 81% 39%; /*hsla(333, 81%, 39%, 1)*/
     --status-disable: #e1e1e1;
     --status-dark: #a3a3a3; /* 글자색 1 */
 

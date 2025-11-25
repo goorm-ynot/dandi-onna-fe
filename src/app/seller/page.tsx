@@ -85,7 +85,7 @@ function SellerPageContent() {
             res.status === 'PENDING'
               ? 'bg-status-pending text-status-pending-foreground'
               : res.status === 'NOSHOW'
-              ? 'bg-status-noshow text-status-dark'
+              ? 'bg-status-noshow text-status-noshow-foreground'
               : 'bg-status-completed text-status-completed-foreground'
           }`}>
           {reservationStatus[res.status as keyof typeof reservationStatus] || res.status}
