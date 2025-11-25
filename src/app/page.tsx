@@ -55,28 +55,32 @@ export default function OnboardingPage() {
   };
 
   const onSellerClick = async () => {
-    redirect('/test-page');
-    // const userLoginData = {
-    //   loginId: 'CEO1',
-    //   password: '111111',
-    //   role: USER_ROLE[1], // OWNER
-    // };
+    // redirect('/test-page');
+    const userLoginData = {
+      loginId: 'CEO22',
+      password: '222222',
+      role: USER_ROLE[1], // OWNER
+    };
 
-    //  try {
-    //   const result = await handleLogin({ loginId: data.userId, password: data.password, role: data.role });
-    //   // result 성공 시, fcm 토큰도 전송
-    //   if (result.success && token && deviceId) {
-    //     await postFcmToken(token, deviceId);
-    //   }
-    //   toast.success('로그인 성공!', {
-    //     description: '로그인 성공했습니다.',
-    //   });
-    //   goSellerHomeParams(data.userId);
-    // } catch (error) {
-    //   toast.error('로그인 실패', {
-    //     description: '아이디 또는 비밀번호를 확인해주세요.',
-    //   });
-    // }
+    try {
+      const result = await handleLogin({
+        loginId: userLoginData.loginId,
+        password: userLoginData.password,
+        role: userLoginData.role,
+      });
+      // result 성공 시, fcm 토큰도 전송
+      if (result.success && token && deviceId) {
+        await postFcmToken(token, deviceId);
+      }
+      toast.success('로그인 성공!', {
+        description: '로그인 성공했습니다.',
+      });
+      goSellerHomeParams(userLoginData.loginId);
+    } catch (error) {
+      toast.error('로그인 실패', {
+        description: '아이디 또는 비밀번호를 확인해주세요.',
+      });
+    }
   };
 
   const images = ['/images/onboarding1.png'];
