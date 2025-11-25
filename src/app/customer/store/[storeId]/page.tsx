@@ -10,6 +10,9 @@ import OrderBottomSheet from '@/components/features/customer/OrderBottomSheet';
 import StoreDetailSkeleton from '@/components/features/customer/StoreDetailSkeleton';
 import { useNavigation } from '@/hooks/useNavigation';
 
+// 🎯 ProductCard 상태 타입
+type ProductCardState = 'selected' | 'default' | 'disabled';
+
 // app/store/[storeId]/page.tsx
 interface Props {
   params: Promise<{ storeId: string }>; // 👈 Promise 타입으로 변경
@@ -91,14 +94,45 @@ export default function StorePage({ params }: Props) {
   }, {} as Record<string, Array<(typeof posts)[0]>>);
 
   const handleProductClick = (postId: number) => {
+    ////expireAt이 이전에 등록한 메뉴와 일치할 때만 선택 될 수 있게
+
     setSelectedProduct(postId);
     setQuantity(1);
+  };
+
+  // 🎯 expireAt 검증: 이미 담긴 아이템과 동일한 expireAt인지 확인
+  const getProductState = (postId: number): ProductCardState => {
+    const post = posts.find((p) => p.postId === postId);
+    if (!post) return 'default';
+
+    // 장바구니가 비어있으면 모두 활성화
+    if (selectedMenus.length === 0) {
+      return selectedProduct === postId ? 'selected' : 'default';
+    }
+
+    // 장바구니에 아이템이 있을 때
+    const firstCartItem = selectedMenus[0];
+    const firstCartPost = posts.find((p) => p.postId === firstCartItem.postId);
+
+    if (!firstCartPost) return 'default';
+
+    // expireAt이 동일하면 활성화, 다르면 disabled
+    const isSameExpireTime = new Date(post.expireAt).getTime() === new Date(firstCartPost.expireAt).getTime();
+
+    if (isSameExpireTime) {
+      // 동일한 expireAt
+      return selectedProduct === postId ? 'selected' : 'default';
+    } else {
+      // 다른 expireAt - disabled
+      return 'disabled';
+    }
   };
 
   const handleAddToCart = () => {
     if (selectedProduct && quantity > 0) {
       const post = posts.find((p) => p.postId === selectedProduct);
       // console.log('선택한거: ', post);
+
       if (post) {
         setSelectedProduct(null);
         setQuantity(1);
@@ -155,7 +189,7 @@ export default function StorePage({ params }: Props) {
         name={store.name}
         description={store.description}
         address={store.addressRoad}
-        distance={300} // You can calculate this or get it from the store data
+        distance={store.distance} // You can calculate this or get it from the store data
         imageUrl={store.imageUrl}
         isFavorite={favorite} // You need to track this in your state
         onToggleFavorite={handleToggleFavorite}
@@ -180,10 +214,10 @@ export default function StorePage({ params }: Props) {
                 title={post.menuName}
                 description={post.menuDescription}
                 originalPrice={post.originalPrice}
-                discountRate={post.discountPercent}
+                discountRate={post.distance || 300}
                 salePrice={post.discountedPrice}
                 stock={post.qtyRemaining}
-                state={selectedProduct === post.postId ? 'selected' : 'default'}
+                state={getProductState(post.postId)}
                 onClick={() => handleProductClick(post.postId)}
               />
             ))}

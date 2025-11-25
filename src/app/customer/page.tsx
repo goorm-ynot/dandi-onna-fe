@@ -32,7 +32,12 @@ export default function CustomerPage() {
   const { goToStoreDetail } = useNavigation();
   const { alarm, hideAlarm } = useAlarmStore();
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'noshow'>('noshow');
+  const [isMounted, setIsMounted] = useState(false);
   const observerTarget = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const displayStores = stores.length > 0 ? stores : [];
 
@@ -113,8 +118,10 @@ export default function CustomerPage() {
         </div>
 
         {/* 예약 메뉴 카드 */}
-        <div className='flex gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 px-4 min-h-[298px]'>
-          {myOrdersLoading ? (
+        <div
+          className='flex gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 min-h-[298px]'
+          suppressHydrationWarning>
+          {!isMounted ? null : myOrdersLoading ? (
             // 로딩 스켈레톤
             [...Array(2)].map((_, index) => (
               <div

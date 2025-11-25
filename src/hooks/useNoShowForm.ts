@@ -96,6 +96,7 @@ export function useNoShowForm(defaultData?: Reservation) {
     setIsSubmitDialogOpen(false);
     setPendingFormData(null);
     setSelectedReservation(null);
+    // 🎯 네비게이션은 batchNoShow의 onSuccess에서 처리됨
   }, [pendingFormData, batchNoShow]);
 
   // ✅ Dialog 취소

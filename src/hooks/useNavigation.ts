@@ -65,11 +65,16 @@ export const useNavigation = () => {
 
   // 히스토리 기록 남기지 않고 이동
   const replaceCustomerHome = () => {
-    router.replace('/customer');
+    window.location.href = '/customer';
   };
 
   const replaceSellerHome = () => {
     router.replace('/seller');
+  };
+
+  // 노쇼 메뉴 관리
+  const goToNoShowManagement = () => {
+    router.push('/seller/no-show');
   };
 
   return {
@@ -82,5 +87,6 @@ export const useNavigation = () => {
     goSellerHome,
     replaceSellerHome,
     goSellerHomeParams, //임시라서 추후 삭제 예정
+    goToNoShowManagement,
   };
 };
