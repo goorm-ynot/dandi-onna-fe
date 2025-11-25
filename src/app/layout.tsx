@@ -10,6 +10,7 @@ const pretendard = localFont({
   weight: '100 900',
   variable: '--font-pretendard',
   preload: true, // 🎯 폰트 preload 활성화
+  fallback: ['system-ui', '-apple-system', 'sans-serif'], // 🎯 Fallback 폰트 명시
 });
 
 // 🎯 SEO 최적화된 메타데이터
@@ -101,8 +102,8 @@ export default function RootLayout({
       {/* 🎯 한국어로 변경 */}
       <head>
         {/* 🎯 Critical preconnects (Document latency 개선) */}
-        <link rel='preconnect' href='https://cdn.jsdelivr.net' />
-        <link rel='preconnect' href='https://dandi-pre.s3.ap-northeast-2.amazonaws.com' />
+        <link rel='preconnect' href='https://cdn.jsdelivr.net' crossOrigin='anonymous' />
+        <link rel='preconnect' href='https://dandi-pre.s3.ap-northeast-2.amazonaws.com' crossOrigin='anonymous' />
         <link rel='dns-prefetch' href='https://placehold.co' />
 
         {/* 🎯 Favicon 및 아이콘들 */}
@@ -111,7 +112,7 @@ export default function RootLayout({
         <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png' />
         <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#000000' />
 
-        {/* 🎯 성능 최적화를 위한 리소스 힌트 */}
+        {/* 🎯 성능 최적화를 위한 리소스 힌트 - manifest 제거 (Critical Path에서 제외) */}
         <link
           rel='preload'
           href='/fonts/pretendard/PretendardVariable.woff2'
@@ -119,6 +120,9 @@ export default function RootLayout({
           type='font/woff2'
           crossOrigin='anonymous'
         />
+
+        {/* 🎯 Manifest는 defer로 로드 (Critical Request Chain 최적화) */}
+        <link rel='manifest' href='/manifest.json' />
 
         {/* 🎯 JSON-LD 구조화 데이터 (SEO) */}
         <script
@@ -138,6 +142,22 @@ export default function RootLayout({
                 priceCurrency: 'KRW',
               },
             }),
+          }}
+        />
+
+        {/* 🎯 성능 최적화: 초기 로드 후 manifest 로드 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                  // 모든 리소스 로드 후 PWA 관련 리소스 로드
+                  const link = document.createElement('link');
+                  link.rel = 'manifest';
+                  link.href = '/manifest.json';
+                });
+              }
+            `,
           }}
         />
       </head>

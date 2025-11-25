@@ -106,14 +106,14 @@ export default function CustomerPage() {
       </div>
 
       {/* 내가 주문한 가게 섹션 */}
-      <section className='px-4 py-5 flex flex-col gap-12'>
+      <section className='px-4 py-5 flex flex-col gap-12 min-h-[340px]'>
         <div className='flex items-center justify-between'>
           <h2 className='title5 text-[#161616]'>내가 주문한 가게</h2>
           <button className='text-[14px] text-[#656565] underline'>더보기</button>
         </div>
 
         {/* 예약 메뉴 카드 */}
-        <div className='flex gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 px-4 '>
+        <div className='flex gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 px-4 min-h-[298px]'>
           {myOrdersLoading ? (
             // 로딩 스켈레톤
             [...Array(2)].map((_, index) => (
@@ -182,11 +182,11 @@ export default function CustomerPage() {
         {storesError && <div className='text-center py-4 text-red-500'>가게 목록을 불러올 수 없습니다.</div>}
 
         {/* 가게 목록 */}
-        <div className='flex flex-col gap-6'>
+        <div className='flex flex-col gap-6 min-h-[400px]'>
           {storesLoading && displayStores.length === 0 ? (
             // 초기 로딩 스켈레톤
             [...Array(5)].map((_, index) => (
-              <div key={`store-skeleton-${index}`} className='flex gap-2.5'>
+              <div key={`store-skeleton-${index}`} className='flex gap-2.5 h-[108px]'>
                 <StoreProfileSkeleton />
               </div>
             ))

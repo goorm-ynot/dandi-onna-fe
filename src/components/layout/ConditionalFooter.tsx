@@ -24,7 +24,7 @@ export default function ConditionalFooter() {
   }
 
   return (
-    <div className='pb-18'>
+    <div className='pb-18' style={{ minHeight: 'var(--footer-height, auto)' }}>
       <NoticeSummary />
       <Footer />
     </div>
