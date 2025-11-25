@@ -80,7 +80,7 @@ export default function CustomerPage() {
           storeName={order.storeName}
           badge={'노쇼'}
           menuItems={order.menuSummary}
-          totalPrice={formatPrice(order.totalPrice)}
+          totalPrice={formatPrice(order.paidAmount)}
           timeRemaining={timeRemaining}
           status={order.status}
           isPriority={isPriority}
