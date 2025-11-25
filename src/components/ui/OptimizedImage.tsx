@@ -31,6 +31,9 @@ export default function OptimizedImage({
     setIsLoading(false);
   };
 
+  // 🎯 S3 이미지는 최적화 스킵 (Vercel Image Optimization 오류 방지)
+  const isS3Image = src.includes('s3.ap-northeast-2.amazonaws.com');
+
   return (
     <div className={`relative w-full h-full`}>
       {/* LCP가 아닐 때만 로딩 상태 스켈레톤 */}
@@ -47,6 +50,7 @@ export default function OptimizedImage({
         fetchPriority={isLCP ? 'high' : 'auto'}
         onError={handleError}
         onLoadingComplete={handleLoadingComplete}
+        unoptimized={isS3Image} // 🎯 S3 이미지는 최적화 스킵
         className={`${isLoading && !isLCP ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300 ${className}`}
         {...props}
       />

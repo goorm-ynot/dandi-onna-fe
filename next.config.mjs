@@ -37,6 +37,22 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 31536000, // 1년 캐시
+
+    // 🎯 S3 이미지는 최적화 스킵 (Query String 때문에 502 오류 방지)
+    unoptimized: false, // 기본값
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 's3.ap-northeast-2.amazonaws.com',
+        port: '',
+        pathname: '/dandi-pre/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+        port: '',
+      },
+    ],
   },
 
   // ✅ polyfill 최적화 설정
