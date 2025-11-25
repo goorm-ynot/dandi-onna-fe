@@ -57,13 +57,15 @@ export const useReservationApi = () => {
     },
     onSuccess: (data) => {
       console.log('✅ 노쇼 처리 성공:', data);
-      showAlarm('노쇼 메뉴 처리가 완료되었습니다.', 'success', '성공');
+      showAlarm('노쇼 메뉴 처리가 완료되었습니다.', 'success', '성공', true);
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
+      // 네비게이션을 onSuccess에서 처리
+      router.push('/seller/no-show');
     },
     onError: (error: any) => {
       console.error('❌ 노쇼 처리 실패:', error);
       const errorMessage = error.response?.data?.message || error.message || '노쇼 메뉴 처리에 실패했습니다.';
-      showAlarm(errorMessage, 'error', '실패');
+      showAlarm(errorMessage, 'error', '실패', true);
     },
   });
 

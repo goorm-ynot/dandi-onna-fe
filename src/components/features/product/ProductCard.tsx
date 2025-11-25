@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 
 type ProductCardState = 'selected' | 'default' | 'disabled';
 
@@ -29,20 +30,39 @@ export default function ProductCard({
 }: ProductCardProps) {
   const formatPrice = (price: number) => price.toLocaleString('ko-KR');
 
-  const baseClasses = 'bg-white flex flex-col gap-5 p-4 rounded-[10px] w-full';
+  const baseClasses = 'bg-white flex flex-col gap-5 p-4 rounded-[10px] w-full relative';
   const selectedClasses = 'border-2 border-[#a87bfe]';
   const defaultClasses = 'shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)]';
-  const disabledClasses = 'shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)] opacity-60';
+  const disabledClasses = 'shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)]';
 
   const stateClass = state === 'selected' ? selectedClasses : state === 'disabled' ? disabledClasses : defaultClasses;
 
+  // 🎯 disabled 상태에서 onClick 무시
+  const handleClick = () => {
+    if (state !== 'disabled' && onClick) {
+      onClick();
+    }
+  };
+
   return (
-    <div className={`${baseClasses} ${stateClass} cursor-pointer hover:shadow-lg transition-all`} onClick={onClick}>
+    <div
+      className={`${baseClasses} ${stateClass} transition-all ${
+        state !== 'disabled' ? 'cursor-pointer hover:shadow-lg' : 'cursor-not-allowed opacity-60'
+      }`}
+      onClick={handleClick}>
       {/* Header */}
       <div className='flex gap-[10px] items-start w-full'>
         {/* Image */}
         <div className='bg-neutral-100 rounded-[6px] overflow-hidden shrink-0 w-[84px] h-[84px] relative'>
-          <img src={image} alt={title} className='object-cover w-full h-full' />
+          {/* 🎯 S3 이미지는 unoptimized 사용 */}
+          <Image
+            src={image}
+            alt={title}
+            fill
+            className='object-cover'
+            sizes='84px'
+            unoptimized={image.includes('s3.ap-northeast-2.amazonaws.com')}
+          />
         </div>
 
         {/* Text Area */}
@@ -82,9 +102,9 @@ export default function ProductCard({
         </div>
       </div>
 
-      {/* Disabled Overlay */}
+      {/* 🎯 Disabled Foreground - status-disable 토큰 사용 (#e1e1e1) */}
       {state === 'disabled' && (
-        <div className='absolute inset-0 rounded-[10px] shadow-[inset_0px_0px_250px_0px_rgba(0,0,0,0.2)] pointer-events-none' />
+        <div className='absolute inset-0 rounded-[10px] bg-[var(--status-disable,hsla(0,0%,78%,1))] opacity-15 pointer-events-none' />
       )}
     </div>
   );

@@ -141,13 +141,13 @@ export const useSellerOrderManage = () => {
     },
     onSuccess: (data) => {
       // console.log('✅ 방문 완료 처리 성공:', data);
-      showAlarm('방문 완료 처리가 완료되었습니다.', 'success', '성공');
+      showAlarm('방문 완료 처리가 완료되었습니다.', 'success', '성공', true);
       queryClient.invalidateQueries({ queryKey: ['seller-orders'] });
       setSelectItem('');
     },
     onError: (error) => {
       console.error('❌ 방문 완료 처리 실패:', error);
-      showAlarm('방문 완료 처리에 실패했습니다.', 'error', '실패');
+      showAlarm('방문 완료 처리에 실패했습니다.', 'error', '실패', true);
     },
   });
 
