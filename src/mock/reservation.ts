@@ -80,7 +80,7 @@ export const mockReservations = {
         { menuId: '7b4d9c9a-c04e-41d0-ba28-983a8f1fb474', name: '(두)모듬사시미(5인~)', qty: 1, price: 110000 },
       ],
       contact: '010-5555-3333',
-      status: 'NOSHOW',
+      status: 'PENDING',
     },
     {
       reservationNo: 'B00009',
@@ -90,7 +90,7 @@ export const mockReservations = {
         { menuId: '7b4d9c9a-c04e-41d0-ba28-983a8f1fb474', name: '(두)모듬사시미(5인~)', qty: 1, price: 110000 },
       ],
       contact: '010-9999-2222',
-      status: 'VISIT_DONE',
+      status: 'PENDING',
     },
     {
       reservationNo: 'B00008',
@@ -107,7 +107,7 @@ export const mockReservations = {
         { menuId: '6b5036ec-5741-439d-8049-9ed154dcc661', name: '해삼', qty: 2, price: 110000 },
       ],
       contact: '010-4455-6677',
-      status: 'NOSHOW',
+      status: 'PENDING',
     },
     {
       reservationNo: 'B00006',
@@ -125,7 +125,7 @@ export const mockReservations = {
       time: '2025-11-25T14:45:00',
       menus: [{ menuId: '6b5036ec-5741-439d-8049-9ed154dcc661', name: '해삼', qty: 3, price: 110000 }],
       contact: '010-3333-9999',
-      status: 'VISIT_DONE',
+      status: 'PENDING',
     },
     {
       reservationNo: 'B00004',
@@ -145,14 +145,14 @@ export const mockReservations = {
         { menuId: '6b5036ec-5741-439d-8049-9ed154dcc661', name: '해삼', qty: 1, price: 110000 },
       ],
       contact: '010-6789-1122',
-      status: 'NOSHOW',
+      status: 'PENDING',
     },
     {
       reservationNo: 'B00002',
       time: '2025-11-25T11:30:00',
       menus: [{ menuId: '6b5036ec-5741-439d-8049-9ed154dcc661', name: '해삼', qty: 2, price: 110000 }],
       contact: '010-2233-4455',
-      status: 'VISIT_DONE',
+      status: 'PENDING',
     },
     {
       reservationNo: 'B00001',
@@ -175,7 +175,7 @@ export const mockReservations = {
         { menuId: 'a4ff5574-7229-4307-b78d-1cec336e37f6', name: '모듬회 5인', qty: 1, price: 129000 },
       ],
       contact: '010-8765-4321',
-      status: 'VISIT_DONE',
+      status: 'PENDING',
     },
     {
       reservationNo: 'D00007',
@@ -186,7 +186,7 @@ export const mockReservations = {
         { menuId: '7d09d348-67dd-4f26-8b43-2a909dfc34d6', name: '이든스시', qty: 1, price: 11500 },
       ],
       contact: '010-5678-1234',
-      status: 'NOSHOW',
+      status: 'PENDING',
     },
     {
       reservationNo: 'D00006',
@@ -203,7 +203,7 @@ export const mockReservations = {
       time: '2025-11-25T15:45:00',
       menus: [{ menuId: 'a4ff5574-7229-4307-b78d-1cec336e37f6', name: '모듬회 5인', qty: 1, price: 129000 }],
       contact: '010-9999-0000',
-      status: 'VISIT_DONE',
+      status: 'PENDING',
     },
     {
       reservationNo: 'D00004',
@@ -240,7 +240,7 @@ export const mockReservations = {
         { menuId: '7d09d348-67dd-4f26-8b43-2a909dfc34d6', name: '이든스시', qty: 2, price: 11500 },
       ],
       contact: '010-1111-2222',
-      status: 'PENDING',
+      status: 'VISIT_DONE',
     },
   ],
 };

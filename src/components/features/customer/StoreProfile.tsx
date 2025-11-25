@@ -22,7 +22,16 @@ const StoreProfile = React.memo(function StoreProfile({
     <div className='flex gap-[10px] items-start w-full'>
       {/* Image */}
       <div className='bg-neutral-100 rounded-[10px] overflow-hidden shrink-0 w-[86px] h-[86px] relative'>
-        <Image src={image} alt={name} fill className='object-cover' sizes='86px' loading='lazy' />
+        {/* 🎯 S3 이미지는 unoptimized 사용 (Vercel Image Optimization 스킵) */}
+        <Image
+          src={image}
+          alt={name}
+          fill
+          className='object-cover'
+          sizes='86px'
+          loading='lazy'
+          unoptimized={image.includes('s3.ap-northeast-2.amazonaws.com')} // S3 이미지는 최적화 스킵
+        />
       </div>
 
       {/* Text Area */}
