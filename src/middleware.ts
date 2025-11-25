@@ -37,10 +37,7 @@ export async function middleware(request: NextRequest) {
   let allowedRoles: string[] = [];
 
   for (const [routePrefix, roles] of Object.entries(ROUTE_PERMISSIONS)) {
-    if (
-      pathname === routePrefix ||
-      pathname.startsWith(routePrefix + '/')
-    ) {
+    if (pathname === routePrefix || pathname.startsWith(routePrefix + '/')) {
       allowedRoles = roles;
       break;
     }
@@ -51,7 +48,13 @@ export async function middleware(request: NextRequest) {
     if (process.env.NODE_ENV === 'development') {
       console.log('⚠️  No route permission defined for:', pathname);
     }
-    return NextResponse.next();
+    const response = NextResponse.next();
+    if (process.env.NODE_ENV === 'production') {
+      response.headers.set('X-Robots-Tag', 'index, follow');
+    } else {
+      response.headers.set('Cache-Control', 'no-store');
+    }
+    return response;
   }
 
   // 권한 체크
@@ -59,7 +62,9 @@ export async function middleware(request: NextRequest) {
     if (process.env.NODE_ENV === 'development') {
       console.log(`❌ Access denied. Required: ${allowedRoles.join(', ')}, Got: ${userRole}`);
     }
-    return NextResponse.redirect(new URL(UNAUTHORIZED_PATH, request.url));
+    const response = NextResponse.redirect(new URL(UNAUTHORIZED_PATH, request.url));
+    response.headers.set('Cache-Control', 'no-store');
+    return response;
   }
 
   // 정상 접근
@@ -68,7 +73,13 @@ export async function middleware(request: NextRequest) {
   }
 
   const response = NextResponse.next();
-  response.headers.set('Cache-Control', 'no-store');
+  if (process.env.NODE_ENV === 'production') {
+    // Production에서는 SEO 허용
+    response.headers.set('X-Robots-Tag', 'index, follow');
+  } else {
+    // Dev/staging에서는 캐시 방지
+    response.headers.set('Cache-Control', 'no-store');
+  }
   return response;
 }
 

@@ -11,7 +11,7 @@ import { formatTimeWithoutSeconds } from '@/lib/utils';
 import { useGlobalTimer } from '@/hooks/useGlobalTimer';
 import { ChevronDown, MapPin } from 'lucide-react';
 import { useNavigation } from '@/hooks/useNavigation';
-import Image from 'next/image';
+import OptimizedImage from '@/components/ui/OptimizedImage';
 import Alarm from '@/components/features/alarm/Alarm';
 import { useAlarmStore } from '@/store/useAlarmStore';
 
@@ -106,14 +106,14 @@ export default function CustomerPage() {
       </div>
 
       {/* 내가 주문한 가게 섹션 */}
-      <section className='px-4 py-5 flex flex-col gap-12'>
+      <section className='px-4 py-5 flex flex-col gap-12 min-h-[340px]'>
         <div className='flex items-center justify-between'>
           <h2 className='title5 text-[#161616]'>내가 주문한 가게</h2>
           <button className='text-[14px] text-[#656565] underline'>더보기</button>
         </div>
 
         {/* 예약 메뉴 카드 */}
-        <div className='flex gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 px-4 '>
+        <div className='flex gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 px-4 min-h-[298px]'>
           {myOrdersLoading ? (
             // 로딩 스켈레톤
             [...Array(2)].map((_, index) => (
@@ -142,18 +142,17 @@ export default function CustomerPage() {
       </section>
 
       {/* 공지사항 배너 */}
-      <section className='relative bg-neutral-100 w-full flex items-center gap-4'>
-        <div className='relative w-full h-[92px]'>
-          <Image
-            src='/images/adNotices1.png'
-            alt='공지사항 배너'
-            fill
-            quality={100}
-            unoptimized={true}
-            className='object-cover'
-            priority={true}
-          />
-        </div>
+      <section className='relative w-full h-[92px] bg-neutral-100'>
+        <OptimizedImage
+          src='/images/adNotices1.png'
+          alt='공지사항 배너'
+          fill
+          quality={85}
+          className='object-cover'
+          priority={true}
+          isLCP={true} // 🎯 LCP 표시
+          fetchPriority='high' // 🎯 명시적 우선순위
+        />
       </section>
 
       {/* 주문 가능한 가게 섹션 */}
@@ -183,11 +182,11 @@ export default function CustomerPage() {
         {storesError && <div className='text-center py-4 text-red-500'>가게 목록을 불러올 수 없습니다.</div>}
 
         {/* 가게 목록 */}
-        <div className='flex flex-col gap-6'>
+        <div className='flex flex-col gap-6 min-h-[400px]'>
           {storesLoading && displayStores.length === 0 ? (
             // 초기 로딩 스켈레톤
             [...Array(5)].map((_, index) => (
-              <div key={`store-skeleton-${index}`} className='flex gap-2.5'>
+              <div key={`store-skeleton-${index}`} className='flex gap-2.5 h-[108px]'>
                 <StoreProfileSkeleton />
               </div>
             ))

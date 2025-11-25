@@ -1,30 +1,30 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { getToken, onMessage, Unsubscribe } from 'firebase/messaging';
-import { fetchToken, messaging } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { useAlarmStore } from '@/store/useAlarmStore';
+import type { Unsubscribe } from 'firebase/messaging';
 
 async function getNotificationPermissionAndToken() {
   // Step 1: Check if Notifications are supported in the browser.
-  // 1단계: 브라우저가 알림을 지원하는지 확인합니다.
   if (!('Notification' in window)) {
     console.info('This browser does not support desktop notification');
     return null;
   }
 
   // Step 2: Check if permission is already granted.
-  // 2단계: 알림 권한이 이미 허용되었는지 확인합니다.
   if (Notification.permission === 'granted') {
+    // 🎯 Dynamic import - Firebase만 필요할 때 로드
+    const { fetchToken } = await import('@/firebase');
     return await fetchToken();
   }
 
   // Step 3: If permission is not denied, request permission from the user.
-  // 3단계: 권한이 거부되지 않은 경우, 사용자에게 권한을 요청합니다.
   if (Notification.permission !== 'denied') {
     const permission = await Notification.requestPermission();
     if (permission === 'granted') {
+      // 🎯 Dynamic import - Firebase만 필요할 때 로드
+      const { fetchToken } = await import('@/firebase');
       return await fetchToken();
     }
   }
@@ -119,9 +119,13 @@ const useFcmToken = () => {
   useEffect(() => {
     const setupListener = async () => {
       if (!token) return; // Exit if no token is available.
-      // 토큰이 없으면 종료합니다.
 
       console.log(`onMessage registered with token ${token}`);
+
+      // 🎯 Dynamic import Firebase messaging functions only when token is available
+      const { onMessage } = await import('firebase/messaging');
+      const { messaging } = await import('@/firebase');
+
       const m = await messaging();
       if (!m) return;
 
