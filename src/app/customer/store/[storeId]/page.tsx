@@ -189,7 +189,7 @@ export default function StorePage({ params }: Props) {
         name={store.name}
         description={store.description}
         address={store.addressRoad}
-        distance={store.distance} // You can calculate this or get it from the store data
+        distance={store.distance || 300} // You can calculate this or get it from the store data
         imageUrl={store.imageUrl}
         isFavorite={favorite} // You need to track this in your state
         onToggleFavorite={handleToggleFavorite}
@@ -214,7 +214,7 @@ export default function StorePage({ params }: Props) {
                 title={post.menuName}
                 description={post.menuDescription}
                 originalPrice={post.originalPrice}
-                discountRate={post.distance || 300}
+                discountRate={post.discountRate}
                 salePrice={post.discountedPrice}
                 stock={post.qtyRemaining}
                 state={getProductState(post.postId)}
