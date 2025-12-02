@@ -45,8 +45,8 @@ export const mockReservations = {
       reservationNo: 'A00003',
       time: '2025-11-25T12:00:00',
       menus: [
-        { menuId: 'bf09e054-f986-4a20-8993-cecd44008c85', name: '모둠초밥 10pcs', qty: 4, price: 28000 },
-        { menuId: '859726a7-c607-433c-9bdf-6a79c428a3cf', name: '저녁 정식', qty: 1, price: 70000 },
+        { menuId: '8faac229-a50d-4403-8f72-bb09a663d4c6', name: '1인 숙성 모둠회', qty: 2, price: 50000 },
+        { menuId: '859726a7-c607-433c-9bdf-6a79c428a3cf', name: '저녁 정식', qty: 2, price: 70000 },
       ],
       contact: '010-6789-1122',
       status: 'NOSHOW',
@@ -54,7 +54,7 @@ export const mockReservations = {
     {
       reservationNo: 'A00002',
       time: '2025-11-25T11:30:00',
-      menus: [{ menuId: '859726a7-c607-433c-9bdf-6a79c428a3cf', name: '저녁 정식', qty: 1, price: 70000 }],
+      menus: [{ menuId: '859726a7-c607-433c-9bdf-6a79c428a3cf', name: '저녁 정식', qty: 2, price: 70000 },],
       contact: '010-2233-4455',
       status: 'VISIT_DONE',
     },
@@ -62,8 +62,8 @@ export const mockReservations = {
       reservationNo: 'A00001',
       time: '2025-11-25T12:30:00',
       menus: [
-        { menuId: 'bf09e054-f986-4a20-8993-cecd44008c85', name: '모둠초밥 10pcs', qty: 4, price: 28000 },
-        { menuId: '8faac229-a50d-4403-8f72-bb09a663d4c6', name: '1인 숙성 모둠회', qty: 3, price: 50000 },
+        { menuId: 'e02bf703-5d60-497a-9889-b2e0f74de401', name: '1인 숙성 모둠회', qty: 6, price: 50000 },
+        { menuId: 'd5fcc0c1-1acc-475e-871c-9a2993ee9097', name: '모둠초밥 10pcs', qty: 4, price: 28000 },
       ],
       contact: '010-1234-5678',
       status: 'PENDING',
