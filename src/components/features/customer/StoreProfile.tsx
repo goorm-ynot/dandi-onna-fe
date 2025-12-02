@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { getProxiedImageUrl } from '@/lib/imageProxy';
 
 interface StoreProfileProps {
   name: string;
@@ -22,18 +23,16 @@ const StoreProfile = React.memo(function StoreProfile({
     <div className='flex gap-[10px] items-start w-full'>
       {/* Image */}
       <div className='bg-neutral-100 rounded-[10px] overflow-hidden shrink-0 w-[86px] h-[86px] relative'>
-        {/* 🎯 S3 이미지는 unoptimized 사용 (Vercel Image Optimization 스킵) */}
+        {/* 🎯 HTTP 이미지는 프록시로 자동 변환 (Mixed Content 방지) */}
         <Image
-          src={image}
+          src={getProxiedImageUrl(image)}
           alt={name}
           fill
           className='object-cover'
           sizes='86px'
           loading='lazy'
-        //  unoptimized={image.includes('s3.ap-northeast-2.amazonaws.com')} // S3 이미지는 최적화 스킵
           loader={({ src }) => src}
-            unoptimized     // Vercel 최적화 OFF
-
+          unoptimized
         />
       </div>
 
