@@ -58,6 +58,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: '667c21b29534.ngrok-free.app',  // 🎯 반드시 명시해야 함
       },
+      {
+        protocol: 'http',
+        hostname: '222.101.227.127',
+        port: '19090'
+      }
     ],
   },
 
