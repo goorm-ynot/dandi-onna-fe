@@ -60,11 +60,6 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false,
   },
 
-  // ✅ 실험적 기능 (안전한 것들만)
-  experimental: {
-    esmExternals: 'loose',
-  },
-
   // ✅ 캐시 헤더 최적화 (Document latency 개선) - 수정됨
   async headers() {
     return [
@@ -80,7 +75,7 @@ const nextConfig = {
       },
       {
         // 이미지 캐싱 - 수정된 패턴
-        source: '/:path*\\\\.(jpg|jpeg|png|webp|avif|ico|svg)',
+        source: '/:path*\\.(jpg|jpeg|png|webp|avif|ico|svg)',
         headers: [
           {
             key: 'Cache-Control',
@@ -103,6 +98,21 @@ const nextConfig = {
 
   // next.config.mjs의 webpack 설정 강화
   webpack: (config, { dev, isServer }) => {
+    // 🎯 Browserslist 설정 (레거시 polyfill 제거)
+    config.module.rules.forEach((rule) => {
+      if (rule.loader === 'babel-loader' || rule.use?.some?.((u) => u.loader === 'babel-loader')) {
+        // Babel에서 모던 브라우저 대상으로 설정
+        if (rule.options) {
+          rule.options.targets = {
+            chrome: '90',
+            firefox: '88',
+            safari: '14',
+            edge: '90',
+          };
+        }
+      }
+    });
+
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
         ...config.optimization.splitChunks,

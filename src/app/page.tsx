@@ -55,10 +55,10 @@ export default function OnboardingPage() {
   };
 
   const onSellerClick = async () => {
-    // redirect('/test-page');
+    //redirect('/test-page');
     const userLoginData = {
-      loginId: 'CEO22',
-      password: '222222',
+      loginId: 'CEO1',
+      password: '111111',
       role: USER_ROLE[1], // OWNER
     };
 

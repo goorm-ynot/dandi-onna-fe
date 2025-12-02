@@ -30,7 +30,7 @@ export default function CustomerPage() {
     setParams,
   } = useStoresActions();
   const { goToStoreDetail } = useNavigation();
-  const { alarm, hideAlarm } = useAlarmStore();
+  const { alarm, hideAlarm, handleAlarmClick } = useAlarmStore();
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'noshow'>('noshow');
   const [isMounted, setIsMounted] = useState(false);
   const observerTarget = useRef<HTMLDivElement>(null);
@@ -149,7 +149,7 @@ export default function CustomerPage() {
       </section>
 
       {/* 공지사항 배너 */}
-      <section className='relative w-full h-[92px] bg-neutral-100'>
+      <section className='relative w-full h-[92px] bg-neutral-100 my-20'>
         <OptimizedImage
           src='/images/adNotices1.png'
           alt='공지사항 배너'
@@ -232,6 +232,8 @@ export default function CustomerPage() {
             onClose={hideAlarm}
             autoClose={alarm.autoClose ?? true}
             duration={30000}
+            deepLink={alarm.deepLink}
+            onAlarmClick={handleAlarmClick}
           />
         </div>
       )}

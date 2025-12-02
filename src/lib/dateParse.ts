@@ -6,10 +6,10 @@ export const getNowDateString = (date?: Date) => {
   return `${newDate.getFullYear()}. ${newDate.getMonth() + 1}. ${newDate.getDate()} (${koDayString[newDate.getDay()]})`;
 };
 
-// 날짜 세팅 (ex: 2025-11-11)
+// 날짜 세팅 (ex: 2025-01-01)
 export const getNowDateHyphenString = () => {
   const newDate = new Date();
-  return `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`;
+  return `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, '0')}-${String(newDate.getDate()).padStart(2, '0')}`;
 };
 
 // 10분 단위 올림 처리 함수

@@ -13,9 +13,20 @@ interface AlarmProps {
   onClose?: () => void;
   autoClose?: boolean;
   duration?: number; // ms
+  deepLink?: string; // 🎯 클릭 시 이동할 URL
+  onAlarmClick?: () => void; // 🎯 Alarm 클릭 핸들러
 }
 
-const Alarm = ({ type = 'info', title, message, onClose, autoClose = false, duration = 30000 }: AlarmProps) => {
+const Alarm = ({
+  type = 'info',
+  title,
+  message,
+  onClose,
+  autoClose = false,
+  duration = 30000,
+  deepLink,
+  onAlarmClick,
+}: AlarmProps) => {
   // 자동 닫기
   React.useEffect(() => {
     if (autoClose && onClose) {
@@ -23,6 +34,14 @@ const Alarm = ({ type = 'info', title, message, onClose, autoClose = false, dura
       return () => clearTimeout(timer);
     }
   }, [autoClose, duration, onClose]);
+
+  // 🎯 Alarm 클릭 핸들러
+  const handleAlarmClick = () => {
+    if (deepLink) {
+      // deepLink가 있으면 onAlarmClick 콜백 호출
+      onAlarmClick?.();
+    }
+  };
 
   const getTypeStyles = () => {
     switch (type) {
@@ -38,7 +57,11 @@ const Alarm = ({ type = 'info', title, message, onClose, autoClose = false, dura
   };
 
   return (
-    <Alert className={`relative ${getTypeStyles()} shadow-lg min-w-[300px] max-w-[400px] p-20`}>
+    <Alert
+      className={`relative ${getTypeStyles()} shadow-lg min-w-[300px] max-w-[400px] p-20 ${
+        deepLink ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''
+      }`}
+      onClick={handleAlarmClick}>
       <AlertDescription>
         {title && (
           <div className='flex items-center justify-between mb-1'>
