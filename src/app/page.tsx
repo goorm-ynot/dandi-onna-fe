@@ -57,7 +57,7 @@ export default function OnboardingPage() {
   const onSellerClick = async () => {
     //redirect('/test-page');
     const userLoginData = {
-      loginId: 'CEO01',
+      loginId: 'CEO1',
       password: '111111',
       role: USER_ROLE[1], // OWNER
     };
