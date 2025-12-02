@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { getProxiedImageUrl } from '@/lib/imageProxy';
 
 type ProductCardState = 'selected' | 'default' | 'disabled';
 
@@ -54,14 +55,15 @@ export default function ProductCard({
       <div className='flex gap-[10px] items-start w-full'>
         {/* Image */}
         <div className='bg-neutral-100 rounded-[6px] overflow-hidden shrink-0 w-[84px] h-[84px] relative'>
-          {/* 🎯 S3 이미지는 unoptimized 사용 */}
+          {/* 🎯 HTTP 이미지는 프록시로 자동 변환 (Mixed Content 방지) */}
           <Image
-            src={image}
+            src={getProxiedImageUrl(image)}
             alt={title}
             fill
             className='object-cover'
             sizes='84px'
-            unoptimized={image.includes('s3.ap-northeast-2.amazonaws.com')}
+            loader={({ src }) => src}
+            unoptimized
           />
         </div>
 

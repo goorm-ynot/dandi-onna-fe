@@ -27,7 +27,7 @@ const nextConfig = {
 
   // ✅ 이미지 최적화 강화
   images: {
-    domains: ['placehold.co', 'dandi-pre.s3.ap-northeast-2.amazonaws.com'],
+    // domains: ['placehold.co', 'dandi-pre.s3.ap-northeast-2.amazonaws.com', '667c21b29534.ngrok-free.app'],
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox",
@@ -43,14 +43,24 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'dandi-pre.s3.ap-northeast-2.amazonaws.com',
+      },
+      {
+        protocol: 'https',
         hostname: 's3.ap-northeast-2.amazonaws.com',
-        port: '',
         pathname: '/dandi-pre/**',
       },
       {
         protocol: 'https',
         hostname: 'placehold.co',
-        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: '667c21b29534.ngrok-free.app',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.ngrok-free.app', // 모든 ngrok 도메인 지원
       },
     ],
   },

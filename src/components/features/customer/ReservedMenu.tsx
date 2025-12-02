@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Badge } from '../ui/Badge';
-import { stat } from 'fs';
+import { getProxiedImageUrl } from '@/lib/imageProxy';
 
 interface MenuItem {
   name: string;
@@ -41,9 +41,9 @@ const ReservedMenu = React.memo(function ReservedMenu({
     <div className='bg-white rounded-[10px] shadow-[0px_2px_6px_0px_rgba(0,0,0,0.1)] flex flex-col gap-3 w-full'>
       {/* Image with Timer */}
       <div className='relative bg-neutral-100 rounded-t-[10px] overflow-hidden h-[160px] w-full'>
-        {/* 🎯 S3 이미지는 unoptimized 사용 (Vercel Image Optimization 스킵) */}
+        {/* 🎯 HTTP 이미지는 프록시로 자동 변환 (Mixed Content 방지) */}
         <Image
-          src={image}
+          src={getProxiedImageUrl(image)}
           alt={storeName}
           fill
           className='object-cover'
@@ -51,7 +51,8 @@ const ReservedMenu = React.memo(function ReservedMenu({
           priority={isPriority}
           loading={isPriority ? undefined : 'lazy'}
           fetchPriority={isPriority ? 'high' : 'auto'}
-          unoptimized={image.includes('s3.ap-northeast-2.amazonaws.com')} // S3 이미지는 최적화 스킵
+          loader={({ src }) => src}
+          unoptimized
         />
 
         {/* Timer Overlay */}

@@ -1,5 +1,6 @@
 import React from 'react';
 import Image, { ImageProps } from 'next/image';
+import { getProxiedImageUrl } from '@/lib/imageProxy';
 
 interface OptimizedImageProps extends Omit<ImageProps, 'src'> {
   src: string;
@@ -20,8 +21,15 @@ export default function OptimizedImage({
   isLCP = false, // LCP 여부
   ...props
 }: OptimizedImageProps) {
-  const [imageSrc, setImageSrc] = React.useState(src);
+  // 🎯 HTTP URL을 HTTPS 프록시로 자동 변환 (Mixed Content 방지)
+  const proxiedSrc = getProxiedImageUrl(src);
+  const [imageSrc, setImageSrc] = React.useState(proxiedSrc);
   const [isLoading, setIsLoading] = React.useState(true);
+
+  // src가 변경되면 imageSrc도 업데이트
+  React.useEffect(() => {
+    setImageSrc(getProxiedImageUrl(src));
+  }, [src]);
 
   const handleError = () => {
     setImageSrc(fallback);
@@ -32,7 +40,7 @@ export default function OptimizedImage({
   };
 
   // 🎯 S3 이미지는 최적화 스킵 (Vercel Image Optimization 오류 방지)
-  const isS3Image = src.includes('s3.ap-northeast-2.amazonaws.com');
+  const isS3Image = imageSrc.includes('s3.ap-northeast-2.amazonaws.com');
 
   return (
     <div className={`relative w-full h-full`}>

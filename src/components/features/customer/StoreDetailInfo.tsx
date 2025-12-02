@@ -1,7 +1,9 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { getProxiedImageUrl } from '@/lib/imageProxy';
 
 interface StoreDetailInfoProps {
   name: string;
@@ -28,7 +30,15 @@ export default function StoreDetailInfo({
     <div className='flex flex-col gap-5 w-full'>
       {/* Store Image */}
       <div className='w-full h-[240px] bg-neutral-100 overflow-hidden relative'>
-        <img src={imageUrl} alt={name} className='object-cover w-full h-full' />
+        <Image
+          src={getProxiedImageUrl(imageUrl)}
+          alt={name}
+          fill
+          className='object-cover'
+          sizes='100vw'
+          loader={({ src }) => src}
+          unoptimized
+        />
       </div>
 
       {/* Store Information */}
