@@ -56,13 +56,12 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '667c21b29534.ngrok-free.app',  // 🎯 반드시 명시해야 함
+        hostname: '667c21b29534.ngrok-free.app',
       },
       {
-        protocol: 'http',
-        hostname: '222.101.227.127',
-        port: '19090'
-      }
+        protocol: 'https',
+        hostname: '*.ngrok-free.app', // 모든 ngrok 도메인 지원
+      },
     ],
   },
 
