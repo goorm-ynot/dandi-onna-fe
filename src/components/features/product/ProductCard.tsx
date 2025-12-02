@@ -61,7 +61,10 @@ export default function ProductCard({
             fill
             className='object-cover'
             sizes='84px'
-            unoptimized={image.includes('s3.ap-northeast-2.amazonaws.com')}
+            // unoptimized={image.includes('s3.ap-northeast-2.amazonaws.com')}
+              loader={({ src }) => src}
+  unoptimized     // Vercel 최적화 OFF
+
           />
         </div>
 

@@ -30,7 +30,10 @@ const StoreProfile = React.memo(function StoreProfile({
           className='object-cover'
           sizes='86px'
           loading='lazy'
-          unoptimized={image.includes('s3.ap-northeast-2.amazonaws.com')} // S3 이미지는 최적화 스킵
+        //  unoptimized={image.includes('s3.ap-northeast-2.amazonaws.com')} // S3 이미지는 최적화 스킵
+          loader={({ src }) => src}
+            unoptimized     // Vercel 최적화 OFF
+
         />
       </div>
 

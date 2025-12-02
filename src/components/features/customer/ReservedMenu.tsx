@@ -51,7 +51,10 @@ const ReservedMenu = React.memo(function ReservedMenu({
           priority={isPriority}
           loading={isPriority ? undefined : 'lazy'}
           fetchPriority={isPriority ? 'high' : 'auto'}
-          unoptimized={image.includes('s3.ap-northeast-2.amazonaws.com')} // S3 이미지는 최적화 스킵
+          // unoptimized={image.includes('s3.ap-northeast-2.amazonaws.com')} // S3 이미지는 최적화 스킵
+          loader={({ src }) => src}
+            unoptimized     // Vercel 최적화 OFF
+
         />
 
         {/* Timer Overlay */}
