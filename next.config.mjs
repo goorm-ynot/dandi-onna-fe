@@ -25,17 +25,6 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
 
-  // 🎯 SWC 미니파이 설정 (모던 브라우저 대상)
-  swcMinify: true,
-
-  // 🎯 Polyfill 최적화 (레거시 polyfill 제거)
-  targets: {
-    chrome: '90',
-    firefox: '88',
-    safari: '14',
-    edge: '90',
-  },
-
   // ✅ 이미지 최적화 강화
   images: {
     domains: ['placehold.co', 'dandi-pre.s3.ap-northeast-2.amazonaws.com'],
@@ -48,9 +37,6 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 31536000, // 1년 캐시
-
-    // 🎯 Vercel 이미지 최적화 캐시 (모든 이미지)
-    maximumCacheTTL: 31536000, // 1년
 
     // 🎯 S3 이미지는 최적화 스킵 (Query String 때문에 502 오류 방지)
     unoptimized: false, // 기본값
@@ -72,11 +58,6 @@ const nextConfig = {
   // ✅ polyfill 최적화 설정
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false,
-  },
-
-  // ✅ 실험적 기능 (안전한 것들만)
-  experimental: {
-    esmExternals: 'loose',
   },
 
   // ✅ 캐시 헤더 최적화 (Document latency 개선) - 수정됨
@@ -105,16 +86,6 @@ const nextConfig = {
       {
         // 폰트 캐싱 - 수정된 패턴
         source: '/:path*\\.(woff|woff2|eot|ttf|otf)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        // 🎯 S3 이미지 캐싱 (Vercel에서 프록시될 때)
-        source: 'https://dandi-pre.s3.ap-northeast-2.amazonaws.com/:path*',
         headers: [
           {
             key: 'Cache-Control',
