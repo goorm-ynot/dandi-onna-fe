@@ -16,6 +16,7 @@ interface ReservedMenuProps {
   badge?: string;
   menuItems: string;
   totalPrice: string;
+  paidAmount: string;
   status: string;
   isPriority?: boolean;
   timeRemaining: {
@@ -25,11 +26,12 @@ interface ReservedMenuProps {
   };
 }
 
-const ReservedMenu = React.memo(function ReservedMenu({
+const ReservedMenu = function ReservedMenu({
   image,
   storeName,
   badge,
   menuItems,
+  paidAmount,
   totalPrice,
   timeRemaining,
   status,
@@ -109,12 +111,15 @@ const ReservedMenu = React.memo(function ReservedMenu({
 
         {/* Price Section */}
         <div className='border-t border-[#dddddd] py-[14px] flex items-center justify-between w-full'>
-          <span className='title1 text-[#4c4c4c]'>총 금액</span>
-          <span className='body3 text-[#161616]'>{totalPrice}</span>
+          <span className='title1 text-foreground-normal'>결제 금액</span>
+          <div className='flex flex-row gap-1 items-center'>
+          <span className='body3 line-through text-foreground-finished'>{totalPrice}원</span>
+          <span className='body7 text-foreground-normal'>{paidAmount}원</span>
+          </div>
         </div>
       </div>
     </div>
   );
-});
+};
 
 export default ReservedMenu;
