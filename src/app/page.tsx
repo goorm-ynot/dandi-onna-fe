@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import React, { useEffect, useState } from 'react';
 import { useUserHook } from '@/hooks/useUser';
 import { useNavigation } from '@/hooks/useNavigation';
+import SafeArea from '@/components/layout/SafeArea';
 
 const USER_ROLE = ['CONSUMER', 'OWNER', 'ADMIN'];
 export default function OnboardingPage() {
@@ -86,7 +87,7 @@ export default function OnboardingPage() {
   const images = ['/images/onboarding1.png'];
 
   return (
-    <div className='w-screen h-screen flex flex-col max-w-full justify-center items-center'>
+    <SafeArea className='w-screen h-screen flex flex-col max-w-full justify-center items-center'>
       <div className='flex-1 flex flex-col justify-center items-center gap-8 p-3'>
         <div className='w-96 inline-flex flex-col justify-center items-center gap-3'>
           <h1 className='logo text-[40px] font-black '>단디온나</h1>
@@ -123,6 +124,6 @@ export default function OnboardingPage() {
           </Button>
         </div>
       </div>
-    </div>
+    </SafeArea>
   );
 }

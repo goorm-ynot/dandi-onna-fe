@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Safe Area 설정 */
+@supports (padding: max(0px)) {
+  body {
+    /* iOS 11+ 에서 safe-area-inset 활성화 */
+    padding: 0;
+  }
+}
+
 @layer base {
   :root {
     --background: 0, 0%, 98%, 1;
