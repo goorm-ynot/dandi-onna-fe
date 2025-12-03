@@ -80,12 +80,13 @@ export const metadata: Metadata = {
   category: 'technology',
 };
 
-// 🎯 뷰포트 설정 (성능 + 사용성)
+// 🎯 뷰포트 설정 (성능 + 사용성 + Safe Area)
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  minimumScale: 1, // optional
+  minimumScale: 1,
   maximumScale: 5,
+  viewportFit: 'cover', // 🎯 Safe Area 지원 (iOS notch 대응)
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
     { media: '(prefers-color-scheme: dark)', color: '#000000' },

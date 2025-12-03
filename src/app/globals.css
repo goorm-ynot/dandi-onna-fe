@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Safe Area 설정 */
+@supports (padding: max(0px)) {
+  body {
+    /* iOS 11+ 에서 safe-area-inset 활성화 */
+    padding: 0;
+  }
+}
+
 @layer base {
   :root {
     --background: 0, 0%, 98%, 1;
@@ -137,7 +145,7 @@
 @layer components {
   /* 로고 스타일 */
   .logo {
-    @apply text-neutral-900 font-[PartialSans] text-primary;
+    @apply text-neutral-900 font-partial text-primary;
   }
   /* 글자 스타일 */
   /* title */
@@ -186,6 +194,9 @@
   }
   .body8 {
     @apply text-[18px] font-bold leading-[20px];
+  }
+  .body9{
+    @apply text-[18px] font-semibold leading-[18px];
   }
   /* caption */
   .caption1 {

@@ -120,7 +120,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, autoPlay = true, inte
 
   if (!images || images.length === 0) {
     return (
-      <div className={`w-[304px] h-[293px] bg-gray-200 rounded-lg flex items-center justify-center ${className}`}>
+      <div className={`w-[206px] h-[178px] bg-gray-200 rounded-lg flex items-center justify-center ${className}`}>
         <span className='text-gray-500'>No images</span>
       </div>
     );
@@ -128,12 +128,12 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, autoPlay = true, inte
 
   return (
     <div
-      className={`relative w-[304px] select-none ${className}`}
+      className={`relative w-[206px] select-none ${className}`}
       onMouseEnter={pauseAutoPlay}
       onMouseLeave={resumeAutoPlay}>
       {/* 이미지 컨테이너 */}
       <div
-        className='w-[304px] h-[293px] overflow-hidden rounded-lg cursor-grab active:cursor-grabbing'
+        className='w-[206px] h-[178px] overflow-hidden rounded-lg cursor-grab active:cursor-grabbing flex items-center justify-center'
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -142,20 +142,20 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, autoPlay = true, inte
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}>
         <div
-          className='flex h-full transition-transform duration-300 ease-in-out'
+          className='flex h-full transition-transform duration-300 ease-in-out items-center'
           style={{
-            transform: `translateX(-${currentIndex * 304}px)`,
-            width: `${images.length * 304}px`,
+            transform: `translateX(-${currentIndex * 206}px)`,
+            width: `${images.length * 206}px`,
           }}>
           {images.map((image, index) => (
-            <div key={index} className='w-[304px] h-[293px] flex-shrink-0 relative'>
+            <div key={index} className='w-[206px] h-[178px] flex-shrink-0 relative flex items-center justify-center'>
               <Image
                 src={image}
                 alt={`Slide ${index + 1}`}
                 fill
-                sizes='100vw'
+                sizes='206px'
                 quality={100}
-                unoptimized={true} // Next.js 최적화 비활성화
+                unoptimized={true}
                 className='object-contain'
                 draggable={false}
               />
@@ -164,9 +164,16 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, autoPlay = true, inte
         </div>
       </div>
 
+      {/* 설명 텍스트 */}
+      <div className='flex flex-col justify-center items-center mt-4 text-[#4c4c4c] gap-0'>
+        <p className='text-center body1 '>
+          사장님의 아까운 빈자리가<br/>당신에겐 특별한 행운이 됩니다.
+          </p>
+      </div>
+
       {/* 인디케이터 점들 */}
       {images.length > 1 && (
-        <div className='flex justify-center gap-2 mt-4'>
+        <div className='flex justify-center gap-2 pt-[40px]'>
           {images.map((_, index) => (
             <Button
               key={index}

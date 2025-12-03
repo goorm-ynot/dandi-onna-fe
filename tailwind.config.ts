@@ -20,7 +20,8 @@ const config = {
     },
     extend: {
       fontFamily: {
-        partial: ['PartialSans', 'sans-serif'],
+        pretendard: ['var(--font-pretendard)', 'system-ui', 'sans-serif'],
+        partial: ['PartialSans', 'Partial Sans KR', 'sans-serif'],
       },
       colors: {
         border: {
@@ -95,7 +96,9 @@ const config = {
           'mauve-light': '#f9f5ff',
         },
         primitives: {
+          brand: '#B477FE',
           brand3: '#8749fe',
+          brandStrong: '#5929BA',
         },
         state: {
           disabled: '#e1e1e1',
