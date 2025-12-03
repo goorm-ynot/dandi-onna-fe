@@ -7,11 +7,11 @@ export default function CustomerHeader() {
   const notificationCount = 3;
 
   return (
-    <header className='sticky top-0 z-50 bg-background-normal w-full py-24'>
+    <header className='sticky top-0 z-50 bg-background-normal w-full py-22'>
       <div className='w-full px-4 h-16 flex justify-between'>
         {/* 로고 (타이포) */}
         <div className='flex items-center'>
-          <h1 className='logo title5'>단디온나</h1>
+          <h1 className='logo logo-header '>단디온나</h1>
         </div>
 
         {/* 알람 + 배찌 */}

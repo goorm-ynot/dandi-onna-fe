@@ -77,11 +77,11 @@ export default function ButtomNav() {
             <Button
               key={item.id}
               variant='ghost'
-              className={`flex flex-col gap-2 items-center p-0 h-auto rounded-none hover:bg-transparent ${
+              className={`flex flex-col gap-2 items-center p-0 h-auto rounded-none hover:bg-transparent [&_svg]:!w-[24px] [&_svg]:!h-[24px] ${
                 isActive ? 'text-foreground-primary' : 'text-foreground-normal'
               }`}
               onClick={() => handleNavClick(item.path)}>
-              <Icon className='w-6 h-6' />
+              <Icon strokeWidth={1.5} />
               <span className='caption3 text-[10px] leading-[14px] whitespace-nowrap'>{item.label}</span>
             </Button>
           );

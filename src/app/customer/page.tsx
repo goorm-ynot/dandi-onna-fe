@@ -70,41 +70,30 @@ export default function CustomerPage() {
     return price.toLocaleString('ko-KR');
   };
 
-  // 🔧 2. ReservedMenuWrapper 컴포넌트 displayName 추가
-  const ReservedMenuWrapper = React.memo(
-    ({ order, isPriority }: { order: (typeof orderList)[0]; isPriority?: boolean }) => {
-      const timeRemaining = useGlobalTimer(order.visitTime);
-      return (
-        <ReservedMenu
-          image={order.storeImageKey}
-          storeName={order.storeName}
-          badge={'노쇼'}
-          menuItems={order.menuSummary}
-          totalPrice={formatPrice(order.paidAmount)}
-          timeRemaining={timeRemaining}
-          status={order.status}
-          isPriority={isPriority}
-        />
-      );
-    },
-    (prevProps, nextProps) => {
-      return (
-        prevProps.order.orderId === nextProps.order.orderId &&
-        prevProps.order.status === nextProps.order.status &&
-        prevProps.isPriority === nextProps.isPriority
-      );
-    }
-  );
-
-  // displayName 추가
-  ReservedMenuWrapper.displayName = 'ReservedMenuWrapper';
+  // 🔧 2. ReservedMenuWrapper 컴포넌트 - React.memo 제거하여 타이머 실시간 업데이트 허용
+  const ReservedMenuWrapper = ({ order, isPriority }: { order: (typeof orderList)[0]; isPriority?: boolean }) => {
+    const timeRemaining = useGlobalTimer(order.visitTime);
+    return (
+      <ReservedMenu
+        image={order.storeImageKey}
+        storeName={order.storeName}
+        badge={'노쇼'}
+        menuItems={order.menuSummary}
+        totalPrice={formatPrice(order.totalPrice)}
+        paidAmount={formatPrice(order.paidAmount)}
+        timeRemaining={timeRemaining}
+        status={order.status}
+        isPriority={isPriority}
+      />
+    );
+  };
 
   return (
     <div className='w-full flex flex-col pb-20'>
       {/* 위치 정보 섹션 */}
       <div className='bg-neutral-100 w-full px-4 py-3.5 flex items-center justify-between gap-2'>
         <div className='flex items-center gap-1.5 flex-1'>
-          <span className='text-[16px] text-[#161616] flex items-center gap-1'>
+          <span className='text-[14px] text-[#161616] flex items-center gap-1'>
             <MapPin size={16} /> 분당구 내정로165번길 35 <ChevronDown size={16} />
           </span>
         </div>
@@ -114,12 +103,14 @@ export default function CustomerPage() {
       <section className='px-4 py-5 flex flex-col gap-12 min-h-[340px]'>
         <div className='flex items-center justify-between'>
           <h2 className='title5 text-[#161616]'>내가 주문한 가게</h2>
-          <button className='text-[14px] text-[#656565] underline'>더보기</button>
+          <button className='flex flex-row items-center text-[14px] text-foreground-primary'>
+            더보기	&gt;
+            </button>
         </div>
 
         {/* 예약 메뉴 카드 */}
         <div
-          className='flex gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 min-h-[298px]'
+          className='flex gap-[10px] overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 min-h-[298px]'
           suppressHydrationWarning>
           {!isMounted ? null : myOrdersLoading ? (
             // 로딩 스켈레톤
@@ -163,13 +154,14 @@ export default function CustomerPage() {
       </section>
 
       {/* 주문 가능한 가게 섹션 */}
-      <section className='px-4 py-5 flex flex-col gap-5'>
+      <section className='px-4 py-5 flex flex-col gap-[10px]'>
         <div className='flex items-center justify-between'>
           <h2 className='title5 text-[#121212]'>주문 가능한 가게</h2>
-          <button className='text-[14px] text-[#656565] flex items-center gap-1'>
-            가까운 순<span>›</span>
+          <button className='text-[14px] text-foreground-primary flex items-center gap-1'>
+            가까운 순 <ChevronDown size={16} />
           </button>
         </div>
+          <h2 className='body1 text-foreground-finished'>갑자기 생긴 빈자리, 지금 할인 중!</h2>
 
         {/* 필터 칩 */}
         <div className='flex gap-2.5'>
@@ -189,7 +181,7 @@ export default function CustomerPage() {
         {storesError && <div className='text-center py-4 text-red-500'>가게 목록을 불러올 수 없습니다.</div>}
 
         {/* 가게 목록 */}
-        <div className='flex flex-col gap-6 min-h-[400px]'>
+        <div className='flex flex-col gap-[20px] min-h-[400px]'>
           {storesLoading && displayStores.length === 0 ? (
             // 초기 로딩 스켈레톤
             [...Array(5)].map((_, index) => (
