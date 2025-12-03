@@ -27,6 +27,7 @@ const buttonVariants = cva(
         xs: 'h-[38px] w-[38px] p-[7px] rounded-[6px]',
         custom: 'h-[38px]',
         table: 'max-h-[26px]',
+        onboarding: 'h-[44px] px-3 py-2.5',
       },
     },
     defaultVariants: {

@@ -164,9 +164,16 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, autoPlay = true, inte
         </div>
       </div>
 
+      {/* 설명 텍스트 */}
+      <div className='flex flex-col justify-center items-center mt-4 text-[#4c4c4c] gap-0'>
+        <p className='text-center body1 '>
+          사장님의 아까운 빈자리가<br/>당신에겐 특별한 행운이 됩니다.
+          </p>
+      </div>
+
       {/* 인디케이터 점들 */}
       {images.length > 1 && (
-        <div className='flex justify-center gap-2 mt-4'>
+        <div className='flex justify-center gap-2 pt-[40px]'>
           {images.map((_, index) => (
             <Button
               key={index}

@@ -145,7 +145,7 @@
 @layer components {
   /* 로고 스타일 */
   .logo {
-    @apply text-neutral-900 font-[PartialSans] text-primary;
+    @apply text-neutral-900 font-partial text-primary;
   }
   /* 글자 스타일 */
   /* title */
@@ -194,6 +194,9 @@
   }
   .body8 {
     @apply text-[18px] font-bold leading-[20px];
+  }
+  .body9{
+    @apply text-[18px] font-semibold leading-[18px];
   }
   /* caption */
   .caption1 {

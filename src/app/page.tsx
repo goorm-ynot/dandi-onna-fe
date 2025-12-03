@@ -88,36 +88,37 @@ export default function OnboardingPage() {
 
   return (
     <SafeArea className='w-screen h-screen flex flex-col max-w-full justify-center items-center'>
-      <div className='flex-1 flex flex-col justify-center items-center gap-8 p-3'>
-        <div className='w-96 inline-flex flex-col justify-center items-center gap-3'>
-          <h1 className='logo text-[40px] font-black '>단디온나</h1>
-          <p className='text-black text-lg font-normal mb-4'>모두가 신뢰할 수 있는 경험</p>
+      <div className='flex-1 flex flex-col justify-center items-center gap-[40px] p-3'>
+        <div className='w-96 inline-flex flex-col justify-center items-center gap-[7px]'>
+          <h1 className='logo text-[40px] font-bold text-primitives-brand3 '>단디온나</h1>
+          <p className='body6'>모두가 신뢰할 수 있는 경험</p>
         </div>
 
         <ImageSlider images={images} interval={3000} />
 
-        <div className='flex flex-col justify-start items-center gap-3 w-full mt-5'>
+        <div className='flex flex-col justify-start items-center gap-[10px] w-full'>
           <Button
             onClick={onKakaoClick}
-            size='default'
-            className='w-full bg-yellow-400 hover:bg-yellow-500 text-black'
+            size='onboarding'
+            className='w-full bg-[#FACC15] hover:bg-yellow-500 body9 text-[#262626]'
             disabled={permission === 'granted' ? false : true}>
+            <img src='/images/IconL-kakao.svg' alt='kakao logo' className='w-5 h-5 mr-2 inline-block align-middle' />
             카카오톡으로 로그인
           </Button>
 
           <Button
             onClick={onSellerClick}
             variant='outline'
-            size='default'
+            size='onboarding'
             disabled={permission === 'granted' ? false : true}
-            className='w-full bg-white text-black hover:bg-gray-100 border border-gray-300'>
+            className='w-full bg-white body4 text-black hover:bg-gray-100 border border-[#C6C6C6]'>
             사장님으로 로그인
           </Button>
 
           <Button
             variant='link'
             size='sm'
-            className='text-xs text-black hover:underline'
+            className='body1 hover:underline text-[#666666]'
             disabled={permission === 'granted' ? false : true}
             onClick={() => alert('현재 비회원은 서비스하고 있지 않습니다.')}>
             비회원으로 둘러보기
