@@ -34,7 +34,7 @@ export default function ProductCard({
   const baseClasses = 'bg-white flex flex-col gap-5 p-4 rounded-[10px] w-full relative';
   const selectedClasses = 'border-2 border-border';
   const defaultClasses = 'shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)]';
-  const disabledClasses = 'shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)]';
+  const disabledClasses = 'bg-foreground-disable shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)]';
 
   const stateClass = state === 'selected' ? selectedClasses : state === 'disabled' ? disabledClasses : defaultClasses;
 
@@ -48,7 +48,7 @@ export default function ProductCard({
   return (
     <div
       className={`${baseClasses} ${stateClass} transition-all ${
-        state !== 'disabled' ? 'cursor-pointer hover:shadow-lg' : 'cursor-not-allowed opacity-60'
+        state !== 'disabled' ? 'cursor-pointer hover:shadow-lg' : 'cursor-not-allowed'
       }`}
       onClick={handleClick}>
       {/* Header */}
