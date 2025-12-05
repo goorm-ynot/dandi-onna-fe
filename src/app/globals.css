@@ -176,6 +176,9 @@
    .title8 {
     @apply text-[24px] font-bold leading-[28px];
   }
+  .title9 {
+    @apply text-[18px] font-bold leading-[20px];
+  }
   /* Body */
   .body1 {
     @apply text-[14px] font-normal leading-[16px];
@@ -204,6 +207,9 @@
   .body9{
     @apply text-[18px] font-semibold leading-[18px];
   }
+  .body10 {
+    @apply text-[14px] font-medium leading-[16px];
+  }
   /* caption */
   .caption1 {
     @apply text-[10px] font-normal leading-[12x];
@@ -231,10 +237,22 @@
   }
   /* 그림자 스타일 */
   .shadow-1 {
-    @apply shadow-[0px_10px_10px_0px_rgba(0,0,0,0.6)];
+    @apply shadow-[0px_10px_10px_0px_rgba(0,0,0,0.06)];
   }
   .shadow-2 {
     @apply shadow-[0px_4px_32px_0px_rgba(0,0,0,0.15)];
+  }
+  .shadow-3 {
+    @apply shadow-[0px_-6px_10px_0px_rgba(0,0,0,0.06)];
+  }
+  .shadow-4 {
+    @apply shadow-[0px_2px_6px_0px_rgba(0,0,0,0.10)];
+  }
+  .shadow-5 {
+    @apply shadow-[0px_0px_4px_0px_rgba(0,0,0,0.10)];
+  }
+  .shadow-6 { 
+    @apply shadow-[0px_0px_10px_0px_rgba(0,0,0,0.10)];
   }
   /* icon 스타일 */
   .icon-xs {

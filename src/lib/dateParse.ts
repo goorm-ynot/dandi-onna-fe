@@ -34,6 +34,13 @@ export const formatTimeString = (date: Date, hours24 = false): string => {
   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: !hours24 });
 };
 
+// 시간 문자열 포맷팅 (HH시 MM분 형식)
+export const formatTimeWithKoreanUnit = (date: Date): string => {
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${hours}시 ${minutes}분`;
+};
+
 // 일시 문자열 포맷팅
 export const formatDateTimeString = (date: Date): string => {
   return getNowDateString(date) + ' ' + formatTimeString(date, true);
