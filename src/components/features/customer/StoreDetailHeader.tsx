@@ -21,9 +21,9 @@ export default function StoreDetailHeader({ title = '주문하기', onBack }: St
   };
 
   return (
-    <div className='sticky top-0 z-50 bg-white border-b border-[#e1e1e1] h-[60px] flex items-center justify-between px-[10px] pr-4'>
+    <div className='sticky top-0 z-50 bg-white h-[60px] flex items-center justify-between px-[10px] pr-4'>
       {/* Back Button */}
-      <Button variant='ghost' size='xs' onClick={handleBack} className='p-0 hover:bg-transparent'>
+      <Button variant='ghost' size='xs' onClick={handleBack} className='p-0 hover:bg-transparent w-11 h-11 flex items-center justify-center'>
         <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
           <path d='M15 18L9 12L15 6' stroke='#262626' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
         </svg>

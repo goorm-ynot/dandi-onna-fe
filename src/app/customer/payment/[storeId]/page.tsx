@@ -11,9 +11,10 @@ import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/store/useCartStore';
 import KakaoPayIcon from '@/components/icons/KakaoPayIcon';
 import NaverPayIcon from '@/components/icons/NaverPayIcon';
-import { formatTimeString } from '@/lib/dateParse';
+import { formatTimeWithKoreanUnit } from '@/lib/dateParse';
 import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDialog';
 import { useNavigation } from '@/hooks/useNavigation';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface Props {
   params: Promise<{ storeId: string; storeInfo?: StoreSummary }>;
@@ -24,6 +25,7 @@ export default function PaymentPage({ params }: Props) {
   const { updateCartQuantity, removeMenuFromCart, selectedMenus } = useCartStore();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<'CARD' | 'KAKAO_PAY' | 'NAVER_PAY' | null>(null);
   const [isPaymentConfirmDialogOpen, setIsPaymentConfirmDialogOpen] = useState(false);
+  const [isPolicyAgreed, setIsPolicyAgreed] = useState(false);
   const { goToPaymentComplete } = useNavigation();
 
   const { paymentSnapshot, isProcessing, paymentError, processPayment, changePaymentMethod, getPaymentSummary } =
@@ -37,7 +39,17 @@ export default function PaymentPage({ params }: Props) {
       alert('결제 방법을 선택해주세요.');
       return;
     }
-    setIsPaymentConfirmDialogOpen(true);
+    if (!isPolicyAgreed) {
+      alert('예약 및 환불 규정에 동의해주세요.');
+      return;
+    }
+    
+    // 체크박스 동의 시 바로 결제 처리
+    const success = await processPayment();
+    if (success) {
+      setIsPaymentConfirmDialogOpen(true);
+      // goToPaymentComplete(storeId, storeInfo);
+    }
   };
 
   const handlePaymentConfirm = async () => {
@@ -77,12 +89,14 @@ export default function PaymentPage({ params }: Props) {
   return (
     <div className='min-h-screen bg-white pb-[200px]'>
       {/* Header */}
-      <StoreDetailHeader title='결제하기' />
+      <div className='fixed top-0 left-0 right-0 z-50 bg-white'>
+        <StoreDetailHeader title='결제하기' />
+      </div>
 
       {/* Content */}
-      <div className='px-[18px] py-10 flex flex-col gap-10'>
+      <div className='px-[16px] py-10 flex flex-col gap-[40px] '>
         {/* Order Items */}
-        <div className='flex flex-col gap-5'>
+        <div className='flex flex-col gap-[20px]'>
           {selectedMenus.map((item) => (
             <OrderItemCard
               key={item.postId}
@@ -102,7 +116,7 @@ export default function PaymentPage({ params }: Props) {
             <p className='title5 text-[#262626]'>최종 결제금액</p>
           </div>
 
-          <div className='bg-white rounded-[10px] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)] p-4 flex flex-col gap-5'>
+          <div className='bg-white rounded-[10px] shadow-3 p-4 flex flex-col gap-5 border border-border-secondary'>
             <OrderDetailList item='상품금액' price={summary.originalAmount.toLocaleString('ko-KR')} />
             <OrderDetailList item='할인금액' price={summary.discountAmount.toLocaleString('ko-KR')} />
             <div className='border-t border-[#e1e1e1] pt-5'>
@@ -120,7 +134,7 @@ export default function PaymentPage({ params }: Props) {
             <Button
               variant='outline'
               className={`h-11 rounded-[6px] ${
-                selectedPaymentMethod === 'CARD' ? 'border-[#8749fe] bg-[#f5f0ff]' : 'border-[#c6c6c6] bg-white'
+                selectedPaymentMethod === 'CARD' ? 'border-[#8749fe] bg-system-mauve-light' : 'border-[#c6c6c6] bg-white'
               }`}
               onClick={() => handlePaymentMethodSelect('CARD')}>
               <p className='body3 text-[#262626]'>신용/체크카드</p>
@@ -131,7 +145,7 @@ export default function PaymentPage({ params }: Props) {
               <Button
                 variant='outline'
                 className={`flex-1 h-11 rounded-[6px] flex items-center justify-center gap-1 ${
-                  selectedPaymentMethod === 'KAKAO_PAY' ? 'border-[#8749fe] bg-[#f5f0ff]' : 'border-[#c6c6c6] bg-white'
+                  selectedPaymentMethod === 'KAKAO_PAY' ? 'border-[#8749fe] bg-system-mauve-light' : 'border-[#c6c6c6] bg-white'
                 }`}
                 onClick={() => handlePaymentMethodSelect('KAKAO_PAY')}>
                 <KakaoPayIcon />
@@ -140,7 +154,7 @@ export default function PaymentPage({ params }: Props) {
               <Button
                 variant='outline'
                 className={`flex-1 h-11 rounded-[6px] flex items-center justify-center gap-1 ${
-                  selectedPaymentMethod === 'NAVER_PAY' ? 'border-[#8749fe] bg-[#f5f0ff]' : 'border-[#c6c6c6] bg-white'
+                  selectedPaymentMethod === 'NAVER_PAY' ? 'border-[#8749fe] bg-system-mauve-light' : 'border-[#c6c6c6] bg-white'
                 }`}
                 onClick={() => handlePaymentMethodSelect('NAVER_PAY')}>
                 <NaverPayIcon />
@@ -151,12 +165,20 @@ export default function PaymentPage({ params }: Props) {
         </div>
 
         {/* Payment Policy */}
-        <PaymentPolicyAccordion />
+        <div className='flex flex-col gap-[10px]'>
+          <PaymentPolicyAccordion />
+          <Checkbox
+            id='payment-policy-agreement'
+            checked={isPolicyAgreed}
+            onCheckedChange={setIsPolicyAgreed}
+            label='예약 및 환불 규정을 모두 읽었으며 이에 동의합니다.'
+          />
+        </div>
       </div>
 
       {/* Sticky Footer */}
       <StickyFooter
-        visitingTime={formatTimeString(new Date(summary?.visitTime || new Date()))}
+        visitingTime={formatTimeWithKoreanUnit(new Date(summary?.visitTime || new Date()))}
         totalPaymentAmount={summary.finalAmount.toLocaleString()}
         context='payment'
         onPaymentClick={handlePayClick}

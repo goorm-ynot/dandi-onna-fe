@@ -32,7 +32,7 @@ export const StickyFooter: React.FC<StickyFooterProps> = ({
       <div className='fixed bottom-0 left-0 right-0 bg-white border-t border-[#e1e1e1] flex flex-col gap-4 px-4 py-5 w-full z-50'>
         {/* 방문시간 */}
         <div className='flex items-start justify-between w-full'>
-          <p className='body1 text-[#262626]'>방문시간</p>
+          <p className='body10 text-[#262626]'>방문시간</p>
           <div className='flex items-center gap-0'>
             <p className='body5 text-[#262626]'>{visitingTime}</p>
           </div>
@@ -40,16 +40,16 @@ export const StickyFooter: React.FC<StickyFooterProps> = ({
 
         {/* 총 결제금액 */}
         <div className='flex items-center justify-between w-full'>
-          <p className='body1 text-[#262626]'>총 결제금액</p>
+          <p className='body10 text-[#262626]'>총 결제금액</p>
           <div className='flex items-start gap-0'>
-            <p className='body5 text-[#262626]'>{totalPaymentAmount}</p>
+            <p className='body5 text-[#262626]'>{totalPaymentAmount}원</p>
           </div>
         </div>
 
         {/* 결제하기 버튼 */}
         <Button
           onClick={onPaymentClick}
-          className='w-full h-11 bg-[#8749fe] hover:bg-[#7239d4] rounded-[6px] flex items-center justify-center'>
+          className='w-full h-11 bg-[#8749fe] hover:bg-[#7239d4] rounded-[6px] flex items-center justify-center active:scale-95 active:opacity-70 transition-all duration-100'>
           <p className='body5 text-white'>{totalPaymentAmount} 결제하기</p>
         </Button>
       </div>
@@ -94,7 +94,7 @@ export const StickyFooter: React.FC<StickyFooterProps> = ({
 
         {/* 주문하기 버튼 */}
         <div className='px-4 w-full'>
-          <Button onClick={onOrderClick} size='custom' className='w-full h-11 flex items-center justify-center'>
+          <Button onClick={onOrderClick} size='custom' className='w-full h-11 flex items-center justify-center active:scale-95 active:opacity-70 transition-all duration-100'>
             <p className='body5 text-white'>주문하기</p>
           </Button>
         </div>

@@ -36,7 +36,7 @@ export default function NumberStepper({ value = 1, min = 0, max = 10, onChange }
         disabled={isMinDisabled}
         className={`p-[7px] border ${
           isMinDisabled ? 'border-[#a3a3a3] bg-white' : 'border-[#8749fe] bg-white'
-        } rounded-[6px]`}>
+        } rounded-[6px] active:scale-95 active:opacity-70 transition-all duration-100`}>
         <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
           <path
             d='M5 12H19'
@@ -61,7 +61,7 @@ export default function NumberStepper({ value = 1, min = 0, max = 10, onChange }
         disabled={isMaxDisabled}
         className={`p-[7px] border ${
           isMaxDisabled ? 'border-[#a3a3a3] bg-white' : 'border-[#8749fe] bg-white'
-        } rounded-[6px]`}>
+        } rounded-[6px] active:scale-95 active:opacity-70 transition-all duration-100`}>
         <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
           <path
             d='M12 5V19M5 12H19'

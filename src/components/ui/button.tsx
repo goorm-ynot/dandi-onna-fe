@@ -17,6 +17,7 @@ const buttonVariants = cva(
         link: 'text-label underline-offset-4 hover:underline',
         filterAct: 'bg-tableFilter-bg text-tableFilter-foreground ',
         filterNone: 'border border-tableFilter-line text-tableFilter-text',
+        map : 'border border-border-normal bg-background-normal hover:bg-accent hover:text-accent-foreground',
       },
       size: {
         default: 'h-[38px] px-5 py-2.5',
@@ -28,6 +29,7 @@ const buttonVariants = cva(
         custom: 'h-[38px]',
         table: 'max-h-[26px]',
         onboarding: 'h-[44px] px-3 py-2.5',
+        map:'w-[76px] h-[26px] rounded-md',
       },
     },
     defaultVariants: {

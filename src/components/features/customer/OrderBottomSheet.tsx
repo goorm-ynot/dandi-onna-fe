@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import NumberStepper from './NumberStepper';
 
@@ -21,13 +21,36 @@ export default function OrderBottomSheet({
   onAddToCart,
   onClose,
 }: OrderBottomSheetProps) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // 마운트 시 애니메이션 트리거
+    setIsVisible(true);
+  }, []);
+
+  const handleClose = () => {
+    setIsVisible(false);
+    // 애니메이션 완료 후 onClose 호출
+    setTimeout(() => {
+      onClose?.();
+    }, 250);
+  };
+
   return (
     <div className='px-4'>
       {/* Backdrop */}
-      <div className='fixed inset-0 bg-black bg-opacity-50 z-40' onClick={onClose} />
+      <div
+        className={`fixed inset-0 bg-black z-40 transition-opacity duration-250 ${
+          isVisible ? 'bg-opacity-50' : 'bg-opacity-0'
+        }`}
+        onClick={handleClose}
+      />
 
       {/* Bottom Sheet */}
-      <div className='fixed bottom-0 left-0 right-0 bg-white shadow-[0px_-6px_10px_0px_rgba(0,0,0,0.06)] rounded-t-[10px] px-4 py-5 flex flex-col gap-5 z-50'>
+      <div
+        className={`fixed bottom-0 left-0 right-0 bg-white shadow-[0px_-6px_10px_0px_rgba(0,0,0,0.06)] rounded-t-[10px] px-4 py-5 flex flex-col gap-5 z-50 transition-transform duration-250 ${
+          isVisible ? 'translate-y-0' : 'translate-y-full'
+        }`}>
         {/* Menu Name */}
         <div className='flex items-start justify-between w-full body3 text-[#262626]'>
           <p className='font-normal'>메뉴</p>

@@ -22,12 +22,12 @@ export default function OrderItemCard({
   onRemove,
 }: OrderItemCardProps) {
   return (
-    <div className='bg-white rounded-[10px] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)] p-4 flex flex-col gap-5'>
+    <div className='bg-white rounded-[10px] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)] p-4 flex flex-col gap-5 border border-border-secondary'>
       {/* Header */}
       <div className='flex items-center justify-between w-full'>
         <p className='title3 text-[#262626]'>{menuName}</p>
-        <button onClick={onRemove} className='w-[16px] h-[16px] flex items-center justify-center'>
-          <X size={16} />
+        <button onClick={onRemove} className='w-[24px] h-[24px] flex items-center justify-center'>
+          <X size={24} />
         </button>
       </div>
 

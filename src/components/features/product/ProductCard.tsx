@@ -32,7 +32,7 @@ export default function ProductCard({
   const formatPrice = (price: number) => price.toLocaleString('ko-KR');
 
   const baseClasses = 'bg-white flex flex-col gap-5 p-4 rounded-[10px] w-full relative';
-  const selectedClasses = 'border-2 border-[#a87bfe]';
+  const selectedClasses = 'border-2 border-border';
   const defaultClasses = 'shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)]';
   const disabledClasses = 'shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)]';
 
@@ -79,7 +79,7 @@ export default function ProductCard({
         {/* Price */}
         <div className='flex-1 flex flex-col items-start gap-1'>
           {/* Original Price */}
-          <div className='flex items-center gap-1 body1 text-[#a3a3a3] line-through'>
+          <div className='flex items-center body1 text-[#C6C6C6] line-through'>
             <span>{formatPrice(originalPrice)}</span>
             <span>원</span>
           </div>
@@ -99,7 +99,7 @@ export default function ProductCard({
 
         {/* Stock */}
         <div className='flex flex-row items-end gap-[2px] shrink-0 whitespace-nowrap'>
-          <span className='body1 text-[#4c4c4c]'>남은수량</span>
+          <span className='body1 text-[#161616]'>남은수량</span>
           <span className='body2 text-[#8749fe]'>{stock}개</span>
         </div>
       </div>
