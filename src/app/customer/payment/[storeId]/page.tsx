@@ -44,12 +44,12 @@ export default function PaymentPage({ params }: Props) {
       return;
     }
     
-    // 체크박스 동의 시 바로 결제 처리
-    const success = await processPayment();
-    if (success) {
+    // // 체크박스 동의 시 바로 결제 처리
+    // const success = await processPayment();
+    // if (success) {
+    //   goToPaymentComplete(storeId, storeInfo);
+    // }
       setIsPaymentConfirmDialogOpen(true);
-      // goToPaymentComplete(storeId, storeInfo);
-    }
   };
 
   const handlePaymentConfirm = async () => {

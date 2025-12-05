@@ -50,6 +50,7 @@ const config = {
           inverse: '#ffffff',
           primary: '#8749fe',
           'primary-emphasis': '#5929ba',
+          disable: '#C6C6C6',
         },
         primary: {
           DEFAULT: '#8949fe',
