@@ -34,34 +34,39 @@ export function ConfirmDialog({
 }: ConfirmDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='sm:max-w-md p-[12px] min-w-[280px] min-h-[142px] rounded-16'>
-        <DialogHeader className='flex flex-col justify-center items-center gap-3 pt-20'>
-          <DialogTitle className='title5'>{title}</DialogTitle>
-          <DialogDescription className='title4 whitespace-pre-line text-center'>
+      <DialogContent className='bg-[#ffffff] sm:max-w-md p-[12px] w-[88%] max-w-[340px] min-h-[142px] rounded-16'>
+        <DialogHeader className='flex flex-col justify-center items-center gap-[8px] pt-[30px]'>
+          <DialogTitle className='title5 text-[#000000]'>{title}</DialogTitle>
+          <DialogDescription className='title1 whitespace-pre-line text-center text-[#707070]'>
             {description}
           </DialogDescription>
         </DialogHeader>
 
         {content && <div className='py-4'>{content}</div>}
 
-        <DialogFooter className='gap-3 w-full pt-20 pb-12'>
+        <DialogFooter className='flex-row gap-[12px] w-full pt-[20px] pb-[12px]'>
           <Button
             type='button'
-            variant='outline'
+            className='title1 text-[#333333]'
+            variant='map'
             onClick={() => {
               onCancel();
               onOpenChange(false);
             }}>
-            {cancelText}
+            <p className='title1'> 
+              {cancelText}
+            </p>
           </Button>
           <Button
             type='button'
-            className='w-full'
+            className='w-full title3 bg-[#8749FE] text-white rounded-[6px] hover:bg-[#7239d4] active:scale-95 active:opacity-70 transition-all duration-100'
             onClick={() => {
               onConfirm();
               onOpenChange(false);
             }}>
-            {confirmText}
+              <p className='title3'>
+                {confirmText}
+              </p>
           </Button>
         </DialogFooter>
       </DialogContent>
