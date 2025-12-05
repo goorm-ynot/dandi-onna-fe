@@ -4,7 +4,7 @@ import React, { use, useEffect, useState } from 'react';
 import { useCartStore } from '@/store/useCartStore';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { formatTimeString } from '@/lib/dateParse';
+import { formatDateTimeString } from '@/lib/dateParse';
 import { getPaymentMethodText } from '@/lib/utils';
 import { useNavigation } from '@/hooks/useNavigation';
 import { StoreSummary } from '@/types/storeType';
@@ -73,7 +73,7 @@ export default function PaymentCompletePage({ params }: Props) {
               {/* 매장명 */}
               <div className='grid grid-cols-[100px_1fr] gap-[10px] h-[19px]'>
                 <p className='body1 text-[#4c4c4c]'>매장명</p>
-                <p className='body10 text-[#262626] text-right'>
+                <p className='body10 text-[#262626] text-right text-ellipsis overflow-hidden whitespace-nowrap'>
                   {storeInfo?.storeName || paymentSnapshot.storeName || '-'}
                 </p>
               </div>
@@ -82,7 +82,7 @@ export default function PaymentCompletePage({ params }: Props) {
               <div className='grid grid-cols-[100px_1fr] gap-[10px] h-[19px]'>
                 <p className='body1 text-[#4c4c4c]'>방문일시</p>
                 <p className='body10 text-[#262626] text-right'>
-                  {paymentSnapshot.visitTime ? formatTimeString(new Date(paymentSnapshot.visitTime)) : '-'}
+                  {paymentSnapshot.visitTime ? formatDateTimeString(new Date(paymentSnapshot.visitTime)) : '-'}
                 </p>
               </div>
 
