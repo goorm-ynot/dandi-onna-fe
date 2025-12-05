@@ -3,7 +3,7 @@ const koDayString = ['일', '월', '화', '수', '목', '금', '토'];
 // 날짜 세팅
 export const getNowDateString = (date?: Date) => {
   const newDate = date || new Date();
-  return `${newDate.getFullYear()}. ${newDate.getMonth() + 1}. ${newDate.getDate()} (${koDayString[newDate.getDay()]})`;
+  return `${newDate.getFullYear()}.${String(newDate.getMonth() + 1).padStart(2, '0')}.${String(newDate.getDate()).padStart(2, '0')}(${koDayString[newDate.getDay()]})`;
 };
 
 // 날짜 세팅 (ex: 2025-01-01)
