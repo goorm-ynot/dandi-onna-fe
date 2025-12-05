@@ -80,11 +80,10 @@ export default function StorePage({ params }: Props) {
 
   // Group posts by expireAt time
   const groupedPosts = posts.reduce((acc, post) => {
-    const expireTime = new Date(post.expireAt).toLocaleTimeString('ko-KR', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    });
+    const expireDate = new Date(post.expireAt);
+    const hour = String(expireDate.getHours()).padStart(2, '0');
+    const minute = String(expireDate.getMinutes()).padStart(2, '0');
+    const expireTime = `${hour}시 ${minute}분`;
 
     if (!acc[expireTime]) {
       acc[expireTime] = [];
@@ -200,9 +199,9 @@ export default function StorePage({ params }: Props) {
       />
 
       {/* Product List by Time Slot */}
-      <div className='flex flex-col gap-5 px-4 mt-8'>
+      <div className='flex flex-col gap-[40px] px-4 pt-[40px]'>
         {Object.entries(groupedPosts).map(([time, timePosts]) => (
-          <div key={time} className='flex flex-col gap-5 w-full'>
+          <div key={time} className='flex flex-col gap-[20px] w-full'>
             {/* Time Slot Header */}
             <TimeSlotHeader time={time} />
 

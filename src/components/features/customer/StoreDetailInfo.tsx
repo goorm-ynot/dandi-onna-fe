@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { getProxiedImageUrl } from '@/lib/imageProxy';
+import { HeartIcon } from '@/components/icons';
 
 interface StoreDetailInfoProps {
   name: string;
@@ -27,7 +28,8 @@ export default function StoreDetailInfo({
   onShowMap,
 }: StoreDetailInfoProps) {
   return (
-    <div className='flex flex-col gap-5 w-full'>
+    // <div className='flex flex-col gap-5 w-full px-[16px]'>
+    <div className='flex flex-col gap-5 w-full '>
       {/* Store Image */}
       <div className='w-full h-[240px] bg-neutral-100 overflow-hidden relative'>
         <Image
@@ -35,38 +37,25 @@ export default function StoreDetailInfo({
           alt={name}
           fill
           className='object-cover'
-          sizes='100vw'
+          sizes='full'
           loader={({ src }) => src}
           unoptimized
         />
       </div>
 
       {/* Store Information */}
-      <div className='flex flex-col gap-5 w-full'>
+      <div className='flex flex-col w-full gap-[20px]  px-[16px]'>
         {/* Title Section */}
-        <div className='flex flex-col gap-5 px-4 w-full'>
+        <div className='flex flex-col gap-[20px] w-full'>
           {/* Name and Favorite */}
           <div className='flex items-center justify-between w-full'>
             <p className='title6 text-[#262626]'>{name}</p>
-            <Button variant='ghost' size='icon' onClick={onToggleFavorite} className='p-0 hover:bg-transparent w-6 h-6'>
-              {isFavorite ? (
-                <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
-                  <path
-                    d='M12 21C12 21 2.5 15.5 2.5 8.5C2.5 6.82 3.16 5.21 4.33 4.04C5.5 2.87 7.11 2.21 8.79 2.21C10.08 2.21 11.32 2.63 12.36 3.4C12.72 3.66 13.05 3.95 13.34 4.27L12 5.61L13.34 4.27C13.63 3.95 13.96 3.66 14.32 3.4C15.36 2.63 16.6 2.21 17.89 2.21C19.57 2.21 21.18 2.87 22.35 4.04C23.52 5.21 24.18 6.82 24.18 8.5C24.18 15.5 14.68 21 12 21Z'
-                    fill='#F84E3E'
-                    stroke='#F84E3E'
-                    strokeWidth='1.5'
-                  />
-                </svg>
-              ) : (
-                <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
-                  <path
-                    d='M12 21C12 21 2.5 15.5 2.5 8.5C2.5 6.82 3.16 5.21 4.33 4.04C5.5 2.87 7.11 2.21 8.79 2.21C10.08 2.21 11.32 2.63 12.36 3.4C12.72 3.66 13.05 3.95 13.34 4.27L12 5.61L13.34 4.27C13.63 3.95 13.96 3.66 14.32 3.4C15.36 2.63 16.6 2.21 17.89 2.21C19.57 2.21 21.18 2.87 22.35 4.04C23.52 5.21 24.18 6.82 24.18 8.5C24.18 15.5 14.68 21 12 21Z'
-                    stroke='#4c4c4c'
-                    strokeWidth='1.5'
-                  />
-                </svg>
-              )}
+            <Button
+              variant='ghost'
+              size='icon'
+              onClick={onToggleFavorite}
+              className='p-0 hover:bg-transparent w-6 h-6 mr-3'>
+              <HeartIcon size={24} filled={isFavorite} />
             </Button>
           </div>
 
@@ -75,7 +64,7 @@ export default function StoreDetailInfo({
         </div>
 
         {/* Location Section */}
-        <div className='border-t border-b border-[#e1e1e1] px-4 py-5 flex gap-0 items-start w-full'>
+        <div className='border-t border-b border-[#e1e1e1] py-5 flex gap-0 items-start w-full'>
           {/* Location Icon */}
           <svg
             width='18'
@@ -97,7 +86,7 @@ export default function StoreDetailInfo({
           </svg>
 
           {/* Location Info */}
-          <div className='flex flex-col gap-2 flex-1 ml-0'>
+          <div className='flex flex-col gap-[8px] flex-1 ml-0'>
             <p className='body3 text-[#262626] whitespace-pre-wrap'>{address}</p>
 
             <div className='flex gap-[6px] items-start w-full'>
@@ -109,8 +98,8 @@ export default function StoreDetailInfo({
 
               {/* Map Button */}
               <Button
-                variant='outline'
-                size='sm'
+                variant='map'
+                size='map'
                 onClick={onShowMap}
                 className='h-auto px-[10px] py-1 border-[#c6c6c6] rounded-[6px]'>
                 <span className='body3 text-[#262626]'>지도보기</span>
