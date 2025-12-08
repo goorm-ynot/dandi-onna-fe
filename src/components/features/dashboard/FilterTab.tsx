@@ -15,15 +15,23 @@ interface FilterTabsProps {
 
 export default function FilterTabs({ tabs, activeTab, onTabChange, className = '' }: FilterTabsProps) {
   return (
-    <div className={`flex gap-3 bg-white px-20 ${className}`}>
+    <div className={`flex gap-3 bg-white ${className}`}>
       {tabs.map((tab) => (
-        <Button
+        <button
           key={tab.id}
-          variant={activeTab === tab.id ? 'filterAct' : 'filterNone'}
           onClick={() => onTabChange(tab.id)}
-          className={`px-24 py-[6px] text-sm font-medium rounded-full `}>
+          className={`
+            px-[30px] py-[10px]
+            body3
+            transition-all
+            ${
+              activeTab === tab.id
+                ? 'text-[#5929BA] border-b-[3px] border-[#5929BA]'
+                : 'text-[#262626] border-b-[3px] border-transparent'
+            }
+          `}>
           {tab.label}
-        </Button>
+        </button>
       ))}
     </div>
   );

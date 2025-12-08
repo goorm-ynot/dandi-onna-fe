@@ -12,8 +12,8 @@ export default function Layout({ children }: Readonly<{ children: React.ReactNod
   useFcmToken(); // FCM 토큰 초기화 및 메시지 리스너 등록
 
   return (
-    <div className='flex min-h-screen flex-col items-center bg-gray-50'>
-      <main className='w-full max-w-[1920px] min-h-screen flex flex-col bg-white'>
+    <div className='flex min-h-screen flex-col items-center '>
+      <main className='w-full min-h-screen flex flex-col bg-white'>
         {/* 고정된 헤더 */}
         <div className='sticky top-0 z-40 bg-white'>
           <Header navList={MENU_ITEMS} hasNotification={true} userName='이든횟집' />
