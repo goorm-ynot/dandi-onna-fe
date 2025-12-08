@@ -32,7 +32,7 @@ export default function Header({ navList, hasNotification, userName }: HeaderPro
   return (
     <header className='relative w-full bg-white shadow-sm border-b border-gray-300'>
       {/* ✅ 한 줄 정렬 + 중앙정렬 */}
-      <div className='max-w-[1280px] mx-auto flex items-center justify-between py-4'>
+      <div className='max-w-[1280px] mx-auto flex items-center justify-between py-4 px-40'>
         {/* 왼쪽: 로고 + 네비게이션 */}
         <div className='flex items-center gap-12'>
           {/* 로고 */}

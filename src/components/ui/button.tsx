@@ -15,8 +15,8 @@ const buttonVariants = cva(
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-label underline-offset-4 hover:underline',
-        filterAct: 'bg-tableFilter-bg text-tableFilter-foreground ',
-        filterNone: 'border border-tableFilter-line text-tableFilter-text',
+        filterAct: 'border-b border-primary  underline-offset-4 hover:underline text-primary',
+        filterNone: 'text-tableFilter-text',
         map : 'border border-border-normal bg-background-normal hover:bg-accent hover:text-accent-foreground',
       },
       size: {

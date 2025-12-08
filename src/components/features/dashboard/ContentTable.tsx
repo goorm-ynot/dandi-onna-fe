@@ -79,11 +79,11 @@ export default function ContentTable<T extends { [key: string]: any }>({
       )}
 
       {/* 테이블 */}
-      <div className='mx-auto w-full max-w-7xl flex-1 overflow-auto p-20'>
+      <div className='mx-auto w-full max-w-7xl flex-1 overflow-auto pt-20'>
         {!data || data.length === 0 ? (
           <div className='text-center text-gray-500 mt-20'>{emptyMessage}</div>
         ) : (
-          <Table className='w-full text-left bg-table-bg rounded-md'>
+          <Table className='w-full text-left rounded-md'>
             {/* 헤더 */}
             <TableHeader>
               <TableRow>
@@ -91,7 +91,7 @@ export default function ContentTable<T extends { [key: string]: any }>({
                   <TableHead
                     key={col.key}
                     className={clsx(
-                      'p-3 text-base font-medium text-gray-700 whitespace-nowrap ',
+                      'p-3 body4 text-gray-700 whitespace-nowrap',
                       col.isWide && 'min-w-[350px]',
                       col.sortable && 'cursor-pointer hover:bg-gray-50 select-none',
                       // ✅ location 기반 정렬
@@ -127,7 +127,7 @@ export default function ContentTable<T extends { [key: string]: any }>({
                     key={itemId || index} // 고유 ID가 있으면 사용, 없으면 index
                     className={clsx('py-10 cursor-pointer transition-colors', {
                       // ✅ 만료된 예약인 경우 붉은색 배경 + 왼쪽 보더
-                      'bg-table-expired hover:bg-red-100 border-l-4 border-l-red-500': isExpired,
+                      'bg-table-expired hover:bg-red-100': isExpired,
                       // ✅ 일반적인 경우
                       'hover:bg-table-hover': !isExpired,
                       'bg-table-secondary ': selectItemId === itemId,
@@ -137,7 +137,7 @@ export default function ContentTable<T extends { [key: string]: any }>({
                       <TableCell
                         key={col.key}
                         className={clsx(
-                          'p-3 text-base text-gray-700 align-middle truncate',
+                          'p-3 body3 text-gray-700 align-middle truncate py-3',
                           col.isWide && 'min-w-[350px]',
                           idx === columns.length - 1 && 'text-center'
                         )}>

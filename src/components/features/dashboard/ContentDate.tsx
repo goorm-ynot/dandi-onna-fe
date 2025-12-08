@@ -10,7 +10,7 @@ export default function ContentDate({ showDate = true, dateString }: ContentDate
   return (
     <>
       {showDate && (
-        <div className='flex item-start p-20'>
+        <div className='flex item-start '>
           <p className='text-base font-normal'>{dateString || getNowDateString()}</p>
         </div>
       )}
