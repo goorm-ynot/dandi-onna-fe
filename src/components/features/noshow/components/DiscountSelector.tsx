@@ -38,19 +38,11 @@ export default function DiscountSelector({ formResult, mode }: DiscountSelectorP
   const [selectedDiscount, setSelectedDiscount] = React.useState(() => getInitialState().selected);
   const [customDiscount, setCustomDiscount] = React.useState(() => getInitialState().custom);
 
-  // ✅ 폼 값이 변경되면 버튼 선택 상태 동기화
-  React.useEffect(() => {
-    if (currentDiscount !== undefined && currentDiscount !== null) {
-      const discountStr = String(currentDiscount);
-      if (discountOptions.includes(discountStr)) {
-        setSelectedDiscount(discountStr);
-        setCustomDiscount('');
-      } else if (currentDiscount > 0) {
-        setSelectedDiscount('custom');
-        setCustomDiscount(discountStr);
-      }
-    }
-  }, [currentDiscount]);
+  // ✅ 폼 값이 변경되면 버튼 선택 상태 동기화 (초기 로드시만)
+  // React.useEffect를 제거하여 직접입력 시 버튼이 자동 선택되지 않도록 함
+
+  // ✅ Debounce를 위한 타이머 ref
+  const debounceTimer = React.useRef<NodeJS.Timeout | null>(null);
 
   return (
     <>
@@ -81,9 +73,19 @@ export default function DiscountSelector({ formResult, mode }: DiscountSelectorP
               value={customDiscount}
               {...register(discountFieldName, { valueAsNumber: true })}
               onChange={(e) => {
-                setCustomDiscount(e.target.value);
+                const value = e.target.value;
+                setCustomDiscount(value);
                 setSelectedDiscount('custom');
-                setValue(discountFieldName, Number(e.target.value));
+
+                // 이전 타이머 취소
+                if (debounceTimer.current) {
+                  clearTimeout(debounceTimer.current);
+                }
+
+                // 500ms 후에 폼 값 업데이트
+                debounceTimer.current = setTimeout(() => {
+                  setValue(discountFieldName, Number(value));
+                }, 500);
               }}
               onFocus={() => setSelectedDiscount('custom')}
               className={`w-[82px] text-center rounded-[6px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${

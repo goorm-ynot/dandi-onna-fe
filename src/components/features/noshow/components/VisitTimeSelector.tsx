@@ -36,19 +36,11 @@ export default function VisitTimeSelector({ formResult, mode }: VisitTimeSelecto
   const [selectedTime, setSelectedTime] = React.useState(() => getInitialState().selected);
   const [customTime, setCustomTime] = React.useState(() => getInitialState().custom);
 
-  // ✅ 폼 값이 변경되면 버튼 선택 상태 동기화
-  React.useEffect(() => {
-    if (currentDuringTime !== undefined && currentDuringTime !== null) {
-      const timeStr = String(currentDuringTime);
-      if (timeOptions.includes(timeStr)) {
-        setSelectedTime(timeStr);
-        setCustomTime('');
-      } else if (currentDuringTime > 0) {
-        setSelectedTime('custom');
-        setCustomTime(timeStr);
-      }
-    }
-  }, [currentDuringTime]);
+  // ✅ 폼 값이 변경되면 버튼 선택 상태 동기화 (초기 로드시만)
+  // React.useEffect를 제거하여 직접입력 시 버튼이 자동 선택되지 않도록 함
+
+  // ✅ Debounce를 위한 타이머 ref
+  const debounceTimer = React.useRef<NodeJS.Timeout | null>(null);
 
   return (
     <div className='flex flex-col gap-1 px-20'>
@@ -81,13 +73,20 @@ export default function VisitTimeSelector({ formResult, mode }: VisitTimeSelecto
               setCustomTime(value);
               setSelectedTime('custom');
 
-              // 빈 값 처리: 수정 모드는 undefined, 생성 모드는 0
-              if (value === '') {
-                setValue('duringTime', mode === 'edit' ? undefined : 0);
-              } else {
-                const numValue = Number(value);
-                setValue('duringTime', isNaN(numValue) ? (mode === 'edit' ? undefined : 0) : numValue);
+              // 이전 타이머 취소
+              if (debounceTimer.current) {
+                clearTimeout(debounceTimer.current);
               }
+
+              // 500ms 후에 폼 값 업데이트
+              debounceTimer.current = setTimeout(() => {
+                if (value === '') {
+                  setValue('duringTime', mode === 'edit' ? undefined : 0);
+                } else {
+                  const numValue = Number(value);
+                  setValue('duringTime', isNaN(numValue) ? (mode === 'edit' ? undefined : 0) : numValue);
+                }
+              }, 500);
             }}
             onFocus={() => setSelectedTime('custom')}
             className={`text-center rounded-[6px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${

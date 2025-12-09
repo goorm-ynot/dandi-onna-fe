@@ -37,7 +37,7 @@ export default function SinglePageLayout({
 }: // onBatchNoShow,
 SingleColumnLayoutProps) {
   return (
-    <div className='px-40'>
+    <div className=''>
       {/* 헤더 (title + 날짜) */}
       <div className='flex flex-row justify-between items-center pb-40'>
         <PageHeader title={title} />

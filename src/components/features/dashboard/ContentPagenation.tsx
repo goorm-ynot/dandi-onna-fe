@@ -24,7 +24,7 @@ export default function Pagination({ totalPages, currentPage, onPageChange, clas
       </Button>
 
       {Array.from({ length: validTotalPages }).map((_, i) => (
-        <Button key={i} size='page' variant={validPage === i ? 'outline' : 'link'} onClick={() => onPageChange(i)}>
+        <Button key={i} size='page' variant={validPage === i ? 'page' : 'link'}  onClick={() => onPageChange(i)}>
           {i + 1}
         </Button>
       ))}

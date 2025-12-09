@@ -18,6 +18,8 @@ const buttonVariants = cva(
         filterAct: 'border-b border-primary  underline-offset-4 hover:underline text-primary',
         filterNone: 'text-tableFilter-text',
         map : 'border border-border-normal bg-background-normal hover:bg-accent hover:text-accent-foreground',
+        page: 'bg-system-mauve-light text-primary border-none',
+        pagelink: 'text-foreground-normal'
       },
       size: {
         default: 'h-[38px] px-5 py-2.5',
