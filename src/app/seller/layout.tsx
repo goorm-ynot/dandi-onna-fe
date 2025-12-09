@@ -6,6 +6,7 @@ import { MENU_ITEMS } from '@/constants/sellerNavConstant';
 import { useAlarmStore } from '@/store/useAlarmStore';
 import useFcmToken from '@/hooks/useFcmToken';
 import React from 'react';
+import NoticeSummary from '@/components/features/dashboard/NoticeSummary';
 
 export default function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
   const { alarm, hideAlarm } = useAlarmStore();
@@ -13,9 +14,9 @@ export default function Layout({ children }: Readonly<{ children: React.ReactNod
 
   return (
     <div className='flex min-h-screen flex-col items-center '>
-      <main className='w-full min-h-screen flex flex-col bg-white'>
+      <main className='w-full min-h-screen flex flex-col bg-background-normal-foreground'>
         {/* 고정된 헤더 */}
-        <div className='sticky top-0 z-40 bg-white'>
+        <div className='sticky top-0 z-40 bg-background-normal-foreground'>
           <Header navList={MENU_ITEMS} hasNotification={true} userName='이든횟집' />
         </div>
 
@@ -37,7 +38,11 @@ export default function Layout({ children }: Readonly<{ children: React.ReactNod
         <div className='flex-1 overflow-y-auto'>
           <div className='mx-auto flex items-center'>{children}</div>
         </div>
-
+        
+        {/* 공지사항 */}
+        <div className='w-full flex-2'>
+          <NoticeSummary />
+        </div>
         {/* 푸터 */}
         <Footer />
       </main>

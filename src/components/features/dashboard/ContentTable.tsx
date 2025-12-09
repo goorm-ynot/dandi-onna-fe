@@ -86,12 +86,12 @@ export default function ContentTable<T extends { [key: string]: any }>({
           <Table className='w-full text-left rounded-md'>
             {/* 헤더 */}
             <TableHeader>
-              <TableRow>
+              <TableRow >
                 {columns.map((col, idx) => (
                   <TableHead
                     key={col.key}
                     className={clsx(
-                      'p-3 body4 text-gray-700 whitespace-nowrap',
+                      ' body4 text-gray-700 whitespace-nowrap',
                       col.isWide && 'min-w-[350px]',
                       col.sortable && 'cursor-pointer hover:bg-gray-50 select-none',
                       // ✅ location 기반 정렬
@@ -125,7 +125,7 @@ export default function ContentTable<T extends { [key: string]: any }>({
                 return (
                   <TableRow
                     key={itemId || index} // 고유 ID가 있으면 사용, 없으면 index
-                    className={clsx('py-10 cursor-pointer transition-colors', {
+                    className={clsx('cursor-pointer transition-colors', {
                       // ✅ 만료된 예약인 경우 붉은색 배경 + 왼쪽 보더
                       'bg-table-expired hover:bg-red-100': isExpired,
                       // ✅ 일반적인 경우
@@ -137,7 +137,7 @@ export default function ContentTable<T extends { [key: string]: any }>({
                       <TableCell
                         key={col.key}
                         className={clsx(
-                          'p-3 body3 text-gray-700 align-middle truncate py-3',
+                          ' body3 text-gray-700 align-middle truncate ',
                           col.isWide && 'min-w-[350px]',
                           idx === columns.length - 1 && 'text-center'
                         )}>

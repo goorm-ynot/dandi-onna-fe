@@ -30,7 +30,7 @@ export default function Header({ navList, hasNotification, userName }: HeaderPro
   const closeMenu = () => setOpenMenuId(null);
 
   return (
-    <header className='relative w-full bg-white shadow-sm border-b border-gray-300'>
+    <header className='relative w-full bg-background-normal-foreground shadow-sm border-b border-gray-300'>
       {/* ✅ 한 줄 정렬 + 중앙정렬 */}
       <div className='max-w-[1280px] mx-auto flex items-center justify-between py-4 px-40'>
         {/* 왼쪽: 로고 + 네비게이션 */}
@@ -43,7 +43,7 @@ export default function Header({ navList, hasNotification, userName }: HeaderPro
           {/* 네비게이션 */}
           <nav className='self-stretch inline-flex justify-center items-center '>
             {navList.map((menu) => {
-              const isActive = menu.children?.some((child) => child.path === pathname);
+              const isActive = pathname === menu.path || menu.children?.some((child) => child.path && pathname === child.path);
               const isOpen = openMenuId === menu.id;
 
               return (
@@ -55,8 +55,8 @@ export default function Header({ navList, hasNotification, userName }: HeaderPro
                   onMouseEnter={() => openMenu(menu.id)}
                   onClick={() => openMenu(menu.id)}
                   className={`
-          transition px-[50px] py-1
-          ${isActive || isOpen ? 'text-neutral-900 font-bold   text-lg' : 'text-neutral-600 font-medium   text-lg'}
+          transition px-[50px] py-1 text-lg
+          ${isActive ? 'text-neutral-900 font-semibold' : 'text-neutral-600 font-medium'}
           hover:text-neutral-900
         `}>
                   {menu.label}

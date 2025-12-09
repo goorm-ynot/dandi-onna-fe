@@ -14,7 +14,7 @@ export default function Pagination({ totalPages, currentPage, onPageChange, clas
   const validPage = Math.max(0, Math.min(currentPage ?? 0, validTotalPages - 1));
 
   return (
-    <div className={`flex items-center justify-center gap-2 py-20 ${className}`}>
+    <div className={`flex items-center justify-center gap-2 py-20  ${className}`}>
       <Button
         variant='link'
         size='page'

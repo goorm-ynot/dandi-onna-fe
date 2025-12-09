@@ -39,30 +39,35 @@ SingleColumnLayoutProps) {
   return (
     <div className='px-40'>
       {/* 헤더 (title + 날짜) */}
-      <PageHeader title={title} />
-      <div className='h-[758px] overflow-hidden border border-border-wrapper border-1 rounded-md'>
-        <div className='flex items-center justify-between border-b border-border-wrapper px-20 pt-20 mb-20'>
+      <div className='flex flex-row justify-between items-center pb-40'>
+        <PageHeader title={title} />
+        <ContentDate showDate={showDate} dateString={dateString} />
+      </div>
+      <div className='h-[758px] overflow-hidden border border-border-wrapper border-1 rounded-md bg-background-normal flex flex-col'>
+        <div className='flex items-center justify-between border-b border-border-wrapper px-20 pt-20 '>
           {/* 필터 (조건부) */}
           {showFilters && tabs.length > 0 && onTabChange && (
             <FilterTabs tabs={tabs} activeTab={activeTab} onTabChange={onTabChange} />
           )}
-          <ContentDate showDate={showDate} dateString={dateString} />
         </div>
 
         {/* 테이블 */}
-        <ContentTable
-          columns={columns}
-          data={data}
-          onSelectRow={onSelected}
-          selectItemId={selectItemId}
-          emptyMessage={emptyMessage}
-          expiredData={expiredData}
-          sortState={sortState}
-          onSort={onSort}
-        />
-
-        {/* 페이지네이션 */}
-        <Pagination totalPages={totalPages} currentPage={page} onPageChange={onPageChange} />
+        <div className='my-20 flex-1'>
+          <ContentTable
+            columns={columns}
+            data={data}
+            onSelectRow={onSelected}
+            selectItemId={selectItemId}
+            emptyMessage={emptyMessage}
+            expiredData={expiredData}
+            sortState={sortState}
+            onSort={onSort}
+          />
+        </div>
+        <div className='border-t border-border-wrapper'>
+          {/* 페이지네이션 */}
+          <Pagination totalPages={totalPages} currentPage={page} onPageChange={onPageChange} />
+        </div>
       </div>
     </div>
   );
