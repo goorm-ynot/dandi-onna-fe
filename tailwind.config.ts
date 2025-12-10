@@ -30,12 +30,14 @@ const config = {
           secondary: '#e1e1e1',
           normal: '#c6c6c6',
           tertiary: '#a3a3a3',
+          quaternary: '#4c4c4c'
         },
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         background: {
           DEFAULT: 'hsl(var(--background))',
           normal: '#ffffff',
+          'normal-foreground': '#F9F9F9', /* 사장님 배경색 */
           'badge-expected': '#c9eca8',
           'badge-finished': '#e1e1e1',
           'badge-noshow': '#ffd8e2',
@@ -85,7 +87,7 @@ const config = {
           foreground: '#DDDDDD',
         },
         error: {
-          DEFAULT: '#da1717ff',
+          DEFAULT: '#DA3944',
           foreground: '#fee2e2',
         },
         badge: {
@@ -95,6 +97,9 @@ const config = {
         },
         system: {
           'mauve-light': '#f9f5ff',
+          'pink-light': '#FFF5F7',
+          'green-light': '#F1FAE8',
+          'mono-white': '#FFFFFF',
         },
         primitives: {
           brand: '#B477FE',
@@ -116,24 +121,24 @@ const config = {
         },
         table: {
           bg: '#F5F5F5',
-          hover: '#e2f2fe',
+          hover: '#F5F9FF',
           secondary: '#abf2bf',
-          expired: 'rgb(254 226 226)',
+          expired: '#F1FAE8',
         },
         status: {
-          pending: 'hsl(var(--status-pending))',
-          'pending-foreground': 'hsl(var(--status-pending-foreground))',
-          completed: 'hsl(var(--status-completed))',
-          'completed-foreground': 'hsl(var(--status-completed-foreground))',
-          noshow: 'hsl(var(--status-noshow))',
-          'noshow-foreground': 'hsl(var(--status-noshow-foreground))',
+          pending: '#C9ECA8',
+          'pending-foreground': '#428600',
+          completed: '#E1E1E1',
+          'completed-foreground': '#A3A3A3',
+          noshow: '#FFD8E2',
+          'noshow-foreground': '#B5135D',
           disable: 'var(--status-disable)',
           dark: 'var(--status-dark)',
         },
         tableFilter: {
           bg: '#383838',
           foreground: '#FFFFFF',
-          line: '#BABABA',
+          line: '#400d0dff',
           text: '#161616',
         },
         label: {

@@ -14,17 +14,18 @@ export default function Pagination({ totalPages, currentPage, onPageChange, clas
   const validPage = Math.max(0, Math.min(currentPage ?? 0, validTotalPages - 1));
 
   return (
-    <div className={`flex items-center justify-center gap-2 py-20 ${className}`}>
+    <div className={`flex items-center justify-center gap-2 py-20  ${className}`}>
       <Button
         variant='link'
         size='page'
         onClick={() => onPageChange(Math.max(0, validPage - 1))}
-        disabled={validPage === 0}>
+        disabled={validPage === 0}
+        >
         {'<'}
       </Button>
 
       {Array.from({ length: validTotalPages }).map((_, i) => (
-        <Button key={i} size='page' variant={validPage === i ? 'outline' : 'link'} onClick={() => onPageChange(i)}>
+        <Button key={i} size='page' variant={validPage === i ? 'page' : 'pagelink'}  onClick={() => onPageChange(i)}>
           {i + 1}
         </Button>
       ))}
@@ -33,7 +34,8 @@ export default function Pagination({ totalPages, currentPage, onPageChange, clas
         variant='link'
         size='page'
         onClick={() => onPageChange(Math.min(validTotalPages - 1, validPage + 1))}
-        disabled={validPage === validTotalPages - 1}>
+        disabled={validPage === validTotalPages - 1}
+        >
         {'>'}
       </Button>
     </div>

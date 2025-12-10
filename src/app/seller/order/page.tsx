@@ -80,7 +80,7 @@ export default function NoShowOrderListPage() {
       location: 'center' as 'center',
       render: (res: OrderItemList) => (
         <span
-          className={`px-3 py-1 rounded-full text-base font-normal ${
+          className={`px-3 py-1 rounded-[20px] text-base font-normal ${
             res.status === 'PENDING'
               ? 'bg-status-pending text-status-pending-foreground'
               : 'bg-status-completed text-status-completed-foreground'

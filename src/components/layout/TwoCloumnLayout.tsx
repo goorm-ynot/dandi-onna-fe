@@ -21,17 +21,19 @@ export function TwoColumnLayout({
 }: TwoColumnLayoutProps) {
   return (
     <DashBoardLayout>
-      <div className='max-w-[1280px] w-full h-full flex gap-6 pt-40'>
+      <div className='max-w-[1280px] w-full h-full flex gap-[40px] pt-40 '>
         {/* 왼쪽 패널 */}
-        <div className={`${leftClassName} flex flex-col`}>
+        <div className={`${leftClassName} flex flex-col max-w-[880px]`}>
           {/* <div className='flex-1 overflow-hidden'>{leftContent}</div> */}
           <div className='flex-1 '>{leftContent}</div>
         </div>
 
         {/* 오른쪽 패널 - 동적 컨텐츠 */}
-        <div className={`${rightClassName} flex flex-col`}>
-          {showTitles && rightTitle && <PageHeader title={rightTitle} />}
-          <div className='flex-1 overflow-auto border border-border-wrapper rounded-md'>
+        <div className={`${rightClassName} flex flex-col w-[380px]`}>
+          <div className='pb-40'>
+            {showTitles && rightTitle && <PageHeader title={rightTitle} />}
+          </div>
+          <div className='flex-1 overflow-auto border border-border-normal rounded-md bg-background-normal max-w-[380px]'>
             <RightPanelContent
               type={panelType}
               mode={panelMode}

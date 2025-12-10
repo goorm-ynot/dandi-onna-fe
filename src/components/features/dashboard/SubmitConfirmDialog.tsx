@@ -48,7 +48,7 @@ export function ConfirmDialog({
           <Button
             type='button'
             className='title1 text-[#333333]'
-            variant='map'
+            variant='outline'
             onClick={() => {
               onCancel();
               onOpenChange(false);

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { UseNoShowFormResult, UseNoShowMenuFormResult } from '@/types/noShowPanelType';
+import { CloudCog } from 'lucide-react';
 
 interface MenuQuantityListProps {
   formResult: UseNoShowFormResult | UseNoShowMenuFormResult;
@@ -23,11 +24,16 @@ export default function MenuQuantityList({ formResult }: MenuQuantityListProps) 
     return (
       <div className='flex flex-col gap-24 px-20'>
         <div className='grid grid-cols-2 gap-20 justify-items-stretch w-full'>
-          <Label className='body3 text-left'>{menu.name}</Label>
-          <Label className='body5 text-right'>{menu.price?.toLocaleString()}원</Label>
+          <Label className='body3 text-foreground-normal text-left'>{menu.name}</Label>
+          <Label className='body5 text-foreground-normal text-right'>{menu.price?.toLocaleString()}원</Label>
 
-          <div className='flex flex-row gap-2'>
-            <Button type='button' variant='outline' size='xs' onClick={decrement}>
+          <div className='flex flex-row gap-[2px]'>
+            <Button 
+              type='button' 
+              variant={quantity <= 1 ? 'outline' : 'destructive'} 
+              size='xs' 
+              onClick={decrement}
+            >
               -
             </Button>
 
@@ -43,14 +49,19 @@ export default function MenuQuantityList({ formResult }: MenuQuantityListProps) 
                       const value = Number(e.target.value);
                       if (value >= 1) field.onChange(value);
                     }}
-                    className='w-[60px] h-[38px] rounded text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+                    className='w-[60px] h-[38px] rounded text-center bg-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
                   />
                   {errors.quantity && <p className='text-red-500 text-sm'>{errors.quantity?.message}</p>}
                 </>
               )}
             />
 
-            <Button type='button' size='xs' variant='outline' onClick={increment}>
+            <Button 
+              type='button' 
+              size='xs' 
+              variant={'destructive'} 
+              onClick={increment}
+            >
               +
             </Button>
           </div>
@@ -70,7 +81,13 @@ export default function MenuQuantityList({ formResult }: MenuQuantityListProps) 
           <Label className='body5 text-right'>{menu.price.toLocaleString()}원</Label>
 
           <div className='flex flex-row gap-2'>
-            <Button type='button' size='xs' variant='outline' onClick={() => decrement(index)}>
+            <Button 
+              type='button'
+              size='xs' 
+              variant={menu.quantity <= 1 ? 'outline' : 'destructive'} 
+              disabled={menu.quantity <= 1}
+              onClick={() => decrement(index)}
+            >
               -
             </Button>
 
@@ -86,7 +103,7 @@ export default function MenuQuantityList({ formResult }: MenuQuantityListProps) 
                       const value = Number(e.target.value);
                       if (value >= 1 && value <= menu.maxQty) field.onChange(value);
                     }}
-                    className='w-[60px] h-[38px] rounded text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+                    className='w-[60px] h-[38px] rounded text-center bg-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
                   />
                   {errors.menus?.[index]?.quantity && (
                     <p className='text-red-500 text-sm'>{errors.menus[index]?.quantity?.message}</p>
@@ -95,7 +112,13 @@ export default function MenuQuantityList({ formResult }: MenuQuantityListProps) 
               )}
             />
 
-            <Button type='button' size='xs' variant='outline' onClick={() => increment(index)}>
+            <Button 
+              type='button' 
+              size='xs' 
+              variant={menu.quantity >= menu.maxQty ? 'outline' : 'destructive'}
+              disabled={menu.quantity >= menu.maxQty}
+              onClick={() => increment(index)}
+            >
               +
             </Button>
           </div>
@@ -103,7 +126,7 @@ export default function MenuQuantityList({ formResult }: MenuQuantityListProps) 
           <Button
             type='button'
             size='sm'
-            variant='outline'
+            variant={'outline'}
             onClick={() => deleteMenu(index)}
             className='max-w-[68px] justify-self-end'>
             삭제

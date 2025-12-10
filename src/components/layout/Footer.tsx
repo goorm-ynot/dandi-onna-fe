@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Footer() {
   return (
-    <footer className='w-full bg-white border-t border-border-wrapper'>
+    <footer className='w-full bg-background-normal-foreground border-t border-border-normal'>
       {/* ✅ 전체는 중앙 정렬 */}
       <div className='w-full pt-40 pb-20'>
         {/* ✅ 내부 컨테이너 */}

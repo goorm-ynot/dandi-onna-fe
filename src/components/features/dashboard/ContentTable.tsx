@@ -86,12 +86,12 @@ export default function ContentTable<T extends { [key: string]: any }>({
           <Table className='w-full text-left rounded-md'>
             {/* 헤더 */}
             <TableHeader>
-              <TableRow>
+              <TableRow className='h-[29px]'>
                 {columns.map((col, idx) => (
                   <TableHead
                     key={col.key}
                     className={clsx(
-                      'p-3 body4 text-gray-700 whitespace-nowrap',
+                      'title1 text-foreground-normal whitespace-nowrap px-[20px] pb-[10px]',
                       col.isWide && 'min-w-[350px]',
                       col.sortable && 'cursor-pointer hover:bg-gray-50 select-none',
                       // ✅ location 기반 정렬
@@ -125,19 +125,19 @@ export default function ContentTable<T extends { [key: string]: any }>({
                 return (
                   <TableRow
                     key={itemId || index} // 고유 ID가 있으면 사용, 없으면 index
-                    className={clsx('py-10 cursor-pointer transition-colors', {
-                      // ✅ 만료된 예약인 경우 붉은색 배경 + 왼쪽 보더
-                      'bg-table-expired hover:bg-red-100': isExpired,
+                    className={clsx('cursor-pointer transition-colors h-[46px] gap-[4px]', {
+                      // ✅ 만료된 예약인 경우 붉은색 배경
+                      'bg-status-noshow hover:bg-table-hover': isExpired,
                       // ✅ 일반적인 경우
                       'hover:bg-table-hover': !isExpired,
-                      'bg-table-secondary ': selectItemId === itemId,
+                      'bg-table-hover ': selectItemId === itemId,
                     })}
                     onClick={() => onSelectRow?.(item)}>
                     {columns.map((col, idx) => (
                       <TableCell
                         key={col.key}
                         className={clsx(
-                          'p-3 body3 text-gray-700 align-middle truncate py-3',
+                          ' body3 text-foreground-normal align-middle truncate ',
                           col.isWide && 'min-w-[350px]',
                           idx === columns.length - 1 && 'text-center'
                         )}>

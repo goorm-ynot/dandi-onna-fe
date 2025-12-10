@@ -7,15 +7,15 @@ interface DashboardLayout {
 
 export default function DashBoardLayout({ children }: DashboardLayout) {
   return (
-    <div className='w-screen flex flex-col justify-center items-center'>
-      <div className='w-full flex flex-col justify-center items-center'>
+    <div className='w-screen h-full'>
+      <div className='w-full flex flex-col justify-center items-center h-full px-40'>
         {/* 간격 추가 */}
         {children}
       </div>
       {/* 공지사항 부분 => 만약 상세부분이나 다른페이지에서 필요 없을 수 있음 */}
-      <div className='w-full flex-1'>
-      <NoticeSummary />
-      </div>
+      {/* <div className='w-full flex-1'>
+        <NoticeSummary />
+      </div> */}
     </div>
   );
 }

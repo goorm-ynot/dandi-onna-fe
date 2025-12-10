@@ -15,7 +15,7 @@ interface FilterTabsProps {
 
 export default function FilterTabs({ tabs, activeTab, onTabChange, className = '' }: FilterTabsProps) {
   return (
-    <div className={`flex gap-3 bg-white ${className}`}>
+    <div className={`flex gap-[32px] bg-white ${className}`}>
       {tabs.map((tab) => (
         <button
           key={tab.id}
@@ -26,8 +26,8 @@ export default function FilterTabs({ tabs, activeTab, onTabChange, className = '
             transition-all
             ${
               activeTab === tab.id
-                ? 'text-[#5929BA] border-b-[3px] border-[#5929BA]'
-                : 'text-[#262626] border-b-[3px] border-transparent'
+                ? 'text-foreground-primary-emphasis border-b-[3px] border-primitives-brandStrong'
+                : 'text-gray-600 border-b-[3px] border-transparent'
             }
           `}>
           {tab.label}

@@ -11,7 +11,7 @@ export default function FormLayout({ children, bottomChildren, onSubmit }: FormL
   return (
     <form onSubmit={onSubmit} className='flex flex-col justify-between min-h-[758px]'>
       <div className='flex flex-col gap-24'>
-        <Label className='title5 pt-[36px] px-20'>메뉴의 개수를 입력해 주세요.</Label>
+        <Label className='title5 text-foreground-normal pt-[36px] px-20'>메뉴의 개수를 입력해 주세요.</Label>
         {children}
       </div>
 
