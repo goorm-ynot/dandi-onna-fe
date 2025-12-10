@@ -30,7 +30,7 @@ const config = {
           secondary: '#e1e1e1',
           normal: '#c6c6c6',
           tertiary: '#a3a3a3',
-          detailPanel: '#4c4c4c'
+          quaternary: '#4c4c4c'
         },
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -87,7 +87,7 @@ const config = {
           foreground: '#DDDDDD',
         },
         error: {
-          DEFAULT: '#da1717ff',
+          DEFAULT: '#DA3944',
           foreground: '#fee2e2',
         },
         badge: {
@@ -97,6 +97,9 @@ const config = {
         },
         system: {
           'mauve-light': '#f9f5ff',
+          'pink-light': '#FFF5F7',
+          'green-light': '#F1FAE8',
+          'mono-white': '#FFFFFF',
         },
         primitives: {
           brand: '#B477FE',
@@ -118,9 +121,9 @@ const config = {
         },
         table: {
           bg: '#F5F5F5',
-          hover: '#e2f2fe',
+          hover: '#F9F5FF',
           secondary: '#abf2bf',
-          expired: 'rgb(254 226 226)',
+          expired: '#F1FAE8',
         },
         status: {
           pending: '#C9ECA8',

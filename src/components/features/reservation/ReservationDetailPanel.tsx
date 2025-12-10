@@ -46,7 +46,7 @@ export default function ReservationDetailPanel({
 
         {/* 구분선 1 */}
         <div className=''>
-          <hr className='w-full border border-1 border-border-detailPanel' />
+          <hr className='w-full border border-1 border-border-quaternary' />
         </div>
 
         <Label className='title5'>주문 메뉴</Label>

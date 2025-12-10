@@ -126,11 +126,11 @@ export default function ContentTable<T extends { [key: string]: any }>({
                   <TableRow
                     key={itemId || index} // 고유 ID가 있으면 사용, 없으면 index
                     className={clsx('cursor-pointer transition-colors', {
-                      // ✅ 만료된 예약인 경우 붉은색 배경 + 왼쪽 보더
-                      'bg-table-expired hover:bg-red-100': isExpired,
+                      // ✅ 만료된 예약인 경우 붉은색 배경
+                      'bg-status-noshow hover:bg-table-hover': isExpired,
                       // ✅ 일반적인 경우
                       'hover:bg-table-hover': !isExpired,
-                      'bg-table-secondary ': selectItemId === itemId,
+                      'bg-table-hover ': selectItemId === itemId,
                     })}
                     onClick={() => onSelectRow?.(item)}>
                     {columns.map((col, idx) => (

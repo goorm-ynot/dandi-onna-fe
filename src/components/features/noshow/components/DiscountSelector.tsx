@@ -54,7 +54,7 @@ export default function DiscountSelector({ formResult, mode }: DiscountSelectorP
             <Button
               type='button'
               key={opt}
-              variant={selectedDiscount === opt ? 'secondary' : 'outline'}
+              variant={selectedDiscount === opt ? 'outlineHug' : 'outline'}
               onClick={() => {
                 setSelectedDiscount(opt);
                 setCustomDiscount('');
@@ -88,14 +88,14 @@ export default function DiscountSelector({ formResult, mode }: DiscountSelectorP
                 }, 500);
               }}
               onFocus={() => setSelectedDiscount('custom')}
-              className={`w-[82px] text-center rounded-[6px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+              className={`w-[82px] text-center rounded-[6px] bg-background-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
                 selectedDiscount === 'custom' ? 'border-primary ring-1 ring-primary' : 'border-muted-foreground/40'
               }`}
             />
           </div>
         </div>
 
-        <Label className='caption3 flex gap-1 justify-end items-center'>
+        <Label className='caption3 flex gap-1 justify-end items-center text-error'>
           <CircleAlert size={18} /> 최대 90%까지 입력할 수 있어요
         </Label>
         {errors[discountFieldName as keyof typeof errors] && (

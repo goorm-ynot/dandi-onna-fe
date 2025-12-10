@@ -50,7 +50,7 @@ export default function VisitTimeSelector({ formResult, mode }: VisitTimeSelecto
             <Button
               type='button'
               key={opt}
-              variant={selectedTime === opt ? 'secondary' : 'outline'}
+              variant={selectedTime === opt ? 'outlineHug' : 'outline'}
               onClick={() => {
                 setSelectedTime(opt);
                 setCustomTime('');
@@ -89,14 +89,14 @@ export default function VisitTimeSelector({ formResult, mode }: VisitTimeSelecto
               }, 500);
             }}
             onFocus={() => setSelectedTime('custom')}
-            className={`text-center rounded-[6px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+            className={`text-center rounded-[6px] bg-background-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
               selectedTime === 'custom' ? 'border-primary ring-1 ring-primary' : 'border-muted-foreground/40'
             } ${mode === 'create' ? 'w-[82px]' : 'w-full'}`}
           />
         </div>
       </div>
 
-      <Label className='caption3 flex gap-1 justify-end items-center'>
+      <Label className='caption3 flex gap-1 justify-end items-center text-error'>
         <CircleAlert size={18} /> 최대 300분까지 입력할 수 있어요
       </Label>
       {errors.duringTime && <p className='caption3 text-error text-right'>{errors.duringTime.message}</p>}
