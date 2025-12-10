@@ -121,7 +121,7 @@ const config = {
         },
         table: {
           bg: '#F5F5F5',
-          hover: '#F9F5FF',
+          hover: '#F5F9FF',
           secondary: '#abf2bf',
           expired: '#F1FAE8',
         },

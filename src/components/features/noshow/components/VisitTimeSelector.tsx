@@ -43,7 +43,8 @@ export default function VisitTimeSelector({ formResult, mode }: VisitTimeSelecto
   const debounceTimer = React.useRef<NodeJS.Timeout | null>(null);
 
   return (
-    <div className='flex flex-col gap-1 px-20'>
+    <div className='flex flex-col gap-[4px] px-20'>
+      {/* <Label className='caption3'>주문 마감 시간 : {currentDuringTime}</Label> */}
       <div className='flex flex-row justify-between items-center w-full gap-3'>
         {mode === 'create' &&
           timeOptions.map((opt) => (
@@ -62,10 +63,10 @@ export default function VisitTimeSelector({ formResult, mode }: VisitTimeSelecto
             </Button>
           ))}
 
-        <div className={clsx(mode === 'create' ? 'flex items-center gap-2' : 'w-full')}>
+        <div className={clsx(mode === 'create' ? 'flex items-center gap-2' : 'w-full', 'relative')}>
           <Input
             type='number'
-            placeholder='0분 후'
+            placeholder='0'
             value={customTime}
             {...register('duringTime', { valueAsNumber: true })}
             onChange={(e) => {
@@ -89,10 +90,13 @@ export default function VisitTimeSelector({ formResult, mode }: VisitTimeSelecto
               }, 500);
             }}
             onFocus={() => setSelectedTime('custom')}
-            className={`text-center rounded-[6px] bg-background-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+            className={`pr-12 text-left rounded-[6px] bg-background-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
               selectedTime === 'custom' ? 'border-primary ring-1 ring-primary' : 'border-muted-foreground/40'
             } ${mode === 'create' ? 'w-[82px]' : 'w-full'}`}
           />
+          <span className='absolute right-3 top-1/2 -translate-y-1/2 text-foreground-normal pointer-events-none'>
+            분 후
+          </span>
         </div>
       </div>
 

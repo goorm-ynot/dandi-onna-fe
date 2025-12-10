@@ -24,8 +24,8 @@ export default function MenuQuantityList({ formResult }: MenuQuantityListProps) 
     return (
       <div className='flex flex-col gap-24 px-20'>
         <div className='grid grid-cols-2 gap-20 justify-items-stretch w-full'>
-          <Label className='body3 text-left'>{menu.name}</Label>
-          <Label className='body5 text-right'>{menu.price?.toLocaleString()}원</Label>
+          <Label className='body3 text-foreground-normal text-left'>{menu.name}</Label>
+          <Label className='body5 text-foreground-normal text-right'>{menu.price?.toLocaleString()}원</Label>
 
           <div className='flex flex-row gap-[2px]'>
             <Button 

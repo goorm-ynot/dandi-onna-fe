@@ -29,7 +29,7 @@ export function TwoColumnLayout({
         </div>
 
         {/* 오른쪽 패널 - 동적 컨텐츠 */}
-        <div className={`${rightClassName} flex flex-col`}>
+        <div className={`${rightClassName} flex flex-col w-[380px]`}>
           <div className='pb-40'>
             {showTitles && rightTitle && <PageHeader title={rightTitle} />}
           </div>

@@ -44,15 +44,15 @@ SingleColumnLayoutProps) {
         <ContentDate showDate={showDate} dateString={dateString} />
       </div>
       <div className='h-[758px] overflow-hidden border border-border-wrapper border-1 rounded-md bg-background-normal flex flex-col'>
-        <div className='flex items-center justify-between border-b border-border-wrapper px-20 pt-20 '>
           {/* 필터 (조건부) */}
           {showFilters && tabs.length > 0 && onTabChange && (
-            <FilterTabs tabs={tabs} activeTab={activeTab} onTabChange={onTabChange} />
+            <div className='flex items-center justify-between border-b border-border-wrapper px-20 pt-20 '>
+                <FilterTabs tabs={tabs} activeTab={activeTab} onTabChange={onTabChange} />
+            </div>
           )}
-        </div>
 
         {/* 테이블 */}
-        <div className='my-20 flex-1'>
+        <div className='flex-1'>
           <ContentTable
             columns={columns}
             data={data}

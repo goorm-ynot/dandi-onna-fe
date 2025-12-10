@@ -46,9 +46,9 @@ export default function DiscountSelector({ formResult, mode }: DiscountSelectorP
 
   return (
     <>
-      <Label className='title5 px-20'>할인율과 방문시간을 등록해 주세요.</Label>
+      <Label className='title5 text-foreground-normal px-20'>할인율과 방문시간을 등록해 주세요.</Label>
 
-      <div className='flex flex-col gap-1 px-20'>
+      <div className='flex flex-col gap-[4px] px-20'>
         <div className='flex flex-row justify-between items-center w-full gap-3'>
           {discountOptions.map((opt) => (
             <Button
@@ -61,37 +61,42 @@ export default function DiscountSelector({ formResult, mode }: DiscountSelectorP
                 setValue(discountFieldName, Number(opt));
               }}
               size='custom'
-              className='w-auto px-5 py-2.5'>
+              className='w-auto px-5 py-2.5 text-foreground-normal'>
               {opt}%
             </Button>
           ))}
 
           <div className='flex items-center gap-2'>
-            <Input
-              type='number'
-              placeholder='0'
-              value={customDiscount}
-              {...register(discountFieldName, { valueAsNumber: true })}
-              onChange={(e) => {
-                const value = e.target.value;
-                setCustomDiscount(value);
-                setSelectedDiscount('custom');
+            <div className='relative'>
+              <Input
+                type='number'
+                placeholder='30~90'
+                value={customDiscount}
+                {...register(discountFieldName, { valueAsNumber: true })}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setCustomDiscount(value);
+                  setSelectedDiscount('custom');
 
-                // 이전 타이머 취소
-                if (debounceTimer.current) {
-                  clearTimeout(debounceTimer.current);
-                }
+                  // 이전 타이머 취소
+                  if (debounceTimer.current) {
+                    clearTimeout(debounceTimer.current);
+                  }
 
-                // 500ms 후에 폼 값 업데이트
-                debounceTimer.current = setTimeout(() => {
-                  setValue(discountFieldName, Number(value));
-                }, 500);
-              }}
-              onFocus={() => setSelectedDiscount('custom')}
-              className={`w-[82px] text-center rounded-[6px] bg-background-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
-                selectedDiscount === 'custom' ? 'border-primary ring-1 ring-primary' : 'border-muted-foreground/40'
-              }`}
-            />
+                  // 500ms 후에 폼 값 업데이트
+                  debounceTimer.current = setTimeout(() => {
+                    setValue(discountFieldName, Number(value));
+                  }, 500);
+                }}
+                onFocus={() => setSelectedDiscount('custom')}
+                className={`w-[82px] pr-6 text-left rounded-[6px] bg-background-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+                  selectedDiscount === 'custom' ? 'border-primary ring-1 ring-primary' : 'border-muted-foreground/40'
+                }`}
+              />
+              <span className='absolute right-3 top-1/2 -translate-y-1/2 text-foreground-normal pointer-events-none'>
+                %
+              </span>
+            </div>
           </div>
         </div>
 

@@ -20,7 +20,7 @@ const buttonVariants = cva(
         filterNone: 'text-tableFilter-text',
         map : 'border-1 border-border-normal bg-white hover:bg-accent hover:text-accent-foreground',
         page: 'bg-system-mauve-light text-primary border-none',
-        pagelink: 'text-foreground-normal'
+        pagelink: 'text-foreground-normal'  
       },
       size: {
         default: 'h-[38px] px-5 py-2.5',

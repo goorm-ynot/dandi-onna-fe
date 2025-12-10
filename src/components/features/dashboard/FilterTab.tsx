@@ -26,7 +26,7 @@ export default function FilterTabs({ tabs, activeTab, onTabChange, className = '
             transition-all
             ${
               activeTab === tab.id
-                ? 'text-primitives-brandStrong border-b-[3px] border-primitives-brandStrong'
+                ? 'text-foreground-primary-emphasis border-b-[3px] border-primitives-brandStrong'
                 : 'text-gray-600 border-b-[3px] border-transparent'
             }
           `}>
