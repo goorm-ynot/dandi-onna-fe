@@ -83,7 +83,7 @@ export default function ContentTable<T extends { [key: string]: any }>({
         {!data || data.length === 0 ? (
           <div className='text-center text-gray-500 mt-20'>{emptyMessage}</div>
         ) : (
-          <Table className='w-full text-left rounded-md'>
+          <Table className='w-full text-left rounded-md  overflow-x-auto'>
             {/* 헤더 */}
             <TableHeader>
               <TableRow className='h-[29px]'>
@@ -137,7 +137,7 @@ export default function ContentTable<T extends { [key: string]: any }>({
                       <TableCell
                         key={col.key}
                         className={clsx(
-                          ' body3 text-foreground-normal align-middle truncate ',
+                          ' body3 text-foreground-normal align-middle truncate px-[16px]',
                           col.isWide && 'min-w-[350px]',
                           idx === columns.length - 1 && 'text-center'
                         )}>
