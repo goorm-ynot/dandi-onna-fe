@@ -49,7 +49,7 @@ export default function MenuQuantityList({ formResult }: MenuQuantityListProps) 
                       const value = Number(e.target.value);
                       if (value >= 1) field.onChange(value);
                     }}
-                    className='w-[60px] h-[38px] rounded text-center bg-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+                    className='w-[46px] h-[38px] rounded text-center bg-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
                   />
                   {errors.quantity && <p className='text-red-500 text-sm'>{errors.quantity?.message}</p>}
                 </>

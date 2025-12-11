@@ -41,7 +41,7 @@ export default function SingleColumnLayout({
 }: SingleColumnLayoutProps) {
   return (
     <DashBoardLayout>
-      <div className='max-w-[1280px] w-full h-full flex flex-col pt-40 px-40'>
+      <div className='max-w-[1280px] w-full h-full flex flex-col px-40 pb-20'>
         <SinglePageLayout
           title={title}
           tabs={tabs}

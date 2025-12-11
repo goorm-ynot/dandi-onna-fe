@@ -6,7 +6,7 @@ export default function Footer() {
       {/* ✅ 전체는 중앙 정렬 */}
       <div className='w-full pt-40 pb-20'>
         {/* ✅ 내부 컨테이너 */}
-        <div className='max-w-[1280px] mx-auto px-16 max-[400px]:px-16 lg:px-[40px] flex flex-col gap-5'>
+        <div className='max-w-[1280px] mx-auto px-16 max-[400px]:px-16 lg:px-[40px] flex flex-col gap-[20px]'>
           {/* 상단: 로고 + 링크 + 고객센터 */}
           <div className='flex flex-row justify-between items-start max-[400px]:flex-col max-[400px]:items-left max-[400px]:gap-[20px]'>
             {/* 왼쪽 */}
@@ -30,7 +30,7 @@ export default function Footer() {
           </div>
 
           {/* 하단: 주소 및 카피라이트 */}
-          <div className='flex flex-col gap-1.5 caption3 text-neutral-900 mt-2'>
+          <div className='flex flex-col gap-[6px] caption3 text-neutral-900 mt-2'>
             <p>경기 성남시 분당구 구름스퀘어 (주)와이낫컴퍼니</p>
             <p>Copyright © 2025 Ynot. All Rights Reserved.</p>
           </div>

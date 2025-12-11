@@ -21,7 +21,7 @@ export function TwoColumnLayout({
 }: TwoColumnLayoutProps) {
   return (
     <DashBoardLayout>
-      <div className='max-w-[1280px] w-full h-full flex gap-[40px] pt-40 px-40'>
+      <div className='max-w-[1280px] w-full h-full flex gap-[40px] px-40 pb-20'>
         {/* 왼쪽 패널 */}
         <div className={`${leftClassName} flex flex-col max-w-[880px]`}>
           {/* <div className='flex-1 overflow-hidden'>{leftContent}</div> */}

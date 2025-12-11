@@ -102,6 +102,7 @@ const config = {
           'pink-light': '#FFF5F7',
           'green-light': '#F1FAE8',
           'mono-white': '#FFFFFF',
+          pink: '#FFD8E2',
         },
         primitives: {
           brand: '#B477FE',
@@ -123,7 +124,7 @@ const config = {
         },
         table: {
           bg: '#F5F5F5',
-          hover: '#F5F9FF',
+          hover: '#f9f5ff',
           secondary: '#abf2bf',
           expired: '#F1FAE8',
         },

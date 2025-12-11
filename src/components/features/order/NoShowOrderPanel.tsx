@@ -51,7 +51,7 @@ export default function NoShowOrderPanel({ mode, orderData, onStatusUpdate }: No
               <div key={item.orderItemId} className='grid grid-cols-4 gap-12  w-full'>
                 <Label className='title1 col-span-2  text-label-semilight'>{item.menuName}</Label>
                 <Label className='text-right title1 flex-none'>{item.quantity}</Label>
-                <Label className='text-right title1 flex-none'>{Number(item.unitPrice).toLocaleString()}원</Label>
+                <Label className='text-right title1 flex-none whitespace-nowrap'>{Number(item.unitPrice).toLocaleString()}원</Label>
               </div>
             ))}
         </div>
