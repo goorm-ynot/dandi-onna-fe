@@ -100,14 +100,13 @@ export default function DiscountSelector({ formResult, mode }: DiscountSelectorP
           </div>
         </div>
 
-        <Label className='caption3 flex gap-1 justify-end items-center text-error'>
-          <CircleAlert size={18} /> 최대 90%까지 입력할 수 있어요
+        <Label className="caption3 flex gap-1 justify-end items-center text-error">
+          <CircleAlert size={18} />
+          {errors[discountFieldName]?.message
+            ? errors[discountFieldName]?.message // ← 에러 있을 때 표시
+            : '최대 90%까지 입력할 수 있어요'}     
         </Label>
-        {errors[discountFieldName as keyof typeof errors] && (
-          <p className='caption3 text-error text-right'>
-            {errors[discountFieldName as keyof typeof errors]?.message as string}
-          </p>
-        )}
+
       </div>
     </>
   );

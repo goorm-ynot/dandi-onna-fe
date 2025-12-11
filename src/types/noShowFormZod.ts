@@ -26,7 +26,7 @@ export const noShowFormSchema = z.object({
     }),
   discount: z
     .number({ message: '할인율을 입력해주세요' })
-    .min(0, '할인율은 0% 이상이어야 합니다')
+    .min(30, '할인율은 30% 이상이어야 합니다')
     .max(90, '최대 90%까지 입력 가능합니다'),
   duringTime: z
     .number({ message: '방문 시간을 입력해주세요' })
@@ -43,7 +43,7 @@ export const noShowEditFormSchema = z.object({
   price: z.number().min(0),
   discountPercent: z
     .number({ message: '할인율을 입력해주세요' })
-    .min(0, '할인율은 0% 이상이어야 합니다')
+    .min(30, '할인율은 30% 이상이어야 합니다')
     .max(90, '최대 90%까지 입력 가능합니다'),
   duringTime: z
     .union([z.number(), z.nan(), z.undefined()])
