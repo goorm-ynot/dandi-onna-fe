@@ -3,7 +3,6 @@ import React from 'react';
 import clsx from 'clsx';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Column, Reservation, SortState } from '@/types/boardData';
-import { ChevronDown, ChevronsUpDown, ChevronUp } from 'lucide-react';
 
 interface ContentTableProps<T> {
   columns: Column<T>[];
@@ -83,7 +82,7 @@ export default function ContentTable<T extends { [key: string]: any }>({
         {!data || data.length === 0 ? (
           <div className='text-center text-gray-500 mt-20'>{emptyMessage}</div>
         ) : (
-          <Table className='w-full text-left rounded-md  overflow-x-auto'>
+          <Table className='w-full text-left rounded-md overflow-x-auto'>
             {/* 헤더 */}
             <TableHeader>
               <TableRow className='h-[29px]'>
@@ -93,7 +92,7 @@ export default function ContentTable<T extends { [key: string]: any }>({
                     className={clsx(
                       'title1 text-foreground-normal whitespace-nowrap px-[20px] pb-[10px]',
                       col.isWide && 'min-w-[350px]',
-                      col.sortable && 'cursor-pointer hover:bg-gray-50 select-none',
+                      col.sortable && 'cursor-pointer select-none',
                       // ✅ location 기반 정렬
                       {
                         'text-left': !col.location || col.location === 'left',
@@ -127,7 +126,7 @@ export default function ContentTable<T extends { [key: string]: any }>({
                     key={itemId || index} // 고유 ID가 있으면 사용, 없으면 index
                     className={clsx('cursor-pointer transition-colors h-[46px] gap-[4px]', {
                       // ✅ 만료된 예약인 경우 붉은색 배경
-                      'bg-status-noshow hover:bg-table-hover': isExpired,
+                      'bg-system-pink-light hover:bg-table-hover': isExpired,
                       // ✅ 일반적인 경우
                       'hover:bg-table-hover': !isExpired,
                       'bg-table-hover ': selectItemId === itemId,
