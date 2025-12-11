@@ -15,7 +15,7 @@ interface FilterTabsProps {
 
 export default function FilterTabs({ tabs, activeTab, onTabChange, className = '' }: FilterTabsProps) {
   return (
-    <div className={`flex gap-[32px] bg-white ${className}`}>
+    <div className={`flex  bg-white min-h-[38px] ${className}`}>
       {tabs.map((tab) => (
         <button
           key={tab.id}
@@ -23,12 +23,14 @@ export default function FilterTabs({ tabs, activeTab, onTabChange, className = '
           className={`
             px-[30px] py-[10px]
             body3
-            transition-all
+            transition-colors duration-150
+            border-b-[3px] transition-[border-color] duration-200
             ${
               activeTab === tab.id
-                ? 'text-foreground-primary-emphasis border-b-[3px] border-primitives-brandStrong'
-                : 'text-gray-600 border-b-[3px] border-transparent'
+                ? 'text-foreground-primary-emphasis border-primitives-brandStrong'
+                : 'text-gray-600 border-transparent'
             }
+            hover:bg-system-mauve-light
           `}>
           {tab.label}
         </button>

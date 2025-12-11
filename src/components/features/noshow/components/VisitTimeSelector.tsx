@@ -100,10 +100,12 @@ export default function VisitTimeSelector({ formResult, mode }: VisitTimeSelecto
         </div>
       </div>
 
-      <Label className='caption3 flex gap-1 justify-end items-center text-error'>
-        <CircleAlert size={18} /> 최대 300분까지 입력할 수 있어요
+      <Label className="caption3 flex gap-1 justify-end items-center text-error">
+        <CircleAlert size={18} />
+        {errors['duringTime']?.message
+          ? errors['duringTime']?.message // ← 에러 있을 때 표시
+          : '최대 300분까지 입력할 수 있어요'}     
       </Label>
-      {errors.duringTime && <p className='caption3 text-error text-right'>{errors.duringTime.message}</p>}
     </div>
   );
 }

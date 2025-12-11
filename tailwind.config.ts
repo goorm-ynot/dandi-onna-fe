@@ -41,6 +41,7 @@ const config = {
           'badge-expected': '#c9eca8',
           'badge-finished': '#e1e1e1',
           'badge-noshow': '#ffd8e2',
+          'secondary-subtle':'#E1E1E1',
         },
         foreground: {
           DEFAULT: 'hsl(var(--foreground))',
@@ -53,6 +54,7 @@ const config = {
           primary: '#8749fe',
           'primary-emphasis': '#5929ba',
           disable: '#C6C6C6',
+          'normal-subtle': '#A3A3A3'
         },
         primary: {
           DEFAULT: '#8949fe',

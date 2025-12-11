@@ -22,32 +22,32 @@ export default function DropDownNav({
   
   return (
     <div
-      style={{ position: 'absolute', top: y + 15, left: x + 10, transform: 'translateX(-50%)' }}
+      style={{ position: 'absolute', top: y + 30, left: x + 10, transform: 'translateX(-50%)' }}
       onMouseEnter={() => {}}
       onMouseLeave={close}
       className={clsx(
-        'min-w-[160px] px-3 py-3 bg-white shadow-lg rounded-md border border-gray-200 z-[9999]',
-        menu.id === 'sales-management' && 'bg-[#E1E1E1]' // sales-management 메뉴일 때 배경색 변경
+        'min-w-[160px] px-[20px] py-[20px] bg-white shadow-lg rounded-md z-[9999] flex flex-col gap-[10px]',
+        menu.id === 'sales-management' && 'bg-background-secondary-subtle' // sales-management 메뉴일 때 배경색 변경
       )}>
       {menu.children?.map((item) => {
-        const URL = item.path ? BASE_URL + item.path : '#';
+        const URL = item.path ? BASE_URL + item.path : '';
         const hasIcon = !!item.icon;
-        const isActive = item.path && pathname === BASE_URL + item.path;
+        const isActive = item.path && pathname == BASE_URL + item.path;
         
         return (
           <Link
             key={item.id}
             href={URL}
             className={clsx(
-              'flex items-center gap-2 px-4 py-2 text-sm whitespace-nowrap',
-              hasIcon && 'text-gray-500',
-              isActive ? 'font-semibold' : 'hover:font-semibold'
+              'flex items-center gap-2 px-4 whitespace-nowrap text-foreground-normal',
+              hasIcon && 'text-foreground-normal-subtle',
+              isActive ? 'body5' : 'body3 hover:font-semibold'
             )}
             onClick={close}>
             {/* ✅ 아이콘이 존재할 경우 함께 표시 */}
             {hasIcon && (
-              <span className='flex-shrink-0 text-gray-500'>
-                <DynamicIcon name={String(item.icon)} size={16} className='text-black pr-1' />
+              <span className='flex-shrink-0 '>
+                <DynamicIcon name={String(item.icon)} size={16} className='text-foreground-normal-subtle pr-1' />
               </span>
             )}
             <span>{item.label}</span>
