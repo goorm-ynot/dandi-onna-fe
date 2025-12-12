@@ -23,7 +23,7 @@ ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
 // ✅ Tailwind 색상 토큰 기반 스타일
 const toastVariants = cva(
-  'group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-5 pr-10 shadow-lg transition-all ' +
+  'group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-sm border p-5 pr-10 shadow-lg transition-all ' +
     'data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none ' +
     'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:slide-in-from-top-full ' +
     'data-[state=closed]:slide-out-to-right-full',
@@ -58,7 +58,7 @@ const ToastClose = React.forwardRef<
   <ToastPrimitives.Close
     ref={ref}
     className={cn(
-      'absolute right-3 top-3 rounded-md p-1 text-toast-text/70 transition-opacity hover:text-toast-text focus:outline-none focus:ring-2 focus:ring-toast-border group-[.destructive]:text-toast-destructive-text',
+      'absolute right-3 top-3 rounded-sm p-1 text-toast-text/70 transition-opacity hover:text-toast-text focus:outline-none focus:ring-2 focus:ring-toast-border group-[.destructive]:text-toast-destructive-text',
       className
     )}
     toast-close=''
@@ -91,7 +91,7 @@ const ToastAction = React.forwardRef<
   <ToastPrimitives.Action
     ref={ref}
     className={cn(
-      'inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium transition-colors hover:bg-toast-border/10 focus:outline-none focus:ring-2 focus:ring-toast-border disabled:pointer-events-none disabled:opacity-50',
+      'inline-flex h-8 shrink-0 items-center justify-center rounded-sm border bg-transparent px-3 text-sm font-medium transition-colors hover:bg-toast-border/10 focus:outline-none focus:ring-2 focus:ring-toast-border disabled:pointer-events-none disabled:opacity-50',
       className
     )}
     {...props}

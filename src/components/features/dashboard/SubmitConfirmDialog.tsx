@@ -34,39 +34,35 @@ export function ConfirmDialog({
 }: ConfirmDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='bg-[#ffffff] sm:max-w-md p-[12px] w-[88%] max-w-[340px] min-h-[142px] rounded-16'>
-        <DialogHeader className='flex flex-col justify-center items-center gap-[8px] pt-[30px]'>
-          <DialogTitle className='title5 text-[#000000]'>{title}</DialogTitle>
-          <DialogDescription className='title1 whitespace-pre-line text-center text-[#707070]'>
+      <DialogContent className='bg-white p-3 w-[304px] rounded-16 shadow-[0_4px_32px_rgba(0,0,0,0.15)]'>
+        <DialogHeader className='flex flex-col justify-center items-center gap-2 pt-[30px]'>
+          <DialogTitle className='title5 text-black'>{title}</DialogTitle>
+          <DialogDescription className='body3 whitespace-pre-line text-center text-[#707070]'>
             {description}
           </DialogDescription>
         </DialogHeader>
 
         {content && <div className='py-4'>{content}</div>}
 
-        <DialogFooter className='flex-row gap-[12px] w-full pt-[20px] pb-[12px]'>
+        <DialogFooter className='flex-row gap-3 w-full pt-5 pb-3'>
           <Button
             type='button'
-            className='title1 text-[#333333]'
+            className='body3 text-[#262626] px-5 py-2.5 h-[38px]'
             variant='outline'
             onClick={() => {
               onCancel();
               onOpenChange(false);
             }}>
-            <p className='title1'> 
-              {cancelText}
-            </p>
+            {cancelText}
           </Button>
           <Button
             type='button'
-            className='w-full title3 bg-[#8749FE] text-white rounded-[6px] hover:bg-[#7239d4] active:scale-95 active:opacity-70 transition-all duration-100'
+            className='w-full body5 bg-[#8749FE] text-white rounded-[6px] px-3 py-2.5 h-[38px] hover:bg-[#7239d4] active:scale-95 active:opacity-70 transition-all duration-100'
             onClick={() => {
               onConfirm();
               onOpenChange(false);
             }}>
-              <p className='title3'>
-                {confirmText}
-              </p>
+            {confirmText}
           </Button>
         </DialogFooter>
       </DialogContent>

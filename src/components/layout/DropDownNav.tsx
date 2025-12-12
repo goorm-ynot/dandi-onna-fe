@@ -26,7 +26,7 @@ export default function DropDownNav({
       onMouseEnter={() => {}}
       onMouseLeave={close}
       className={clsx(
-        'min-w-[160px] px-[20px] py-[20px] bg-white shadow-lg rounded-md z-[9999] flex flex-col gap-[10px]',
+        'min-w-[160px] px-[20px] py-[20px] bg-white shadow-lg rounded-sm z-[9999] flex flex-col gap-[10px]',
         menu.id === 'sales-management' && 'bg-background-secondary-subtle' // sales-management 메뉴일 때 배경색 변경
       )}>
       {menu.children?.map((item) => {

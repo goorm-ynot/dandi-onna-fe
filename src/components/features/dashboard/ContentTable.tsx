@@ -82,7 +82,7 @@ export default function ContentTable<T extends { [key: string]: any }>({
         {!data || data.length === 0 ? (
           <div className='text-center text-gray-500 mt-20'>{emptyMessage}</div>
         ) : (
-          <Table className='w-full text-left rounded-md overflow-x-auto'>
+          <Table className='w-full text-left rounded-sm overflow-x-auto'>
             {/* 헤더 */}
             <TableHeader>
               <TableRow className='h-[29px]'>
@@ -124,19 +124,19 @@ export default function ContentTable<T extends { [key: string]: any }>({
                 return (
                   <TableRow
                     key={itemId || index} // 고유 ID가 있으면 사용, 없으면 index
-                    className={clsx('cursor-pointer transition-colors h-[46px] gap-[4px]', {
+                    className={clsx('cursor-pointer transition-colors h-[48px]', {
                       // ✅ 만료된 예약인 경우 붉은색 배경
                       'bg-system-pink-light hover:bg-table-hover': isExpired,
                       // ✅ 일반적인 경우
                       'hover:bg-table-hover': !isExpired,
-                      'bg-table-hover ': selectItemId === itemId,
+                      'bg-table-hover': selectItemId === itemId,
                     })}
                     onClick={() => onSelectRow?.(item)}>
                     {columns.map((col, idx) => (
                       <TableCell
                         key={col.key}
                         className={clsx(
-                          ' body3 text-foreground-normal align-middle truncate px-[16px]',
+                          'body3 text-foreground-normal align-middle truncate px-[16px]',
                           col.isWide && 'min-w-[350px]',
                           idx === columns.length - 1 && 'text-center'
                         )}>

@@ -5,7 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -24,15 +24,16 @@ const buttonVariants = cva(
       },
       size: {
         default: 'h-[38px] px-5 py-2.5',
-        sm: 'h-[38px] rounded-md px-3',
-        lg: 'h-[38px] rounded-md px-8',
+        sm: 'h-[38px] rounded-sm px-3',
+        md: 'h-[38px] rounded-sm p-[7px]',
+        lg: 'h-[38px] rounded-sm px-8',
         icon: 'h-10 w-10',
-        page: 'h-[24px] w-[24px] py-1 rounded-md',
+        page: 'h-[24px] w-[24px] py-1 rounded-sm',
         xs: 'h-[38px] w-[38px] p-[7px] rounded-[6px]',
         custom: 'h-[38px]',
         table: 'max-h-[26px]',
         onboarding: 'h-[44px] px-3 py-2.5',
-        map:'w-[76px] h-[26px] rounded-md',
+        map:'w-[76px] h-[26px] rounded-sm',
       },
     },
     defaultVariants: {

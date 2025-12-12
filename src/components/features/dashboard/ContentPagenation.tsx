@@ -1,5 +1,6 @@
 // src/components/common/Pagination.tsx
 import { Button } from '@/components/ui/button';
+import IconChevronRight from '/images/icons/IconL-chevron-right.svg';
 
 interface PaginationProps {
   totalPages: number;
@@ -21,7 +22,9 @@ export default function Pagination({ totalPages, currentPage, onPageChange, clas
         onClick={() => onPageChange(Math.max(0, validPage - 1))}
         disabled={validPage === 0}
         >
-        {'<'}
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
       </Button>
 
       {Array.from({ length: validTotalPages }).map((_, i) => (
@@ -36,8 +39,11 @@ export default function Pagination({ totalPages, currentPage, onPageChange, clas
         onClick={() => onPageChange(Math.min(validTotalPages - 1, validPage + 1))}
         disabled={validPage === validTotalPages - 1}
         >
-        {'>'}
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
       </Button>
     </div>
   );
 }
+``
