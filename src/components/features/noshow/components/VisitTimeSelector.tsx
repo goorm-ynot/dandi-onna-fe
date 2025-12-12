@@ -45,7 +45,7 @@ export default function VisitTimeSelector({ formResult, mode }: VisitTimeSelecto
   return (
     <div className='flex flex-col gap-[4px] px-20'>
       {/* <Label className='caption3'>주문 마감 시간 : {currentDuringTime}</Label> */}
-      <div className='flex flex-row justify-between items-center w-full gap-3'>
+      <div className='flex flex-row justify-between items-center w-full gap-[7.66px]'>
         {mode === 'create' &&
           timeOptions.map((opt) => (
             <Button
@@ -58,7 +58,7 @@ export default function VisitTimeSelector({ formResult, mode }: VisitTimeSelecto
                 setValue('duringTime', Number(opt));
               }}
               size='custom'
-              className='w-auto px-3.5 py-2.5'>
+              className='w-auto px-[10px] py-[10px] body3'>
               {opt}분 후
             </Button>
           ))}
@@ -90,9 +90,11 @@ export default function VisitTimeSelector({ formResult, mode }: VisitTimeSelecto
               }, 500);
             }}
             onFocus={() => setSelectedTime('custom')}
-            className={`pr-12 text-left rounded-[6px] bg-background-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+            className={`pr-12 text-left rounded-[6px] bg-background-normal 
+              min-w-[82px]
+              [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
               selectedTime === 'custom' ? 'border-primary ring-1 ring-primary' : 'border-muted-foreground/40'
-            } ${mode === 'create' ? 'w-[82px]' : 'w-full'}`}
+            } ${mode === 'create' ? 'w-[85px]' : 'w-full'}`}
           />
           <span className='absolute right-3 top-1/2 -translate-y-1/2 text-foreground-normal pointer-events-none'>
             분 후

@@ -5,7 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -18,9 +18,10 @@ const buttonVariants = cva(
         link: 'text-label underline-offset-4 hover:underline',
         filterAct: 'border-b border-primary  underline-offset-4 hover:underline text-primary',
         filterNone: 'text-tableFilter-text',
-        map : 'border-1 border-border-normal bg-white hover:bg-accent hover:text-accent-foreground',
+        map : 'border border-border-normal bg-white hover:bg-accent hover:text-accent-foreground',
         page: 'bg-system-mauve-light text-primary border-none',
-        pagelink: 'text-foreground-normal'  
+        pagelink: 'text-foreground-normal',
+        icon: 'bg-background-normal hover:bg-accent hover:text-accent-foreground p-0',
       },
       size: {
         default: 'h-[38px] px-5 py-2.5',

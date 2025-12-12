@@ -133,32 +133,32 @@ export default function PaymentPage({ params }: Props) {
             {/* Credit Card */}
             <Button
               variant='outline'
-              className={`h-11 rounded-[6px] ${
+              className={`h-11 rounded-[6px] px-[12px] py-[10px] ${
                 selectedPaymentMethod === 'CARD' ? 'border-[#8749fe] bg-system-mauve-light' : 'border-[#c6c6c6] bg-white'
               }`}
               onClick={() => handlePaymentMethodSelect('CARD')}>
-              <p className='body3 text-[#262626]'>신용/체크카드</p>
+              <p className='body5 text-[#262626]'>신용/체크카드</p>
             </Button>
 
             {/* Other Payment Methods */}
             <div className='flex gap-4'>
               <Button
                 variant='outline'
-                className={`flex-1 h-11 rounded-[6px] flex items-center justify-center gap-1 ${
+                className={`flex-1 h-11 rounded-[6px] flex items-center justify-center gap-1 px-[12px] py-[10px] ${
                   selectedPaymentMethod === 'KAKAO_PAY' ? 'border-[#8749fe] bg-system-mauve-light' : 'border-[#c6c6c6] bg-white'
                 }`}
                 onClick={() => handlePaymentMethodSelect('KAKAO_PAY')}>
                 <KakaoPayIcon />
-                <p className='body3 text-[#262626]'>카카오페이</p>
+                <p className='body5 text-[#262626]'>카카오페이</p>
               </Button>
               <Button
                 variant='outline'
-                className={`flex-1 h-11 rounded-[6px] flex items-center justify-center gap-1 ${
+                className={`flex-1 h-11 rounded-[6px] flex items-center justify-center gap-1 px-[12px] py-[10px] ${
                   selectedPaymentMethod === 'NAVER_PAY' ? 'border-[#8749fe] bg-system-mauve-light' : 'border-[#c6c6c6] bg-white'
                 }`}
                 onClick={() => handlePaymentMethodSelect('NAVER_PAY')}>
                 <NaverPayIcon />
-                <p className='body3 text-[#262626]'>네이버페이</p>
+                <p className='body5 text-[#262626]'>네이버페이</p>
               </Button>
             </div>
           </div>

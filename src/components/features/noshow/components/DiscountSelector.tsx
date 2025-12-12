@@ -49,7 +49,7 @@ export default function DiscountSelector({ formResult, mode }: DiscountSelectorP
       <Label className='title5 text-foreground-normal px-20'>할인율과 방문시간을 등록해 주세요.</Label>
 
       <div className='flex flex-col gap-[4px] px-20'>
-        <div className='flex flex-row justify-between items-center w-full gap-3'>
+        <div className='flex flex-row justify-between items-center w-full gap-[2.5px]'>
           {discountOptions.map((opt) => (
             <Button
               type='button'
@@ -61,7 +61,7 @@ export default function DiscountSelector({ formResult, mode }: DiscountSelectorP
                 setValue(discountFieldName, Number(opt));
               }}
               size='custom'
-              className='w-auto px-5 py-2.5 text-foreground-normal'>
+              className='body3 w-auto px-5 py-2.5 text-foreground-normal'>
               {opt}%
             </Button>
           ))}
@@ -89,7 +89,9 @@ export default function DiscountSelector({ formResult, mode }: DiscountSelectorP
                   }, 500);
                 }}
                 onFocus={() => setSelectedDiscount('custom')}
-                className={`w-[82px] pr-6 text-left rounded-[6px] bg-background-normal [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+                className={`pr-6 text-left rounded-[6px] bg-background-normal 
+                  min-w-[82px] w-[85px]
+                  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
                   selectedDiscount === 'custom' ? 'border-primary ring-1 ring-primary' : 'border-muted-foreground/40'
                 }`}
               />

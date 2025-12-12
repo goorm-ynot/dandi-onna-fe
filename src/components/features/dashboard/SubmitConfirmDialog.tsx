@@ -57,7 +57,7 @@ export function ConfirmDialog({
           </Button>
           <Button
             type='button'
-            className='w-full body5 bg-[#8749FE] text-white rounded-[6px] px-3 py-2.5 h-[38px] hover:bg-[#7239d4] active:scale-95 active:opacity-70 transition-all duration-100'
+            className='w-full body5 bg-[#8749FE] text-white rounded-[6px] px-[12px] py-[10px] h-[38px] hover:bg-[#7239d4] active:scale-95 active:opacity-70 transition-all duration-100'
             onClick={() => {
               onConfirm();
               onOpenChange(false);
