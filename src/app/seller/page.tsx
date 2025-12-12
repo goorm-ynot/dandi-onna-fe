@@ -81,7 +81,7 @@ function SellerPageContent() {
       location: 'center' as 'center',
       render: (res: Reservation) => (
         <span
-          className={`px-3 py-1 rounded-[20px] text-base font-normal block text-center ${
+          className={`px-3 py-1 rounded-[20px] h-[26px] w-[120px] body3 inline-flex items-center justify-center ${
             res.status === 'PENDING'
               ? 'bg-status-pending text-status-pending-foreground'
               : res.status === 'NOSHOW'

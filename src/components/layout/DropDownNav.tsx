@@ -26,8 +26,8 @@ export default function DropDownNav({
       onMouseEnter={() => {}}
       onMouseLeave={close}
       className={clsx(
-        'min-w-[160px] px-[20px] py-[20px] bg-white shadow-lg rounded-md z-[9999] flex flex-col gap-[10px]',
-        menu.id === 'sales-management' && 'bg-background-secondary-subtle' // sales-management 메뉴일 때 배경색 변경
+        'min-w-[160px] px-[20px] py-[20px] shadow-lg rounded-sm z-[10000] flex flex-col gap-[10px]',
+        menu.id === 'sales-management' ? 'bg-background-secondary-subtle' : 'bg-white' // sales-management 메뉴일 때 배경색 변경
       )}>
       {menu.children?.map((item) => {
         const URL = item.path ? BASE_URL + item.path : '';
@@ -40,7 +40,7 @@ export default function DropDownNav({
             href={URL}
             className={clsx(
               'flex items-center gap-2 px-4 whitespace-nowrap text-foreground-normal',
-              hasIcon && 'text-foreground-normal-subtle',
+              hasIcon && 'text-foreground-normal-subtle ',
               isActive ? 'body5' : 'body3 hover:font-semibold'
             )}
             onClick={close}>

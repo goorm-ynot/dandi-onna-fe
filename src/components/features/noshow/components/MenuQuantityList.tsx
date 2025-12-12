@@ -31,10 +31,12 @@ export default function MenuQuantityList({ formResult }: MenuQuantityListProps) 
             <Button 
               type='button' 
               variant={quantity <= 1 ? 'outline' : 'destructive'} 
-              size='xs' 
+              size='md' 
               onClick={decrement}
             >
-              -
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 12H19" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </Button>
 
             <Controller
@@ -58,11 +60,14 @@ export default function MenuQuantityList({ formResult }: MenuQuantityListProps) 
 
             <Button 
               type='button' 
-              size='xs' 
+              size='md' 
               variant={'destructive'} 
               onClick={increment}
             >
-              +
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V19" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M5 12H19" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </Button>
           </div>
         </div>
