@@ -101,7 +101,7 @@ export default function StoreDetailInfo({
                 variant='map'
                 size='map'
                 onClick={onShowMap}
-                className='h-auto px-[10px] py-1 border-[#c6c6c6] rounded-[6px]'>
+                className='h-auto px-[10px] py-1'>
                 <span className='body3 text-[#262626]'>지도보기</span>
               </Button>
             </div>

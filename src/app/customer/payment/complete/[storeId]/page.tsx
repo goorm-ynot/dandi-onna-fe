@@ -109,7 +109,7 @@ export default function PaymentCompletePage({ params }: Props) {
         {/* 홈으로 가기 Button */}
         <Button
           variant='outline'
-          className='w-full max-w-[358px] h-[48px] border-[#d8d8d8] bg-white rounded-[6px]'
+          className='w-full max-w-[358px] h-[48px] border-[#d8d8d8] bg-white rounded-[6px] px-[12px] py-[10px]'
           onClick={handleGoHome}>
           <p className='body4 text-[#262626]'>홈으로 가기</p>
         </Button>

@@ -100,7 +100,7 @@ export default function OnboardingPage() {
           <Button
             onClick={onKakaoClick}
             size='onboarding'
-            className='w-full bg-[#FACC15] hover:bg-yellow-500 body9 text-[#262626]'
+            className='w-full bg-[#FACC15] hover:bg-yellow-500 body5 text-foreground-normal px-[12px] py-[10px] rounded-[6px]'
             disabled={permission === 'granted' ? false : true}>
             <img src='/images/IconL-kakao.svg' alt='kakao logo' className='w-5 h-5 mr-2 inline-block align-middle' />
             카카오톡으로 로그인
@@ -111,7 +111,7 @@ export default function OnboardingPage() {
             variant='outline'
             size='onboarding'
             disabled={permission === 'granted' ? false : true}
-            className='w-full bg-white body4 text-black hover:bg-gray-100 border border-[#C6C6C6]'>
+            className='w-full bg-white body3 text-foreground-normal hover:bg-gray-100 border border-[#C6C6C6] px-[12px] py-[10px] rounded-[6px]'>
             사장님으로 로그인
           </Button>
 

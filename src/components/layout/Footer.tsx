@@ -14,9 +14,9 @@ export default function Footer() {
               <div className='title7 max-[400px]:title5'>단디온나</div>
 
               <div className='flex flex-wrap items-center gap-[20px] min-[400px]:gap-3 text-xs text-neutral-900'>
-                <span className='caption3 cursor-pointer hover:underline hover:font-bold transition-all'>브랜드 소개</span>
-                <span className='caption3 cursor-pointer hover:underline hover:font-bold transition-all'>이용약관</span>
-                <span className='caption3 cursor-pointer hover:underline hover:font-bold transition-all'>
+                <span className='caption3 cursor-pointer hover:font-bold transition-all'>브랜드 소개</span>
+                <span className='caption3 cursor-pointer hover:font-bold transition-all'>이용약관</span>
+                <span className='caption3 cursor-pointer hover:font-bold transition-all'>
                   개인정보처리방침
                 </span>
               </div>
