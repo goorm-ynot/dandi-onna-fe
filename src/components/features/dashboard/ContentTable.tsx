@@ -124,7 +124,7 @@ export default function ContentTable<T extends { [key: string]: any }>({
                 return (
                   <TableRow
                     key={itemId || index} // 고유 ID가 있으면 사용, 없으면 index
-                    className={clsx('cursor-pointer transition-colors h-[48px]', {
+                    className={clsx('cursor-pointer transition-colors h-[48px] border-b border-border-secondary', {
                       // ✅ 만료된 예약인 경우 붉은색 배경
                       'bg-system-pink-light hover:bg-table-hover': isExpired,
                       // ✅ 일반적인 경우

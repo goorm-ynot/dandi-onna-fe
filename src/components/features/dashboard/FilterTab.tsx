@@ -22,13 +22,12 @@ export default function FilterTabs({ tabs, activeTab, onTabChange, className = '
           onClick={() => onTabChange(tab.id)}
           className={`
             px-[30px] py-[10px]
-            body3
-            transition-colors duration-150
-            border-b-[3px] transition-[border-color] duration-200
+            caption5
+            transition-colors duration-150 transition-[color] duration-200
             ${
               activeTab === tab.id
-                ? 'text-foreground-primary-emphasis border-primitives-brandStrong'
-                : 'text-gray-600 border-transparent'
+                ? 'text-foreground-primary-emphasis border-b-[3px] border-border-primary-emphasis'
+                : 'text-gray-600 transparent'
             }
             hover:bg-system-mauve-light
           `}>
