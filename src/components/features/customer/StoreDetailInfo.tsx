@@ -54,7 +54,7 @@ export default function StoreDetailInfo({
               variant='ghost'
               size='icon'
               onClick={onToggleFavorite}
-              className='p-0 hover:bg-transparent w-6 h-6 mr-3'>
+              className='p-0 hover:bg-transparent w-[24px] h-[24px] border-none'>
               <HeartIcon size={24} filled={isFavorite} />
             </Button>
           </div>

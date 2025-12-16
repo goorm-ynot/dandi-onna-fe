@@ -15,6 +15,7 @@ import { formatTimeWithKoreanUnit } from '@/lib/dateParse';
 import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDialog';
 import { useNavigation } from '@/hooks/useNavigation';
 import { Checkbox } from '@/components/ui/checkbox';
+import SafeArea from '@/components/layout/SafeArea';
 
 interface Props {
   params: Promise<{ storeId: string; storeInfo?: StoreSummary }>;
@@ -87,6 +88,7 @@ export default function PaymentPage({ params }: Props) {
   }
 
   return (
+    <SafeArea>
     <div className='min-h-screen bg-white pb-[200px]'>
       {/* Header */}
       <div className='fixed top-0 left-0 right-0 z-50 bg-white'>
@@ -197,5 +199,6 @@ export default function PaymentPage({ params }: Props) {
         cancelText='아니요'
       />
     </div>
+    </SafeArea>
   );
 }
