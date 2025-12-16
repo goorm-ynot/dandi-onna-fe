@@ -96,7 +96,7 @@ export default function OnboardingPage() {
 
         <ImageSlider images={images} interval={3000} />
 
-        <div className='flex flex-col justify-start items-center gap-[10px] w-full'>
+        <div className='flex flex-col justify-start items-center gap-[10px] w-full max-[400px]:px-[16px]'>
           <Button
             onClick={onKakaoClick}
             size='onboarding'
