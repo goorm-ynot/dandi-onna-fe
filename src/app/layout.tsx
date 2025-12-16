@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     description: '단디온나 - 스마트한 온보딩 서비스로 더 나은 경험을 시작하세요.',
     images: [
       {
-        url: '/image/logo/favicon-32x32.png', // 1200x630 권장
+        url: '/images/logo/favicon-32x32.png', // 1200x630 권장
         width: 1200,
         height: 630,
         alt: '단디온나 로고',
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '단디온나',
     description: '단디온나 - 스마트한 온보딩 서비스',
-    images: ['/image/logo/favicon-32x32.png'], // 1200x600 권장
+    images: ['/images/logo/favicon-32x32.png'], // 1200x600 권장
     creator: '@dandi_onna',
   },
 
@@ -108,9 +108,9 @@ export default function RootLayout({
         <link rel='dns-prefetch' href='https://placehold.co' />
 
         {/* 🎯 Favicon 및 아이콘들 */}
-        <link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png' />
-        <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png' />
-        <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png' />
+        <link rel='icon' type='image/png' sizes='32x32' href='/images/logo/favicon-32x32.png' />
+        <link rel='icon' type='image/png' sizes='16x16' href='/images/logo/favicon-16x16.png' />
+        <link rel='apple-touch-icon' sizes='180x180' href='/images/logo/apple-touch-icon.png' />
         <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#000000' />
 
         {/* 🎯 Manifest는 defer로 로드 (Critical Request Chain 최적화) */}

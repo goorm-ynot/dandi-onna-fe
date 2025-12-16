@@ -35,8 +35,8 @@ export const mockReservations = {
       reservationNo: 'A00004',
       time: '2025-12-15T13:15:00',
       menus: [
-        { menuId: '8faac229-a50d-4403-8f72-bb09a663d4c6', name: '1인 숙성 모둠회', qty: 2, price: 50000 },
-        { menuId: '859726a7-c607-433c-9bdf-6a79c428a3cf', name: '저녁 정식', qty: 2, price: 70000 },
+        { menuId: 'e02bf703-5d60-497a-9889-b2e0f74de401', name: '1인 숙성 모둠회', qty: 2, price: 50000 },
+        { menuId: 'cd3adeb8-0c1c-4da0-8399-472abe6f081d', name: '저녁 정식', qty: 2, price: 70000 },
       ],
       contact: '010-4567-8910',
       status: 'PENDING',

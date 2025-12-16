@@ -3,6 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { ChevronLeft } from 'lucide-react';
 
 interface StoreDetailHeaderProps {
   title?: string;
@@ -23,11 +24,12 @@ export default function StoreDetailHeader({ title = '주문하기', onBack }: St
   return (
     <div className='sticky top-0 z-50 bg-white h-[60px] flex items-center justify-between px-[10px] pr-4'>
       {/* Back Button */}
-      <Button variant='icon' size='xs' onClick={handleBack} className='p-0 hover:bg-transparent w-11 h-11 flex items-center justify-center'>
-        <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+        {/* <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
           <path d='M15 18L9 12L15 6' stroke='#262626' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
-        </svg>
-      </Button>
+        </svg> */}
+      <div className='p-0 hover:bg-transparent flex items-center justify-center' onClick={handleBack}>
+        <ChevronLeft color='#262626' strokeWidth={2} size={24} />
+      </div>
 
       {/* Title */}
       <h1 className='flex-1 title5 text-[#161616] text-center'>{title}</h1>
