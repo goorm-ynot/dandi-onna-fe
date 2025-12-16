@@ -14,7 +14,7 @@ interface SafeAreaProps {
 
 /**
  * Safe Area 컴포넌트
- * Spec: 16px, Actual: 12px (iOS notch 및 Android navigation bar 대응)
+ * Spec: 16px, Actual: 16px (iOS notch 및 Android navigation bar 대응)
  * 
  * @param top - 상단 safe area 적용 (기본: true)
  * @param bottom - 하단 safe area 적용 (기본: true)
@@ -33,10 +33,10 @@ export default function SafeArea({
     <div
       className={cn(
         'w-full h-full',
-        top && 'pt-[max(12px,env(safe-area-inset-top))]',
-        bottom && 'pb-[max(12px,env(safe-area-inset-bottom))]',
-        left && 'pl-[max(12px,env(safe-area-inset-left))]',
-        right && 'pr-[max(12px,env(safe-area-inset-right))]',
+        top && 'pt-[max(16px,env(safe-area-inset-top))]',
+        bottom && 'pb-[max(16px,env(safe-area-inset-bottom))]',
+        left && 'pl-[max(16px,env(safe-area-inset-left))]',
+        right && 'pr-[max(16px,env(safe-area-inset-right))]',
         className
       )}>
       {children}

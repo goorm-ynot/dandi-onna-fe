@@ -37,7 +37,7 @@ const StoreProfile = React.memo(function StoreProfile({
       </div>
 
       {/* Text Area */}
-      <div className='flex-1 flex flex-col gap-2 min-w-0'>
+      <div className='flex-1 flex flex-col gap-[8px] min-w-0'>
         {/* Header */}
         <div className='w-full'>
           <p className='title5 text-[#262626] truncate'>{name}</p>

@@ -3,55 +3,63 @@ import React, { forwardRef } from 'react';
 import { IconProps } from '@/types/icon';
 
 interface BellIconProps extends IconProps {
-  filled?: boolean; // 채워진 버전
-  hasNotification?: boolean; // 알림 표시
+  hasNotification?: boolean;
+  notificationColor?: string;
 }
 
 const BellIcon = forwardRef<SVGSVGElement, BellIconProps>(
   (
     {
-      size = 20,
-      color = 'currentColor',
+      size = 24,
+      color = '#262626',
       strokeWidth = 2,
       className = '',
-      filled = false,
       hasNotification = false,
+      notificationColor = '#8749FE',
       onClick,
     },
     ref
   ) => {
     return (
-      <div className='relative inline-block overflow-visible '>
-        <svg
-          ref={ref}
-          width={size}
-          height={size + 4}
-          viewBox='0 0 20 21'
-          fill={filled ? color : 'none'}
-          xmlns='http://www.w3.org/2000/svg'
-          className={`${className} ${onClick ? 'cursor-pointer' : ''}`}
-          onClick={onClick}>
-          <path
-            d='M16 7.00053C16 5.40909 15.3679 3.88283 14.2426 2.75751C13.1174 1.6322 11.5913 1 10 1C8.4087 1 6.88258 1.6322 5.75736 2.75751C4.63214 3.88283 4 5.40909 4 7.00053C4 14.0011 1 16.0013 1 16.0013H19C19 16.0013 16 14.0011 16 7.00053Z'
-            stroke={color}
-            strokeWidth={strokeWidth}
-            strokeLinecap='round'
-            strokeLinejoin='round'
-          />
-          <path
-            d='M11.7295 19C11.5537 19.3031 11.3014 19.5547 10.9978 19.7296C10.6941 19.9045 10.3499 19.9965 9.99953 19.9965C9.64915 19.9965 9.30492 19.9045 9.0013 19.7296C8.69769 19.5547 8.44534 19.3031 8.26953 19'
-            stroke={color}
-            strokeWidth={strokeWidth}
-            strokeLinecap='round'
-            strokeLinejoin='round'
-          />
-        </svg>
+      <svg
+        ref={ref}
+        width={size}
+        height={size}
+        viewBox="0 0 32 32"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={`${className} ${onClick ? 'cursor-pointer' : ''}`}
+        onClick={onClick}
+      >
+        {/* 종 */}
+        <path
+          d="M23.1111 12.4932C23.1111 10.5943 22.3619 8.77312 21.0283 7.43039C19.6947 6.08767 17.886 5.33333 16 5.33333C14.114 5.33333 12.3053 6.08767 10.9717 7.43039C9.63807 8.77312 8.88887 10.5943 8.88887 12.4932C8.88887 20.8463 5.33331 23.2329 5.33331 23.2329H26.6666C26.6666 23.2329 23.1111 20.8463 23.1111 12.4932Z"
+          stroke={color}
+          strokeWidth={strokeWidth}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        />
 
-        {/* 알림 점 */}
+        {/* 종 아래 */}
+        <path
+          d="M18.05 26.8109C17.8416 27.1725 17.5425 27.4727 17.1827 27.6814C16.8228 27.8901 16.4149 27.9999 15.9996 27.9999C15.5843 27.9999 15.1763 27.8901 14.8165 27.6814C14.4567 27.4727 14.1576 27.1725 13.9492 26.8109"
+          stroke={color}
+          strokeWidth={strokeWidth}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+
+        {/* 🔴 알림 점 (오른쪽 상단, 원본 SVG 좌표 그대로) */}
         {hasNotification && (
-          <div className='absolute -top-1.5 -right-1.5  w-3 h-3 bg-gray-500 rounded-full border-2 border-white' />
+          <circle
+            cx="29"
+            cy="3"
+            r="3"
+            fill={notificationColor}
+          />
         )}
-      </div>
+      </svg>
     );
   }
 );

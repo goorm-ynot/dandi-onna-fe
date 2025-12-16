@@ -10,7 +10,7 @@ export const useNavigation = () => {
 
   // 가게 상세 페이지
   const goToStoreDetail = (storeId: string) => {
-    router.push(`/customer/store/${storeId}`);
+    router.push(`/customer/store/${storeId}`, {scroll: true});
   };
 
   // 결제 페이지
@@ -18,7 +18,7 @@ export const useNavigation = () => {
     const params = storeInfo
       ? `?storeName=${encodeURIComponent(storeInfo.storeName)}&addressRoad=${encodeURIComponent(storeInfo.addressRoad)}`
       : '';
-    router.push(`/customer/payment/${storeId}${params}`);
+    router.push(`/customer/payment/${storeId}${params}`, {scroll: true});
   };
 
   // 결제 완료 페이지
@@ -27,7 +27,7 @@ export const useNavigation = () => {
       ? `?storeName=${encodeURIComponent(storeInfo.storeName)}&addressRoad=${encodeURIComponent(storeInfo.addressRoad)}`
       : '';
     // router.push(`/customer/payment/complete/${orderId}${params}`);
-    router.replace(`/customer/payment/complete/${orderId}${params}`);
+    router.replace(`/customer/payment/complete/${orderId}${params}`, {scroll: true});
   };
 
   // 뒤로가기
@@ -37,11 +37,11 @@ export const useNavigation = () => {
 
   // 히스토리 기록 남김
   const goCustomerHome = () => {
-    router.push('/customer');
+    router.push('/customer', {scroll: true});
   };
 
   const goSellerHome = () => {
-    router.push('/seller');
+    router.push('/seller', {scroll: true});
   };
 
   // query params
@@ -60,7 +60,7 @@ export const useNavigation = () => {
 
     // loginId를 Base64로 인코딩
     const encodedLoginId = btoa(storedLoginId);
-    router.push(`/seller?token=${encodeURIComponent(encodedLoginId)}`);
+    router.push(`/seller?token=${encodeURIComponent(encodedLoginId)}`, {scroll: true});
   };
 
   // 히스토리 기록 남기지 않고 이동
@@ -69,12 +69,12 @@ export const useNavigation = () => {
   };
 
   const replaceSellerHome = () => {
-    router.replace('/seller');
+    router.replace('/seller', {scroll: true});
   };
 
   // 노쇼 메뉴 관리
   const goToNoShowManagement = () => {
-    router.push('/seller/no-show');
+    router.push('/seller/no-show', {scroll: true});
   };
 
   return {

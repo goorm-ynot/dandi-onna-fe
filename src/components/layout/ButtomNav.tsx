@@ -76,7 +76,7 @@ export default function ButtomNav() {
           return (
             <Button
               key={item.id}
-              variant='ghost'
+              variant='link'
               className={`flex flex-col gap-2 items-center p-0 h-auto rounded-none hover:bg-transparent [&_svg]:!w-[24px] [&_svg]:!h-[24px] ${
                 isActive ? 'text-foreground-primary' : 'text-foreground-normal'
               }`}

@@ -33,14 +33,14 @@ export default function OrderBottomSheet({
     // 애니메이션 완료 후 onClose 호출
     setTimeout(() => {
       onClose?.();
-    }, 250);
+    }, 20);
   };
 
   return (
     <div className='px-4'>
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-black z-40 transition-opacity duration-250 ${
+        className={`fixed inset-0 bg-black z-40 transition-opacity duration-[20ms] ${
           isVisible ? 'bg-opacity-50' : 'bg-opacity-0'
         }`}
         onClick={handleClose}
@@ -48,7 +48,7 @@ export default function OrderBottomSheet({
 
       {/* Bottom Sheet */}
       <div
-        className={`fixed bottom-0 left-0 right-0 bg-white shadow-[0px_-6px_10px_0px_rgba(0,0,0,0.06)] rounded-t-[10px] px-4 py-5 flex flex-col gap-5 z-50 transition-transform duration-250 ${
+        className={`fixed bottom-0 left-0 right-0 bg-white shadow-[0px_-6px_10px_0px_rgba(0,0,0,0.06)] rounded-t-[10px] px-4 py-5 flex flex-col gap-5 z-50 transition-transform duration-[20ms] ${
           isVisible ? 'translate-y-0' : 'translate-y-full'
         }`}>
         {/* Menu Name */}

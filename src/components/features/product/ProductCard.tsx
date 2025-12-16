@@ -31,10 +31,10 @@ export default function ProductCard({
 }: ProductCardProps) {
   const formatPrice = (price: number) => price.toLocaleString('ko-KR');
 
-  const baseClasses = 'bg-white flex flex-col gap-5 p-4 rounded-[10px] w-full relative';
-  const selectedClasses = 'border-2 border-border';
-  const defaultClasses = 'shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)]';
-  const disabledClasses = 'bg-foreground-disable shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)]';
+  const baseClasses = 'bg-white flex flex-col gap-5 p-4 rounded-[10px] w-full relative border-2';
+  const selectedClasses = 'border-border';
+  const defaultClasses = 'border-transparent shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)]';
+  const disabledClasses = 'bg-foreground-disable border-transparent shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)]';
 
   const stateClass = state === 'selected' ? selectedClasses : state === 'disabled' ? disabledClasses : defaultClasses;
 

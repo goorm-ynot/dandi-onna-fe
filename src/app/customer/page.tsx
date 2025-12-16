@@ -9,7 +9,7 @@ import { Chip } from '@/components/features/ui/Chip';
 import { useStoresActions } from '@/hooks/customer/useStoresManage';
 import { formatTimeWithoutSeconds } from '@/lib/utils';
 import { useGlobalTimer } from '@/hooks/useGlobalTimer';
-import { ChevronDown, MapPin } from 'lucide-react';
+import { ChevronDown, MapPin, ChevronRight } from 'lucide-react';
 import { useNavigation } from '@/hooks/useNavigation';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import Alarm from '@/components/features/alarm/Alarm';
@@ -104,7 +104,7 @@ export default function CustomerPage() {
         <div className='flex items-center justify-between'>
           <h2 className='title5 text-[#161616]'>내가 주문한 가게</h2>
           <button className='flex flex-row items-center text-[14px] text-foreground-primary'>
-            더보기	&gt;
+            더보기	<ChevronRight size={16} strokeWidth={2}/>
             </button>
         </div>
 
@@ -146,7 +146,7 @@ export default function CustomerPage() {
           alt='공지사항 배너'
           fill
           quality={85}
-          className='object-cover'
+          className='object-fill'
           priority={true}
           isLCP={true} // 🎯 LCP 표시
           fetchPriority='high' // 🎯 명시적 우선순위
