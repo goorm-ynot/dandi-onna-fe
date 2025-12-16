@@ -43,9 +43,7 @@ export default function CustomerHeader() {
 
         {/* 알람 + 배찌 */}
         <div className='flex items-center'>
-          <Button aria-label='알람확인' variant='icon' size='icon' className='relative'>
-            <BellIcon hasNotification={notificationCount > 0} />
-          </Button>
+          <BellIcon hasNotification={notificationCount > 0} size={24} notificationColor='#8749FE'/>
         </div>
       </div>
     </header>

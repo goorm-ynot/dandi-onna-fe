@@ -17,7 +17,7 @@ export default function Layout({
       <main className='flex-1 w-full bg-white'>{children}</main>
       {/* 📍 조건부 렌더링을 Client Component로 분리 */}
       <ConditionalFooter />
-      <ButtomNav />
+      <ButtomNav/>
       <div className='h-[80px]' />
     </div>
   );

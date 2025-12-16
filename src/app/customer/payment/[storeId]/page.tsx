@@ -96,7 +96,7 @@ export default function PaymentPage({ params }: Props) {
       </div>
 
       {/* Content */}
-      <div className='px-[16px] py-10 flex flex-col gap-[40px] '>
+      <div className='px-[16px] py-10 flex flex-col gap-[40px] mt-[60px]'>
         {/* Order Items */}
         <div className='flex flex-col gap-[20px]'>
           {selectedMenus.map((item) => (

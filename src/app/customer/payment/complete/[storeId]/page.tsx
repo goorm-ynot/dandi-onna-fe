@@ -8,6 +8,7 @@ import { formatDateTimeString } from '@/lib/dateParse';
 import { getPaymentMethodText } from '@/lib/utils';
 import { useNavigation } from '@/hooks/useNavigation';
 import { StoreSummary } from '@/types/storeType';
+import SafeArea from '@/components/layout/SafeArea';
 
 interface Props {
   params: Promise<{ storeId: string; storeInfo?: StoreSummary }>;
@@ -44,9 +45,9 @@ export default function PaymentCompletePage({ params }: Props) {
   }
 
   return (
-    <div className='min-h-screen bg-white'>
+    <SafeArea className='min-h-screen bg-white'>
       {/* Content */}
-      <div className='flex flex-col gap-5 items-center px-4 pt-[80px]'>
+      <div className='flex flex-col gap-5 items-center px-4 pt-[136px] pb-10'>
         {/* Success Icon & Message */}
         <div className='flex flex-col gap-[60px] items-center w-full'>
           <div className='flex flex-col gap-[15px] items-center h-32 w-full'>
@@ -114,6 +115,6 @@ export default function PaymentCompletePage({ params }: Props) {
           <p className='body4 text-[#262626]'>홈으로 가기</p>
         </Button>
       </div>
-    </div>
+    </SafeArea>
   );
 }
