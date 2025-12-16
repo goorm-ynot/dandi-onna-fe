@@ -13,7 +13,7 @@ export default function Layout({ children }: Readonly<{ children: React.ReactNod
   useFcmToken(); // FCM 토큰 초기화 및 메시지 리스너 등록
 
   return (
-    <div className='flex min-h-screen flex-col items-center '>
+    <div className='flex min-h-screen min-w-[1200px] flex-col items-center '>
       <main className='w-full min-h-screen flex flex-col bg-background-normal-foreground'>
         {/* 고정된 헤더 */}
         <div className='sticky top-0 z-40 bg-background-normal-foreground'>

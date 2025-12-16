@@ -57,7 +57,7 @@ export default function NoShowOrderPanel({ mode, orderData, onStatusUpdate }: No
         </div>
         {/* 구분선 1 */}
         <div className=''>
-          <hr className='w-full border border-1 border-line' />
+          <hr className='w-full border border-1 border-line-quaternary' />
         </div>
 
         <Label className='title5'>결제 정보</Label>
@@ -84,7 +84,7 @@ export default function NoShowOrderPanel({ mode, orderData, onStatusUpdate }: No
         </div>
         {/* 구분선 2 */}
         <div className=''>
-          <hr className='w-full border border-1 border-line-foreground' />
+          <hr className='w-full border border-1 border-line-normal' />
         </div>
 
         {/* 결제 관련 정보 */}

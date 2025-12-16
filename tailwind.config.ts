@@ -30,7 +30,8 @@ const config = {
           secondary: '#e1e1e1',
           normal: '#c6c6c6',
           tertiary: '#a3a3a3',
-          quaternary: '#4c4c4c'
+          quaternary: '#4c4c4c',
+          'primary-emphasis': '#5929ba',
         },
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -87,6 +88,8 @@ const config = {
         line: {
           DEFAULT: '#656565',
           foreground: '#DDDDDD',
+          normal: '#c6c6c6',
+          quaternary: '#4c4c4c',
         },
         error: {
           DEFAULT: '#DA3944',
