@@ -35,12 +35,12 @@ export default function NumberStepper({ value = 1, min = 0, max = 10, onChange }
         onClick={handleDecrement}
         disabled={isMinDisabled}
         className={`p-[7px] border ${
-          isMinDisabled ? 'border-[#a3a3a3] bg-white' : 'border-[#8749fe] bg-white'
+          isMinDisabled ? 'border-[#c6c6c6] bg-white' : 'border-[#8749fe] bg-white'
         } rounded-[6px] active:scale-95 active:opacity-70 transition-all duration-100`}>
         <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
           <path
             d='M5 12H19'
-            stroke={isMinDisabled ? '#a3a3a3' : '#a3a3a3'}
+            stroke={isMinDisabled ? '#c6c6c6' : '#8749fe'}
             strokeWidth='2'
             strokeLinecap='round'
             strokeLinejoin='round'
@@ -49,8 +49,18 @@ export default function NumberStepper({ value = 1, min = 0, max = 10, onChange }
       </Button>
 
       {/* Number Display */}
-      <div className='bg-white border border-[#a3a3a3] rounded-[6px] h-[38px] min-w-[46px] px-[18px] py-[10px] flex items-center justify-center'>
-        <p className='body3 text-[#262626]'>{value}</p>
+      <div className='bg-white border border-border-tertiary rounded-[6px] h-[38px] min-w-[46px] flex items-center justify-center'>
+        <input
+          type='number'
+          value={value}
+          onChange={(e) => {
+            const newValue = parseInt(e.target.value) || 0;
+            if (newValue >= min && newValue <= max) {
+              onChange(newValue);
+            }
+          }}
+          className='body3 text-[#262626] text-center w-[18px] h-full bg-transparent border-none outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+        />
       </div>
 
       {/* Plus Button */}
@@ -60,12 +70,12 @@ export default function NumberStepper({ value = 1, min = 0, max = 10, onChange }
         onClick={handleIncrement}
         disabled={isMaxDisabled}
         className={`p-[7px] border ${
-          isMaxDisabled ? 'border-[#a3a3a3] bg-white' : 'border-[#8749fe] bg-white'
+          isMaxDisabled ? 'border-[#c6c6c6] bg-white' : 'border-[#8749fe] bg-white'
         } rounded-[6px] active:scale-95 active:opacity-70 transition-all duration-100`}>
         <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
           <path
             d='M12 5V19M5 12H19'
-            stroke={isMaxDisabled ? '#a3a3a3' : '#8749fe'}
+            stroke={isMaxDisabled ? '#c6c6c6' : '#8749fe'}
             strokeWidth='2'
             strokeLinecap='round'
             strokeLinejoin='round'
