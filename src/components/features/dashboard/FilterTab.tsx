@@ -15,7 +15,7 @@ interface FilterTabsProps {
 
 export default function FilterTabs({ tabs, activeTab, onTabChange, className = '' }: FilterTabsProps) {
   return (
-    <div className={`flex  bg-white min-h-[38px] ${className}`}>
+    <div className={`bg-white min-h-[38px] ${className}`}>
       {tabs.map((tab) => (
         <button
           key={tab.id}
