@@ -102,7 +102,7 @@ export default function ContentTable<T extends { [key: string]: any }>({
                     )}
                     onClick={() => col.sortable && onSort?.(col.sortKey || col.key)}>
                     <p
-                      className={clsx('flex flex-row gap-1 items-center', {
+                      className={clsx('flex flex-row gap-16 items-center', {
                         'justify-start': !col.location || col.location === 'left',
                         'justify-center': col.location === 'center',
                         'justify-end': col.location === 'right',

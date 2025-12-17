@@ -2,13 +2,8 @@
 'use client';
 
 import React from 'react';
-import { Reservation, SingleColumnLayoutProps } from '@/types/boardData';
+import { SingleColumnLayoutProps } from '@/types/boardData';
 import DashBoardLayout from './DashboardLayout';
-import PageHeader from '../features/dashboard/PageHeader';
-import FilterTabs from '../features/dashboard/FilterTab';
-import ContentTable from '../features/dashboard/ContentTable';
-import Pagination from '@/components/features/dashboard/ContentPagenation';
-import ContentDate from '../features/dashboard/ContentDate';
 import SinglePageLayout from '../features/dashboard/SinglePageLayout';
 
 export default function SingleColumnLayout({
