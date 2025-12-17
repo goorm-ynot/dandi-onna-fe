@@ -11,12 +11,12 @@ export default function Footer() {
           <div className='flex flex-row justify-between items-start max-[400px]:flex-col max-[400px]:items-left max-[400px]:gap-[20px]'>
             {/* 왼쪽 */}
             <div className='flex flex-row items-center gap-[20px]'>
-              <div className='title7 max-[400px]:title5'>단디온나</div>
+              <div className='title7 max-[400px]:title5 text-foreground-normal'>단디온나</div>
 
-              <div className='flex flex-wrap items-center gap-[20px] min-[400px]:gap-3 text-xs text-neutral-900'>
-                <span className='caption3 cursor-pointer hover:font-bold transition-all'>브랜드 소개</span>
-                <span className='caption3 cursor-pointer hover:font-bold transition-all'>이용약관</span>
-                <span className='caption3 cursor-pointer hover:font-bold transition-all'>
+              <div className='flex flex-wrap items-center gap-[20px] min-[400px]:gap-3 text-xs text-notice-unactive'>
+                <span className='caption3 cursor-pointer hover:font-bold hover:text-notioce transition-all'>브랜드 소개</span>
+                <span className='caption3 cursor-pointer hover:font-bold hover:text-notioce transition-all'>이용약관</span>
+                <span className='caption3 cursor-pointer hover:font-bold hover:text-notioce transition-all'>
                   개인정보처리방침
                 </span>
               </div>
@@ -24,13 +24,13 @@ export default function Footer() {
 
             {/* 오른쪽 */}
             <div className='flex flex-row text-right items-center gap-[10px]'>
-              <span className='text-neutral-900 text-base font-medium min-[400px]:body1'>고객센터</span>
+              <span className='text-foreground-normal text-base font-medium min-[400px]:body1'>고객센터</span>
               <span className='text-primary text-xl font-bold min-[400px]:caption8'>1500-0000</span>
             </div>
           </div>
 
           {/* 하단: 주소 및 카피라이트 */}
-          <div className='flex flex-col gap-[6px] caption3 text-neutral-900 mt-2'>
+          <div className='flex flex-col gap-[6px] caption3 text-notice mt-2'>
             <p>경기 성남시 분당구 구름스퀘어 (주)와이낫컴퍼니</p>
             <p>Copyright © 2025 Ynot. All Rights Reserved.</p>
           </div>

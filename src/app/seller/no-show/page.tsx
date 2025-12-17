@@ -78,7 +78,7 @@ export default function NoShowMenuPage() {
       location: 'center' as 'center',
       render: (res: NoShowMenuList) => (
         <Button
-          className='rounded-[20px] max-w-[120px] w-full py-2 '
+          className='rounded-[20px] max-w-[120px] w-full py-[4px] px-[12px]'
           size='table'
           variant='default'
           onClick={(e) => {

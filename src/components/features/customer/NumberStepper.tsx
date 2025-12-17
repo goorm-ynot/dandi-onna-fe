@@ -2,15 +2,17 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import clsx from 'clsx';
 
 interface NumberStepperProps {
   value: number;
   min?: number;
   max?: number;
+  division?: 'customer' | 'seller'; // 소비자인지 판매자인지 구분 필요 
   onChange: (value: number) => void;
 }
 
-export default function NumberStepper({ value = 1, min = 0, max = 10, onChange }: NumberStepperProps) {
+export default function NumberStepper({ value = 1, min = 0, max = 10, division='customer', onChange }: NumberStepperProps) {
   const handleDecrement = () => {
     if (value > min) {
       onChange(value - 1);
@@ -34,9 +36,11 @@ export default function NumberStepper({ value = 1, min = 0, max = 10, onChange }
         size='xs'
         onClick={handleDecrement}
         disabled={isMinDisabled}
-        className={`p-[7px] border ${
-          isMinDisabled ? 'border-[#c6c6c6] bg-white' : 'border-[#8749fe] bg-white'
-        } rounded-[6px] active:scale-95 active:opacity-70 transition-all duration-100`}>
+        className={clsx(
+          'p-[7px] border rounded-[6px] active:scale-95 active:opacity-70 transition-all duration-100',
+          isMinDisabled ? 'border-[#c6c6c6]' : 'border-[#8749fe]',
+          division === 'seller' ? 'bg-system-mauve-light' : 'bg-white'
+        )}>
         <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
           <path
             d='M5 12H19'
@@ -69,9 +73,11 @@ export default function NumberStepper({ value = 1, min = 0, max = 10, onChange }
         size='xs'
         onClick={handleIncrement}
         disabled={isMaxDisabled}
-        className={`p-[7px] border ${
-          isMaxDisabled ? 'border-[#c6c6c6] bg-white' : 'border-[#8749fe] bg-white'
-        } rounded-[6px] active:scale-95 active:opacity-70 transition-all duration-100`}>
+        className={clsx(
+          'p-[7px] border rounded-[6px] active:scale-95 active:opacity-70 transition-all duration-100',
+          isMaxDisabled ? 'border-[#c6c6c6]' : 'border-border-primary',
+          division === 'seller' ? 'bg-system-mauve-light' : 'bg-white'
+        )}>
         <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
           <path
             d='M12 5V19M5 12H19'
