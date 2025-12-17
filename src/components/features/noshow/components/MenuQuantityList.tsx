@@ -1,10 +1,9 @@
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { UseNoShowFormResult, UseNoShowMenuFormResult } from '@/types/noShowPanelType';
-import { CloudCog } from 'lucide-react';
+import NumberStepper from '@/components/features/customer/NumberStepper';
 
 interface MenuQuantityListProps {
   formResult: UseNoShowFormResult | UseNoShowMenuFormResult;
@@ -27,49 +26,22 @@ export default function MenuQuantityList({ formResult }: MenuQuantityListProps) 
           <Label className='body3 text-foreground-normal text-left'>{menu.name}</Label>
           <Label className='body5 text-foreground-normal text-right'>{menu.price?.toLocaleString()}원</Label>
 
-          <div className='flex flex-row gap-[2px]'>
-            <Button 
-              type='button' 
-              variant={quantity <= 1 ? 'outline' : 'destructive'} 
-              size='md' 
-              onClick={decrement}
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 12H19" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </Button>
-
-            <Controller
-              control={control}
-              name='quantity'
-              render={({ field }) => (
-                <>
-                  <Input
-                    type='number'
-                    {...field}
-                    onChange={(e) => {
-                      const value = Number(e.target.value);
-                      if (value >= 1) field.onChange(value);
-                    }}
-                    className='w-[46px] h-[38px] rounded text-center bg-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
-                  />
-                  {errors.quantity && <p className='text-red-500 text-sm'>{errors.quantity?.message}</p>}
-                </>
-              )}
-            />
-
-            <Button 
-              type='button' 
-              size='md' 
-              variant={'destructive'} 
-              onClick={increment}
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 5V19" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M5 12H19" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </Button>
-          </div>
+          <Controller
+            control={control}
+            name='quantity'
+            render={({ field }) => (
+              <div className='flex flex-col gap-1'>
+                <NumberStepper
+                  value={field.value}
+                  min={1}
+                  max={menu.maxQty || 100}
+                  division='seller'
+                  onChange={field.onChange}
+                />
+                {errors.quantity && <p className='text-red-500 text-sm'>{errors.quantity?.message}</p>}
+              </div>
+            )}
+          />
         </div>
       </div>
     );
@@ -85,48 +57,24 @@ export default function MenuQuantityList({ formResult }: MenuQuantityListProps) 
           <Label className='body3 text-left'>{menu.name}</Label>
           <Label className='body5 text-right'>{menu.price.toLocaleString()}원</Label>
 
-          <div className='flex flex-row gap-2'>
-            <Button 
-              type='button'
-              size='xs' 
-              variant={menu.quantity <= 1 ? 'outline' : 'destructive'} 
-              disabled={menu.quantity <= 1}
-              onClick={() => decrement(index)}
-            >
-              -
-            </Button>
-
-            <Controller
-              control={control}
-              name={`menus.${index}.quantity`}
-              render={({ field }) => (
-                <>
-                  <Input
-                    type='number'
-                    {...field}
-                    onChange={(e) => {
-                      const value = Number(e.target.value);
-                      if (value >= 1 && value <= menu.maxQty) field.onChange(value);
-                    }}
-                    className='w-[60px] h-[38px] rounded text-center bg-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
-                  />
-                  {errors.menus?.[index]?.quantity && (
-                    <p className='text-red-500 text-sm'>{errors.menus[index]?.quantity?.message}</p>
-                  )}
-                </>
-              )}
-            />
-
-            <Button 
-              type='button' 
-              size='xs' 
-              variant={menu.quantity >= menu.maxQty ? 'outline' : 'destructive'}
-              disabled={menu.quantity >= menu.maxQty}
-              onClick={() => increment(index)}
-            >
-              +
-            </Button>
-          </div>
+          <Controller
+            control={control}
+            name={`menus.${index}.quantity`}
+            render={({ field }) => (
+              <div className='flex flex-col gap-1'>
+                <NumberStepper
+                  value={field.value}
+                  min={1}
+                  max={menu.maxQty}
+                  division='seller'
+                  onChange={field.onChange}
+                />
+                {errors.menus?.[index]?.quantity && (
+                  <p className='text-red-500 text-sm'>{errors.menus[index]?.quantity?.message}</p>
+                )}
+              </div>
+            )}
+          />
 
           <Button
             type='button'

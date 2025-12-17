@@ -84,13 +84,13 @@ export default function ContentTable<T extends { [key: string]: any }>({
         ) : (
           <Table className='w-full text-left rounded-sm overflow-x-auto'>
             {/* 헤더 */}
-            <TableHeader>
-              <TableRow className='h-[29px]'>
+            <TableHeader className='max-h-[29px]'>
+              <TableRow>
                 {columns.map((col, idx) => (
                   <TableHead
                     key={col.key}
                     className={clsx(
-                      'title1 text-foreground-normal whitespace-nowrap px-[20px] pb-[10px]',
+                      'body4 text-foreground-normal whitespace-nowrap px-[20px] pb-[10px] h-[29px]',
                       col.isWide && 'min-w-[350px]',
                       col.sortable && 'cursor-pointer select-none',
                       // ✅ location 기반 정렬
