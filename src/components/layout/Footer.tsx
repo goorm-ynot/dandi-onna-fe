@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Footer() {
   return (
-    <footer className={`w-full border-t border-border-normal max-[400px]:bg-white bg-background-normal-foreground`}>
+    <footer className={`w-full border-t border-border-footer max-[400px]:bg-white bg-background-normal-foreground`}>
       {/* ✅ 전체는 중앙 정렬 */}
       <div className='w-full pt-40 pb-20'>
         {/* ✅ 내부 컨테이너 */}
@@ -24,8 +24,8 @@ export default function Footer() {
 
             {/* 오른쪽 */}
             <div className='flex flex-row text-right items-center gap-[10px]'>
-              <span className='text-foreground-normal text-base font-medium min-[400px]:body1'>고객센터</span>
-              <span className='text-primary text-xl font-bold min-[400px]:caption8'>1500-0000</span>
+              <span className='text-foreground-normal caption6 max-[400px]:caption4'>고객센터</span>
+              <span className='text-primary text-xl font-bold max-[400px]:caption8'>1500-0000</span>
             </div>
           </div>
 
