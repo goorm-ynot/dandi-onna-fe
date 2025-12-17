@@ -112,11 +112,11 @@ npm run dev
 📜tsconfig.json
 ```
 
-> 자세한 구조 Wiki 작성
+> 자세한 구조 [Wiki 작성 > 보러가기](https://github.com/goorm-ynot/dandi-onna-fe/wiki/%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EA%B5%AC%EC%A1%B0-%EB%AA%85%EC%84%B8%EC%84%9C)
 
 ### API 엔드포인트
 
-> wiki 작성
+> [wiki 작성 > 보러가기](https://github.com/goorm-ynot/dandi-onna-fe/wiki/API-%EC%97%94%EB%93%9C%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EB%AA%85%EC%84%B8%EC%84%9C)
 
 ## 📄 라이선스
 
