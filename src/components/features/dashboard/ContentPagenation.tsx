@@ -20,6 +20,7 @@ export default function Pagination({ totalPages, currentPage, onPageChange, clas
         variant='link'
         size='page'
         onClick={() => onPageChange(Math.max(0, validPage - 1))}
+        className='disabled:text-foreground-disable disabled:opacity-100'
         disabled={validPage === 0}
         >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,6 +38,7 @@ export default function Pagination({ totalPages, currentPage, onPageChange, clas
         variant='link'
         size='page'
         onClick={() => onPageChange(Math.min(validTotalPages - 1, validPage + 1))}
+        className='disabled:text-foreground-disable disabled:opacity-100'
         disabled={validPage === validTotalPages - 1}
         >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

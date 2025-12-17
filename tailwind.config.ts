@@ -32,6 +32,7 @@ const config = {
           tertiary: '#a3a3a3',
           quaternary: '#4c4c4c',
           'primary-emphasis': '#5929ba',
+          footer: '#d3d3d3',
         },
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -58,7 +59,7 @@ const config = {
           'normal-subtle': '#A3A3A3'
         },
         primary: {
-          DEFAULT: '#8949fe',
+          DEFAULT: '#8749fe',
           foreground: '#ffffff',
         },
         secondary: {
@@ -186,6 +187,9 @@ const config = {
         40: 'var(--padding-40)',
       },
       gap: {
+        10: '10px',
+        12: '12px',
+        14: '14px',
         16: '16px',
         20: '20px',
         24: '24px',

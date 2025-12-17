@@ -48,10 +48,10 @@ export default function NoShowOrderPanel({ mode, orderData, onStatusUpdate }: No
         <div className='flex flex-col gap-16'>
           {orderData?.items &&
             orderData.items.map((item) => (
-              <div key={item.orderItemId} className='grid grid-cols-4 gap-12  w-full'>
+              <div key={item.orderItemId} className='grid grid-cols-4 gap-10 w-full'>
                 <Label className='title1 col-span-2  text-label-semilight'>{item.menuName}</Label>
-                <Label className='text-right title1 flex-none'>{item.quantity}</Label>
-                <Label className='text-right title1 flex-none whitespace-nowrap'>{Number(item.unitPrice).toLocaleString()}원</Label>
+                <Label className='text-right body3 flex-none text-foreground-normal'>{item.quantity}</Label>
+                <Label className='text-right body3 flex-none whitespace-nowrap text-foreground-normal'>{Number(item.unitPrice).toLocaleString()}원</Label>
               </div>
             ))}
         </div>
@@ -64,11 +64,11 @@ export default function NoShowOrderPanel({ mode, orderData, onStatusUpdate }: No
         <div className='flex flex-col gap-16'>
           <div className='flex flex-row justify-between items-center'>
             <Label className='title1 text-label-semilight'>기존 판매금액</Label>
-            <Label className='body3 text-label'>{orderData?.totalPrice.toLocaleString()}원</Label>
+            <Label className='body3 text-label text-foreground-normal'>{orderData?.totalPrice.toLocaleString()}원</Label>
           </div>
           <div className='flex flex-row justify-between items-center'>
             <Label className='title1 text-label-semilight'>할인율</Label>
-            <Label className='body3 text-label'>{orderData?.items[0].discountPercent}%</Label>
+            <Label className='body3 text-label text-foreground-normal'>{orderData?.items[0].discountPercent}%</Label>
           </div>
           <div className='flex flex-row justify-between items-center'>
             <Label className='body3 text-foreground-normal'>최종 결제금액</Label>
@@ -92,7 +92,7 @@ export default function NoShowOrderPanel({ mode, orderData, onStatusUpdate }: No
           {parsedPaymentInfo.map((info) => (
             <div key={info.label} className='flex flex-row justify-between items-center gap-8'>
               <Label className='title1 text-label-semilight whitespace-nowrap flex-shrink-0'>{info.label}</Label>
-              <Label className='body3 text-label text-right flex-1'>{info.value}</Label>
+              <Label className='body3 text-label text-right flex-1 text-foreground-normal'>{info.value}</Label>
             </div>
           ))}
         </div>
