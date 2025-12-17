@@ -66,15 +66,9 @@ npm run dev
 ## 🎨 디자인 시스템
 
 - **Primary Color**: 브랜드 컬러
-- **Breakpoints**: 400px (모바일), 640px (태블릿), 1024px+ (데스크톱)
+- **Breakpoints**: 390px (모바일), 1024px+ (데스크톱)
 - **Container**: 최대 1280px
 - **Typography**: Pretendard 폰트
-
-## 📱 반응형 지원
-
-- **390px 기준 모바일 최적화**
-- **400px 미만**: 세로 스택 레이아웃
-- **400px 이상**: 가로 배치 레이아웃
 
 ## 🔧 개발 정보
 
