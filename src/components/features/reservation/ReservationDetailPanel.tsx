@@ -25,7 +25,7 @@ export default function ReservationDetailPanel({
   onDataUpdate,
 }: ReservationDetailPanel) {
   return (
-    <div className='px-20 flex flex-col justify-between min-h-[758px] pt-[36px]'>
+    <div className='px-20 flex flex-col justify-between min-h-[758px] pt-[36px] w-[360px]'>
       <div className='flex flex-col gap-24'>
         <Label className='title5'>예약 정보</Label>
         {/* 예약 정보 */}

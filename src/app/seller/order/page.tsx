@@ -26,9 +26,11 @@ export default function NoShowOrderListPage() {
     error,
     onSelected,
     handlePageChange,
-    handleFilterChange, // 현재는 구현 필요 없음
-    handleSort, // 현재는 구현 필요 없음
+    handleFilterChange, // 구현 진행중 (백엔드 필터링 필요)
+    handleSort, // 정렬
     handleCompleteVisit,
+
+    sortState,
   } = useSellerOrderManage();
 
   /** 방문 완료 요청 - Dialog 띄우기 */
@@ -61,9 +63,11 @@ export default function NoShowOrderListPage() {
 
   // 테이블 컬럼 (UI용)
   const columns = [
-    { key: 'orderId', header: '주문번호' },
+    { key: 'orderId', header: '주문번호', sortable: true },
     {
       key: 'visitTime',
+      sortable: true,
+      sortKey: 'visitTime', // 실제 데이터 필드명
       header: '시간',
       render: (res: { visitTime: string | number | Date }) => formatTimeString(new Date(res.visitTime)),
     },
@@ -107,6 +111,8 @@ export default function NoShowOrderListPage() {
         emptyMessage='주문 내역이 비어있습니다.'
         activeTab={activeFilter}
         selectItemId={selectItemId}
+        onSort={handleSort}
+        sortState={sortState}
       />
     );
   }
@@ -130,6 +136,8 @@ export default function NoShowOrderListPage() {
             emptyMessage='주문 내역이 비어있습니다.'
             activeTab={activeFilter}
             selectItemId={selectItemId}
+            onSort={handleSort}
+            sortState={sortState}
           />
         }
         panelType={'noshow-order-view'}

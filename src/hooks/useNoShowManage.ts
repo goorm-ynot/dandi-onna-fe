@@ -4,8 +4,10 @@ import { getNowDateHyphenString } from '@/lib/dateParse';
 import { useNoShowStore } from '@/store/useNoShowStore';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { SortState } from '@/types/boardData';
+import { sortData, handleSortToggle } from '@/lib/sortUtils';
 
 export const useNoShowManage = () => {
   const router = useRouter();
@@ -31,6 +33,9 @@ export const useNoShowManage = () => {
     }
   };
 
+  // 정렬 상태
+  const [sortState, setSortState] = useState<SortState>({ key: '', order: null });
+
   const {
     data: noShowLists,
     isLoading,
@@ -47,7 +52,7 @@ export const useNoShowManage = () => {
           // date: new Date(),
         },
       });
-      console.log('response: ', response.data);
+      // console.log('response: ', response.data);
       return response.data;
     },
     staleTime: 1000 * 60 * 1,
@@ -100,7 +105,7 @@ export const useNoShowManage = () => {
     if (detailData) {
       const detail = detailData.data || detailData;
       setSelectNoshowItem(detail);
-      console.log('상세 데이터:', detail);
+      // console.log('상세 데이터:', detail);
     }
   }, [detailData, setSelectNoshowItem]);
 
@@ -119,9 +124,16 @@ export const useNoShowManage = () => {
 
   // 정렬 핸들러
   const handleSort = (key: string) => {
-    // 정렬 선택 시, refetch 호출, 백엔드에서 정렬 처리
-    // INFO: 정렬 상태 관리 필요 시 추가 구현
+    // 정렬 선택 시 기존의 데이터에서 직접 정렬 수행
+    // desc, asc 구분 필요
+    // console.log('정렬 키 선택됨:', key);
+    handleSortToggle(key, setSortState);
   };
+
+  // 정렬된 노쇼 메뉴 데이터
+  const sortedNoShowList = useMemo(() => {
+    return sortData(noShowList, sortState);
+  }, [noShowList, sortState]);
 
   return {
     // 상태
@@ -144,7 +156,10 @@ export const useNoShowManage = () => {
     onSelected,
     handlePageChange,
     setActiveEdit, // 임시로 추가
+    
     // sort
+    sortState,
+    sortedReservations: sortedNoShowList,
     handleSort,
   };
 };

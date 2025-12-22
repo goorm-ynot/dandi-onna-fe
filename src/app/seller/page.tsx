@@ -198,7 +198,7 @@ function SellerPageContent() {
             tabs={tabs}
             showFilters={true}
             columns={columns}
-            data={reservations}
+            data={sortedReservations}
             expiredData={expiredReservations}
             onSelected={onSelectReservation}
             onTabChange={handleFilterChange}
@@ -209,6 +209,8 @@ function SellerPageContent() {
             emptyMessage='오늘 예약이 비어있습니다.'
             activeTab={activeTab}
             selectItemId={selectItemId}
+            onSort={handleSort}
+            sortState={sortState}
           />
         }
         // selectItemStatus 말고 다른 방법?
