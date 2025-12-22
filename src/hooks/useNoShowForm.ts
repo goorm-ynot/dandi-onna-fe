@@ -201,7 +201,7 @@ export function useNoShowMenuForm(defaultData?: NoShowMenu) {
         discountPercent: defaultData.discountPercent,
         visitTime: serverVisitTime.toISOString(), // ISO 문자열로 저장
       });
-      console.log('폼 데이터 리셋:', defaultData);
+      // console.log('폼 데이터 리셋:', defaultData);
     }
   }, [defaultData, reset]);
 
@@ -259,10 +259,10 @@ export function useNoShowMenuForm(defaultData?: NoShowMenu) {
   const handleConfirmSubmit = useCallback(() => {
     if (!pendingFormData) return;
 
-    console.log('✅ 수정 확정 데이터:', {
-      ...pendingFormData,
-      visitTime: calculatedVisitTime.toISOString(),
-    });
+    // console.log('✅ 수정 확정 데이터:', {
+    //   ...pendingFormData,
+    //   visitTime: calculatedVisitTime.toISOString(),
+    // });
     // TODO: 실제 API 호출 로직 추가(필요시)
     setIsSubmitDialogOpen(false);
     setPendingFormData(null);

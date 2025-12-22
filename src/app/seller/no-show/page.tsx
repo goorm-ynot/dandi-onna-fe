@@ -25,9 +25,12 @@ export default function NoShowMenuPage() {
     detailError,
     setSelectNoshowItem,
     onSelected,
-    handleSort,
     handlePageChange,
     setActiveEdit,
+    // sort
+    handleSort,
+    sortState,
+    sortedReservations: sortedNoShowList,
   } = useNoShowManage();
 
   // const handleSelectStatus = (item: string) => {
@@ -57,8 +60,9 @@ export default function NoShowMenuPage() {
   const columns = [
     {
       key: 'time',
+      sortKey: 'visitTime', // 실제 데이터 필드명
       header: '시간',
-      // sortable: true,
+      sortable: true, // 페이지 하나당 정렬 > 정렬 훅 추가 필요
       render: (res: { visitTime: string | number | Date }) =>
         new Date(res.visitTime).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false }),
     },
@@ -108,7 +112,7 @@ export default function NoShowMenuPage() {
         title='노쇼 메뉴 상태를 관리해요'
         showFilters={false}
         columns={columns}
-        data={noShowList || []}
+        data={sortedNoShowList || []}
         expiredData={[]}
         // onSelected={onSelected} // 행 클릭 비활성화
         isUpdating={activeEdit}
@@ -116,6 +120,8 @@ export default function NoShowMenuPage() {
         page={Number(cursor)}
         onPageChange={handlePageChange}
         emptyMessage={'노쇼가 없습니다.'} // TODO: 멘트 추천받기
+        sortState={sortState}
+        onSort={handleSort}
       />
     );
   }
@@ -130,7 +136,7 @@ export default function NoShowMenuPage() {
             title='노쇼 메뉴 상태를 관리해요'
             showFilters={false}
             columns={columns}
-            data={noShowList || []}
+            data={sortedNoShowList || []}
             expiredData={[]}
             // onSelected={onSelected} // 행 클릭 비활성화
             isUpdating={activeEdit}
@@ -138,6 +144,8 @@ export default function NoShowMenuPage() {
             page={Number(cursor)}
             onPageChange={handlePageChange}
             emptyMessage='오늘 노쇼가 없습니다!' // TODO: 멘트 추천받기
+            onSort={handleSort}
+            sortState={sortState}
           />
         }
         panelType='noshow-edit'

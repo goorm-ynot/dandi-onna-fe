@@ -8,6 +8,7 @@ import { useReservationStore } from '@/store/useReservationStore';
 import { useReservationTimer } from './useReservationTimer';
 import { useReservationApi } from './useReservationApi';
 import { Reservation, SortState } from '@/types/boardData';
+import { sortData, handleSortToggle } from '@/lib/sortUtils';
 
 export const useReservationManager = ({ userId = null }: { userId?: string | null }) => {
   const router = useRouter();
@@ -105,58 +106,13 @@ export const useReservationManager = ({ userId = null }: { userId?: string | nul
 
   // ✅ 정렬 핸들러
   const handleSort = (key: string) => {
-    setSortState((prev) => {
-      if (prev.key !== key) {
-        return { key, order: 'asc' };
-      }
-
-      switch (prev.order) {
-        case null:
-          return { key, order: 'asc' };
-        case 'asc':
-          return { key, order: 'desc' };
-        case 'desc':
-          return { key, order: null };
-        default:
-          return { key, order: 'asc' };
-      }
-    });
+    // console.log('Sorting by key:', key);
+    handleSortToggle(key, setSortState);
   };
 
   // ✅ 정렬된 예약 데이터
   const sortedReservations = useMemo(() => {
-    if (!sortState.key || !sortState.order) {
-      return reservations;
-    }
-
-    return [...reservations].sort((a, b) => {
-      const key = sortState.key as keyof typeof a;
-      let aValue = a[key];
-      let bValue = b[key];
-
-      // 시간 정렬 특별 처리
-      if (key === 'time') {
-        const aTime = new Date(aValue as unknown as string).getTime();
-        const bTime = new Date(bValue as unknown as string).getTime();
-        return sortState.order === 'asc' ? aTime - bTime : bTime - aTime;
-      }
-
-      // 문자열 정렬
-      if (typeof aValue === 'string' && typeof bValue === 'string') {
-        const result = aValue.localeCompare(bValue);
-        return sortState.order === 'asc' ? result : -result;
-      }
-
-      // 숫자 정렬
-      if (typeof aValue === 'number' && typeof bValue === 'number') {
-        return sortState.order === 'asc' ? aValue - bValue : bValue - aValue;
-      }
-
-      // 기본 정렬
-      if (aValue < bValue) return sortState.order === 'asc' ? -1 : 1;
-      if (aValue > bValue) return sortState.order === 'asc' ? 1 : -1;
-      return 0;
-    });
+    return sortData(reservations, sortState);
   }, [reservations, sortState]);
 
   return {

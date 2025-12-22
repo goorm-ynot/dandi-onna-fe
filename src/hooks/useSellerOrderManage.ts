@@ -1,12 +1,13 @@
 import { getNowDateHyphenString } from '@/lib/dateParse';
 import { useSellerOrderStore } from '@/store/useSellerOrder';
 import { useAlarmStore } from '@/store/useAlarmStore';
-import { OrderDetail } from '@/types/boardData';
+import { OrderDetail, SortState } from '@/types/boardData';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { set } from 'zod';
+import { sortData, handleSortToggle } from '@/lib/sortUtils';
 
 export const useSellerOrderManage = () => {
   const router = useRouter();
@@ -24,6 +25,7 @@ export const useSellerOrderManage = () => {
   } = useSellerOrderStore();
   const { showAlarm } = useAlarmStore();
   const queryClient = useQueryClient();
+  const [sortState, setSortState] = useState<SortState>({ key: '', order: null });
 
   // 에러 처리 핸들러
   const handleQueryError = (error: any) => {
@@ -114,9 +116,9 @@ export const useSellerOrderManage = () => {
     // 구현 필요 시 추가
   };
 
-  // 정렬 핸들러 > 당장 구현하지 않음
+  // 정렬 핸들러 
   const handleSort = (key: string) => {
-    // 구현 필요 시 추가
+    handleSortToggle(key, setSortState);
   };
 
   // 선택한 주문내역 아이템 세팅
@@ -157,8 +159,12 @@ export const useSellerOrderManage = () => {
     completeVisitMutation.mutate(orderId);
   };
 
+  const sortOrders = useMemo(() => {
+    return sortData(orders, sortState);
+  },[orders, sortState]);
+
   return {
-    orders,
+    orders: sortOrders,
     selectItemId,
     cursor: pagination?.page || 0,
     totalPages: pagination?.totalPages || 0,
@@ -173,5 +179,8 @@ export const useSellerOrderManage = () => {
     handleFilterChange, // 현재는 구현 필요 없음
     handleSort, // 현재는 구현 필요 없음
     handleCompleteVisit, // 방문 완료 핸들러
+
+    //sort
+    sortState,
   };
 };
