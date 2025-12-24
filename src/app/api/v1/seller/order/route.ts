@@ -4,29 +4,28 @@ import serverApiClient from '@/services/ApiClient';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
+  const BASE_URL = '/owner/orders';
   try {
     // URL에서 쿼리파라미터 추출
     const searchParams = request.nextUrl.searchParams;
     const date = searchParams.get('date') || getNowDateHyphenString();
     const size = searchParams.get('size') || '10';
     const page = searchParams.get('page') || '0';
-
-    // if (process.env.NODE_ENV === 'development') {
-    //   console.log('Query Params:', { date, page, size });
-    // }
+    const filter = searchParams.get('filter') || 'ALL';
+    
+    if(process.env.NODE_ENV === 'development') {
+      console.log('✅ Received query params:', { date, size, page, filter });
+    }
 
     // ✅ await 추가 및 백엔드 API 호출
-    const response = await serverApiClient.get('/owner/orders', {
+    // filter에 값이 있는경우 BASE_URL + filter 형태로 요청 보내기
+    const response = await serverApiClient.get(BASE_URL + (filter !== 'ALL' ? `/${filter.toLowerCase()}` : ''), {
       params: {
         page: page,
         size: size,
         date: date,
       },
     });
-
-    // if (process.env.NODE_ENV === 'development') {
-    //   console.log('✅ Response from serverApiClient:', response);
-    // }
 
     // ✅ 백엔드 응답을 그대로 반환
     return NextResponse.json(response, { status: 200 });

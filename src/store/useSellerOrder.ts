@@ -37,8 +37,9 @@ interface SellerOrderState {
   /**
    * 필터 상태 세팅
    * INFO: 당장 필요없음
+   * 'ALL' | 'PENDING' | 'COMPLETED'
    */
-  setFilterStatus: (filterStatus: 'ALL' | 'PENDING' | 'COMPLETED') => void;
+  setFilterStatus: (filterStatus: string) => void; 
 }
 
 export const useSellerOrderStore = create<SellerOrderState>((set) => ({
@@ -74,8 +75,8 @@ export const useSellerOrderStore = create<SellerOrderState>((set) => ({
       selectItemId: selectItemId,
     }),
 
-  setFilterStatus: (filterStatus: 'ALL' | 'PENDING' | 'COMPLETED') =>
+  setFilterStatus: (filterStatus: string) =>
     set({
-      filterStatus,
+      filterStatus: filterStatus as 'ALL' | 'PENDING' | 'COMPLETED',
     }),
 }));

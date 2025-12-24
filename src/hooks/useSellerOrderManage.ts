@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useEffect, useMemo, useState } from 'react';
 import { set } from 'zod';
 import { sortData, handleSortToggle } from '@/lib/sortUtils';
+import { fi } from 'zod/v4/locales';
 
 export const useSellerOrderManage = () => {
   const router = useRouter();
@@ -43,13 +44,14 @@ export const useSellerOrderManage = () => {
     refetch,
     error,
   } = useQuery({
-    queryKey: ['seller-orders', pagination.page], // 페이지를 queryKey에 포함
+    queryKey: ['seller-orders', pagination.page, filterStatus], // 페이지와 필터를 queryKey에 포함
     queryFn: async () => {
       const response = await axios.get('/api/v1/seller/order', {
         params: {
           date: getNowDateHyphenString(),
           page: pagination.page, // 0부터 시작하는 페이지 인덱스
           size: pagination.size || 10,
+          filter: filterStatus,
         },
       });
       return response.data;
@@ -103,7 +105,7 @@ export const useSellerOrderManage = () => {
     if (orderDetail) {
       setSelectOrderItem(orderDetail.data || null);
     }
-  }, [orderList, orderDetail, setOrders, setPages, setSelectOrderItem]);
+  }, [orderList, orderDetail, setOrders, setPages, setSelectOrderItem, filterStatus]);
 
   // 페이지 변경 함수
   const handlePageChange = (newPage: number) => {
@@ -113,7 +115,7 @@ export const useSellerOrderManage = () => {
 
   // Filter 선택 함수
   const handleFilterChange = (filter: string) => {
-    // 구현 필요 시 추가
+    setFilterStatus(filter);
   };
 
   // 정렬 핸들러 
