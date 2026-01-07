@@ -3,6 +3,7 @@ import ReservationDetailPanel from '../features/reservation/ReservationDetailPan
 import NoShowEditPanel from '../features/noshow/NoShowEditPanel';
 import NoShowPanel from '../features/noshow';
 import NoShowOrderPanel from '../features/order/NoShowOrderPanel';
+import EmptyGuide from '../common/EmptyGuide';
 
 interface RightPanelContentProps {
   type: PanelType;
@@ -25,6 +26,16 @@ export default function RightPanelContent({
   onClose,
   onEditMode,
 }: RightPanelContentProps) {
+  // 데이터가 없으면 EmptyGuide 표시
+  if (!data) {
+    return (
+      <EmptyGuide
+        title='예약을 선택해주세요'
+        description='왼쪽에서 예약을 선택하면&#10;상세 정보를 확인할 수 있습니다'
+      />
+    );
+  }
+
   switch (type) {
     case 'reservation-detail':
       return (

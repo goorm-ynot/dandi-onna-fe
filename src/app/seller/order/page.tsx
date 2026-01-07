@@ -6,7 +6,7 @@ import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDial
 import { orderStatus } from '@/constants/sellerNavConstant';
 import { useSellerOrderManage } from '@/hooks/useSellerOrderManage';
 import { formatTimeString } from '@/lib/dateParse';
-import { OrderDetail, OrderItem, OrderItemList } from '@/types/boardData';
+import { OrderItemList } from '@/types/boardData';
 import React, { useState } from 'react';
 import { useApiErrorHandler } from '@/hooks/useApiErrorHandler';
 
@@ -95,28 +95,7 @@ export default function NoShowOrderListPage() {
     },
   ];
 
-  if (!selectItemId) {
-    return (
-      <SingleColumnLayout
-        title='노쇼 주문 내역을 볼 수 있어요'
-        tabs={tabs}
-        showFilters={true}
-        columns={columns}
-        data={orders}
-        onSelected={onSelected}
-        onTabChange={handleFilterChange}
-        totalPages={totalPages}
-        page={cursor}
-        onPageChange={handlePageChange}
-        emptyMessage='주문 내역이 비어있습니다.'
-        activeTab={activeFilter}
-        selectItemId={selectItemId}
-        onSort={handleSort}
-        sortState={sortState}
-      />
-    );
-  }
-
+  // 항상 TwoColumnLayout 사용
   return (
     <>
       <TwoColumnLayout

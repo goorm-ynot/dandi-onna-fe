@@ -162,36 +162,11 @@ function SellerPageContent() {
     );
   }
 
-  /** 예약이 아직 선택되지 않은 경우 — 단일 컬럼 레이아웃 */
-  if (!selectedReservation) {
-    return (
-      <SingleColumnLayout
-        title='오늘의 예약 내역이에요'
-        tabs={tabs}
-        showFilters={true}
-        columns={columns}
-        data={sortedReservations}
-        expiredData={expiredReservations}
-        onSelected={onSelectReservation}
-        onTabChange={handleFilterChange}
-        isUpdating={isUpdating}
-        totalPages={Number(totalPage)}
-        page={Number(cursor)}
-        onPageChange={handlePageChange}
-        emptyMessage='오늘 예약이 비어있습니다.'
-        activeTab={activeTab}
-        selectItemId={selectItemId}
-        sortState={sortState}
-        onSort={handleSort}
-      />
-    );
-  }
-
-  /** 예약이 선택된 경우 — 두 개의 패널로 세부 정보 표시 */
+  /** 항상 TwoColumnLayout 사용 */
   return (
     <>
       <TwoColumnLayout
-        rightTitle={selectItemStatus === 'PENDING' ? '예약 상세정보를 확인해주세요' : '앗, 노쇼가 발생했나요?'}
+        rightTitle={selectedReservation && selectItemStatus === 'PENDING' ? '예약 상세정보를 확인해주세요' : selectedReservation ? '앗, 노쇼가 발생했나요?' : '예약 상세정보를 확인해주세요'}
         leftContent={
           <SinglePageLayout
             title='오늘의 예약 내역이에요'
@@ -213,9 +188,8 @@ function SellerPageContent() {
             sortState={sortState}
           />
         }
-        // selectItemStatus 말고 다른 방법?
+        // 예약이 선택되지 않았을 때는 EmptyGuide를 렌더링하고, 선택되었을 때는 실제 패널을 표시
         panelType={!activeEdit ? 'reservation-detail' : 'noshow-edit'}
-        // panelMode={'edit'}
         panelMode={'noshow-form'}
         selectedData={selectedReservation}
         onBack={() => console.log('onBack')}
@@ -225,7 +199,7 @@ function SellerPageContent() {
         onEditMode={onChangeEdit}
         leftClassName='flex-1'
         rightClassName='w-96'
-        showTitles={true}
+        showTitles={!!selectedReservation}
       />
 
       {/* 노쇼 확인 다이얼로그 */}

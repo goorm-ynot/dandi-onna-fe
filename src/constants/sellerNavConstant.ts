@@ -1,5 +1,4 @@
 // src/constants/menu.ts
-import { DynamicIcon } from '@/lib/iconMapper';
 
 export interface MenuItem {
   id: string; // 고유 식별자
@@ -47,9 +46,10 @@ export const MENU_ITEMS: MenuItem[] = [
 export const reservationStatus = {
   PROCESSING: '방문예정',
   PENDING: '방문예정',
-  NOSHOW: '노쇼',
-  DISABLED: '방문완료',
+  LATE: '지각/확인필요', // 이름이 바뀔 수 있음
+  NOSHOW: '노쇼 등록 완료 ',
   VISIT_DONE: '방문완료',
+  DISABLED: '방문완료',
   CONFIRMED: '노쇼 등록 완료',
   COMPLETED: '노쇼 주문 완료',
   CANCELLED: '노쇼 방문 완료',

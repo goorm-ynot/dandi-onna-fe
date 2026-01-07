@@ -105,27 +105,7 @@ export default function NoShowMenuPage() {
       </div>
     );
   }
-
-  if (!activeEdit) {
-    return (
-      <SingleColumnLayout
-        title='노쇼 메뉴 상태를 관리해요'
-        showFilters={false}
-        columns={columns}
-        data={sortedNoShowList || []}
-        expiredData={[]}
-        // onSelected={onSelected} // 행 클릭 비활성화
-        isUpdating={activeEdit}
-        totalPages={Number(totalPages)}
-        page={Number(cursor)}
-        onPageChange={handlePageChange}
-        emptyMessage={'노쇼가 없습니다.'} // TODO: 멘트 추천받기
-        sortState={sortState}
-        onSort={handleSort}
-      />
-    );
-  }
-
+/** TwoColumnLayout만 보이기 */
   return (
     <>
       {/* TODO: rightTitle 수정하기 */}
