@@ -54,6 +54,7 @@ function SellerPageContent() {
   const tabs = [
     { id: 'all', label: '전체' },
     { id: 'PENDING', label: '방문예정' },
+    { id: 'LATE', label: '지각/확인필요' },
     { id: 'NOSHOW', label: '노쇼' },
     { id: 'VISIT_DONE', label: '방문완료' },
   ];
@@ -84,7 +85,7 @@ function SellerPageContent() {
           className={`px-[12px] py-[4px] rounded-[20px] h-[26px] w-[120px] caption5 inline-flex items-center justify-center ${
             res.status === 'PENDING'
               ? 'bg-status-pending text-status-pending-foreground'
-              : res.status === 'NOSHOW'
+              : res.status === 'LATE'
               ? 'bg-status-noshow text-status-noshow-foreground'
               : 'bg-status-completed text-status-completed-foreground'
           }`}>
@@ -200,6 +201,8 @@ function SellerPageContent() {
         leftClassName='flex-1'
         rightClassName='w-96'
         showTitles={!!selectedReservation}
+        emptyTitle='예약을 선택해주세요'
+        emptyDescription='왼쪽에서 예약을 선택하면&#10;상세 정보를 확인할 수 있습니다'
       />
 
       {/* 노쇼 확인 다이얼로그 */}

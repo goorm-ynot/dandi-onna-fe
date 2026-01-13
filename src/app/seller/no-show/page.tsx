@@ -132,6 +132,8 @@ export default function NoShowMenuPage() {
         panelMode={'edit'}
         selectedData={selectNoShowItem}
         onDataUpdate={onDataUpdate}
+        emptyTitle='메뉴를 선택해주세요.'
+        emptyDescription='왼쪽에서 노쇼 메뉴를 선택하면&#10;상세 정보를 확인할 수 있습니다.'
       />
 
       {/* 노쇼 메뉴 삭제 확인 Dialog */}

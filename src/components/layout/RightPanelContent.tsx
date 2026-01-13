@@ -9,6 +9,8 @@ interface RightPanelContentProps {
   type: PanelType;
   mode: PanelMode;
   data: any;
+  emptyTitle?: string | null;
+  emptyDescription?: string | null;
   onModeChange?: (mode: PanelMode) => void;
   onDataUpdate?: (data: any) => void;
   onStatusUpdate?: (id: string, status: string) => void;
@@ -20,6 +22,8 @@ export default function RightPanelContent({
   type,
   mode,
   data,
+  emptyTitle,
+  emptyDescription,
   onModeChange,
   onDataUpdate,
   onStatusUpdate,
@@ -30,8 +34,8 @@ export default function RightPanelContent({
   if (!data) {
     return (
       <EmptyGuide
-        title='예약을 선택해주세요'
-        description='왼쪽에서 예약을 선택하면&#10;상세 정보를 확인할 수 있습니다'
+        title={emptyTitle}
+        description={emptyDescription}
       />
     );
   }

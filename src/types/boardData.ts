@@ -14,7 +14,7 @@ export interface MenuMini {
 export interface Reservation {
   reservationNo: string; // 예약 번호
   time: string; // 예약 시간
-  status: 'PENDING' | 'NOSHOW' | 'VISIT_DONE'; // 예약 상태
+  status: ReservationStatus; // 예약 상태
   contact: string; // 고객 연락처
   expired: boolean; // 예약 시간 초과 여부 확인
   menus: MenuMini[]; // 메뉴
@@ -57,6 +57,8 @@ export interface TwoColumnLayoutProps<T = any> {
   leftTitle?: string;
   rightTitle?: string;
   leftContent: React.ReactNode;
+  emptyTitle?: string | null;
+  emptyDescription?: string | null;
 
   // 오른쪽 패널 설정
   panelType: PanelType;
@@ -176,6 +178,7 @@ export interface OrderItem {
 }
 
 // 상태 관련 타입들
+export type ReservationStatus = 'PENDING' | 'LATE' | 'NOSHOW' | 'VISIT_DONE';
 export type OrderStatus = 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED';
 
 export type PaymentStatus = 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED' | 'CANCELLED';

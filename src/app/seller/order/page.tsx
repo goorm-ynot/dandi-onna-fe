@@ -126,6 +126,8 @@ export default function NoShowOrderListPage() {
         rightClassName='w-96'
         showTitles={true}
         onStatusUpdate={onStatusUpdate}
+        emptyTitle='주문내역을 선택해주세요.'
+        emptyDescription='왼쪽에서 노쇼 주문내역을 선택하면&#10;상세 정보를 확인할 수 있습니다.'
       />
 
       {/* 방문 완료 확인 Dialog */}

@@ -53,10 +53,12 @@ export const useReservationManager = ({ userId = null }: { userId?: string | nul
     queryFn: async () => {
       // fetch 넘길 때 Params 넘겨야함. 참고
       // const response = await fetch('/api/v1/seller/reservations');
+      // LATE는 프론트엔드 상태이므로, API에는 PENDING으로 요청
+      const apiStatus = activeTab === 'LATE' ? 'PENDING' : activeTab;
       const response = await axios.get('/api/v1/seller/reservations', {
         params: {
           date: new Date(),
-          status: activeTab,
+          status: apiStatus,
           sort: 'time_desc',
           cursor: Number(cursor),
           size: 10,
@@ -110,10 +112,17 @@ export const useReservationManager = ({ userId = null }: { userId?: string | nul
     handleSortToggle(key, setSortState);
   };
 
-  // ✅ 정렬된 예약 데이터
+  // ✅ 필터링 및 정렬된 예약 데이터
   const sortedReservations = useMemo(() => {
-    return sortData(reservations, sortState);
-  }, [reservations, sortState]);
+    let filteredData = reservations;
+    
+    // LATE 탭일 때는 expired된 항목만 필터링
+    if (activeTab === 'LATE') {
+      filteredData = reservations.filter(res => res.expired || res.status === 'LATE');
+    }
+    
+    return sortData(filteredData, sortState);
+  }, [reservations, sortState, activeTab]);
 
   return {
     // 상태

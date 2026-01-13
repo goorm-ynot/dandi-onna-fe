@@ -46,7 +46,7 @@ export const MENU_ITEMS: MenuItem[] = [
 export const reservationStatus = {
   PROCESSING: '방문예정',
   PENDING: '방문예정',
-  LATE: '지각/확인필요', // 이름이 바뀔 수 있음
+  LATE: '확인필요', // 이름이 바뀔 수 있음
   NOSHOW: '노쇼 등록 완료 ',
   VISIT_DONE: '방문완료',
   DISABLED: '방문완료',

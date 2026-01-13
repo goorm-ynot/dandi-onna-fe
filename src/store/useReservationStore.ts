@@ -117,7 +117,7 @@ export const useReservationStore = create<ReservationStore>()(
     markAsExpired: (reservationId) =>
       set((state) => ({
         reservations: state.reservations.map((res) =>
-          res.reservationNo === reservationId ? { ...res, expired: true } : res
+          res.reservationNo === reservationId ? { ...res,status: 'LATE',expired: true } : res
         ),
       })),
 

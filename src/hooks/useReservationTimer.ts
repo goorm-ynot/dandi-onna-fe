@@ -5,21 +5,25 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useReservationStore } from '@/store/useReservationStore';
 
+const EXPIRE_MINUTES = 15;
+const EXPIRE_MS = EXPIRE_MINUTES * 60 * 1000;
+
 export const useReservationTimer = () => {
   const { reservations, markAsExpired } = useReservationStore();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // 날짜까지 함께 체크하는  코드
   const checkExpiredReservations = useCallback(() => {
-    const now = new Date();
+    const now = Date.now();
 
-    reservations.forEach((reservation) => {
-      if (reservation.status === 'PENDING' && !reservation.expired) {
-        const visitTime = new Date(reservation.time);
-        const expiredTime = new Date(visitTime.getTime() + 15 * 60 * 1000); // +15분
+    reservations
+    .filter((r) => r.status === 'PENDING' && !r.expired)
+    .forEach((reservation) => {
+      const visitMS = new Date(reservation.time).getTime();
+      const expiredMS = visitMS + EXPIRE_MS;
 
-        if (now >= expiredTime) {
-          markAsExpired(reservation.reservationNo);
-        }
+      if(now >= expiredMS) {
+        markAsExpired(reservation.reservationNo);
       }
     });
   }, [reservations, markAsExpired]);
