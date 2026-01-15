@@ -12,6 +12,9 @@ import { Reservation } from '@/types/boardData';
 import { useEffect, useState, Suspense } from 'react';
 import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDialog';
 import { useSearchParams } from 'next/navigation';
+import Notice, { NoticeContent, NoticeDescription, NoticeTitle } from '@/components/features/ui/Notice';
+import { Info } from 'lucide-react';
+import clsx from 'clsx';
 
 function SellerPageContent() {
   const searchParams = useSearchParams();
@@ -54,7 +57,7 @@ function SellerPageContent() {
   const tabs = [
     { id: 'all', label: '전체' },
     { id: 'PENDING', label: '방문예정' },
-    { id: 'LATE', label: '지각/확인필요' },
+    { id: 'LATE', label: '확인필요' },
     { id: 'NOSHOW', label: '노쇼' },
     { id: 'VISIT_DONE', label: '방문완료' },
   ];
@@ -82,13 +85,16 @@ function SellerPageContent() {
       location: 'center' as 'center',
       render: (res: Reservation) => (
         <span
-          className={`px-[12px] py-[4px] rounded-[20px] h-[26px] w-[120px] caption5 inline-flex items-center justify-center ${
-            res.status === 'PENDING'
-              ? 'bg-status-pending text-status-pending-foreground'
-              : res.status === 'LATE'
-              ? 'bg-status-noshow text-status-noshow-foreground'
-              : 'bg-status-completed text-status-completed-foreground'
-          }`}>
+          className={clsx(
+            'px-[12px] py-[4px] rounded-[20px] h-[26px] w-[120px] caption5 inline-flex items-center justify-center',
+            {
+              'bg-status-pending text-status-pending-foreground': res.status === 'PENDING',
+              'bg-status-noshow text-status-noshow-foreground': res.status === 'LATE',
+              'bg-system-blue-light text-system-blue-strong': res.status === 'NOSHOW',
+              'bg-status-completed text-status-completed-foreground': res.status === 'VISIT_DONE',
+            }
+          )}
+        >
           {reservationStatus[res.status as keyof typeof reservationStatus] || res.status}
         </span>
       ),
@@ -146,13 +152,42 @@ function SellerPageContent() {
    * (INFO: 당장은 mock데이터를 사용해서 그냥 다 넘기지만 API 호출 시, 이부분 수정 필요)
    */
   const onSelectReservation = (reservation: Reservation) => {
-    if (reservation.status === 'PENDING') {
-      setSelectedReservation(reservation);
-      setActiveEdit(false);
-      return;
-    }
-    setSelectedReservation(null);
+    setSelectedReservation(reservation);
+    // if (reservation.status === 'PENDING' || reservation.status === 'LATE') {
+    //   setActiveEdit(false);
+    //   return;
+    // }
+    // setSelectedReservation(null);
   };
+
+  /** 선택이 되지 않은 경우 보여주는 커스텀 컴포넌트 */
+  const EmptyPanelContent = () => {
+    // late가 하나라도 있으면 warning 노출
+    const hasLate = reservations.some((res) => res.status === 'LATE');
+    return (
+      <div className='flex flex-col items-center w-full h-full px-20 py-[36px] gap-24'>
+        <Notice
+          variant={hasLate ? 'warning' : 'info'}
+          icon={<Info className={clsx('icon-m', 
+            hasLate ? 'text-system-yellow-strong' : 'text-primitives-brand')} />}
+          title={hasLate ? '노쇼 확인 대기중인 예약이 있습니다.' : '현재 노쇼처리할 예약이 없습니다.'}
+          description={hasLate ? '예약 시간이 15분 지났습니다.\n아직 노쇼로 확정되지 않았어요.' : '모든 예약이 정상적으로 진행 중이에요.'}
+        />
+        <Notice variant={'default'}>
+            <NoticeContent className='px-16 py-20 flex flex-col gap-20'>
+              <NoticeTitle >예약은 이렇게 관리돼요</NoticeTitle>
+              <NoticeDescription className='pl-4'>
+                <ul className='list-disc flex flex-col gap-12'>
+                  <li>손님이 도착하면 예약 상태가 '방문완료'로 바뀝니다.</li>
+                  <li>예약 시간이 15분 지나면 노쇼 여부를 확인할 수 있어요.</li>
+                  <li>노쇼가 발생하면 알림으로 안내해 드려요.</li>
+                </ul>
+              </NoticeDescription>
+            </NoticeContent>
+        </Notice>
+      </div>
+    );
+  }
 
   /** 로딩 중 상태 표시 */
   if (isLoading) {
@@ -167,7 +202,7 @@ function SellerPageContent() {
   return (
     <>
       <TwoColumnLayout
-        rightTitle={selectedReservation && selectItemStatus === 'PENDING' ? '예약 상세정보를 확인해주세요' : selectedReservation ? '앗, 노쇼가 발생했나요?' : '예약 상세정보를 확인해주세요'}
+        rightTitle={selectedReservation && selectItemStatus === 'LATE' ? '앗, 노쇼가 발생했나요?' : '예약 상세정보를 확인해주세요'}
         leftContent={
           <SinglePageLayout
             title='오늘의 예약 내역이에요'
@@ -201,8 +236,8 @@ function SellerPageContent() {
         leftClassName='flex-1'
         rightClassName='w-96'
         showTitles={!!selectedReservation}
-        emptyTitle='예약을 선택해주세요'
-        emptyDescription='왼쪽에서 예약을 선택하면&#10;상세 정보를 확인할 수 있습니다'
+        // 선택이 되지 않은 경우 보여줌
+        emptyContent={<EmptyPanelContent />}
       />
 
       {/* 노쇼 확인 다이얼로그 */}

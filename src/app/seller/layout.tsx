@@ -17,7 +17,7 @@ export default function Layout({ children }: Readonly<{ children: React.ReactNod
       <main className='w-full min-h-screen flex flex-col bg-background-normal-foreground'>
         {/* 고정된 헤더 */}
         <div className='sticky top-0 z-40 bg-background-normal-foreground'>
-          <Header navList={MENU_ITEMS} hasNotification={true} userName='이든횟집' />
+          <Header navList={MENU_ITEMS} hasNotification={true} userName='test' />
         </div>
 
         {/* 알림 */}

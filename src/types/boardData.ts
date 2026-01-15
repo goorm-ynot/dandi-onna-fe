@@ -57,6 +57,9 @@ export interface TwoColumnLayoutProps<T = any> {
   leftTitle?: string;
   rightTitle?: string;
   leftContent: React.ReactNode;
+
+  // 빈 상태
+  emptyContent?: React.ReactNode;
   emptyTitle?: string | null;
   emptyDescription?: string | null;
 
@@ -75,6 +78,23 @@ export interface TwoColumnLayoutProps<T = any> {
   leftClassName?: string;
   rightClassName?: string;
   showTitles?: boolean;
+}
+
+/** 우측 판넬 타입 */
+export interface RightPanelContentProps<T = any> {
+  type: PanelType;
+  mode: PanelMode;
+  data: any;
+
+  emptyContent?: React.ReactNode;
+  emptyTitle?: string | null;
+  emptyDescription?: string | null;
+
+  onModeChange?: (mode: PanelMode) => void;
+  onDataUpdate?: (data: any) => void;
+  onStatusUpdate?: (id: string, status: string) => void;
+  onClose?: () => void;
+  onEditMode?: (editmode: boolean) => void;
 }
 
 // table 컬럼 타입

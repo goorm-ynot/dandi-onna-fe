@@ -29,6 +29,8 @@ export default function NoShowCreateForm<T = Reservation>({
 
   return (
     <>
+      {/* 노쇼 알람 울리게 할건지 선택 */}
+      
       <FormProvider {...formResult.form}>
         <FormLayout
           onSubmit={formResult.onSubmit}

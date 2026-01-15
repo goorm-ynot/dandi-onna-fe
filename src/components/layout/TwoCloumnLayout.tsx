@@ -18,6 +18,7 @@ export function TwoColumnLayout({
   leftClassName = 'flex-1',
   rightClassName = 'w-96',
   showTitles = true,
+  emptyContent,
   emptyDescription,
   emptyTitle,
 }: TwoColumnLayoutProps) {
@@ -42,6 +43,7 @@ export function TwoColumnLayout({
               type={panelType}
               mode={panelMode}
               data={selectedData}
+              emptyContent={emptyContent}
               emptyTitle={emptyTitle}
               emptyDescription={emptyDescription}
               onModeChange={onModeChange}

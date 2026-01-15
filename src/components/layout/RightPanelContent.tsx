@@ -4,24 +4,13 @@ import NoShowEditPanel from '../features/noshow/NoShowEditPanel';
 import NoShowPanel from '../features/noshow';
 import NoShowOrderPanel from '../features/order/NoShowOrderPanel';
 import EmptyGuide from '../common/EmptyGuide';
-
-interface RightPanelContentProps {
-  type: PanelType;
-  mode: PanelMode;
-  data: any;
-  emptyTitle?: string | null;
-  emptyDescription?: string | null;
-  onModeChange?: (mode: PanelMode) => void;
-  onDataUpdate?: (data: any) => void;
-  onStatusUpdate?: (id: string, status: string) => void;
-  onClose?: () => void;
-  onEditMode?: (editmode: boolean) => void;
-}
+import { RightPanelContentProps } from '@/types/boardData';
 
 export default function RightPanelContent({
   type,
   mode,
   data,
+  emptyContent,
   emptyTitle,
   emptyDescription,
   onModeChange,
@@ -33,10 +22,14 @@ export default function RightPanelContent({
   // 데이터가 없으면 EmptyGuide 표시
   if (!data) {
     return (
-      <EmptyGuide
-        title={emptyTitle}
-        description={emptyDescription}
-      />
+      emptyContent ? (
+        <>{emptyContent}</>
+      ) : (
+        <EmptyGuide
+          title={emptyTitle ?? '선택된 항목이 없습니다.'}
+          description={emptyDescription ?? '왼쪽에서 항목을 선택해주세요.'}
+        />
+      )
     );
   }
 

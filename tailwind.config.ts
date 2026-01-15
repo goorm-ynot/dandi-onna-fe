@@ -111,11 +111,19 @@ const config = {
           'green-light': '#F1FAE8',
           'mono-white': '#FFFFFF',
           pink: '#FFD8E2',
+          'pink-strong': '#B5135D',
+          'yellow-light': '#FFF7E7',
+          'yellow-strong': '#FBBD05',
+          green: '#C9ECA8',
+          'green-strong': '#428600',
+          red: '#DA3944',
+          'blue-light': '#C6E6FF',
+          'blue-strong': '#0957C8',
         },
         primitives: {
-          brand: '#B477FE',
-          brand3: '#8749fe',
-          brandStrong: '#5929BA',
+          brand: '#B477FE',  // light
+          brand3: '#8749fe', // normal
+          brandStrong: '#5929BA', //dark
         },
         state: {
           disabled: '#e1e1e1',
@@ -139,6 +147,8 @@ const config = {
         status: {
           pending: '#C9ECA8',
           'pending-foreground': '#428600',
+          late: '#FFF7E7',
+          'late-foreground': '#FBBD05',
           completed: '#E1E1E1',
           'completed-foreground': '#A3A3A3',
           noshow: '#FFD8E2',

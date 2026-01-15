@@ -3,7 +3,7 @@
 import React, { useRef, useState } from 'react';
 import { BellIcon } from '../icons';
 import { MenuItem } from '@/constants/sellerNavConstant';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import DropDownNav from './DropDownNav';
 import { useDropdownPosition } from '@/hooks/useDropdownPosition';
 import DropdownPortal from './DropDownPortal';
@@ -17,10 +17,13 @@ interface HeaderProps {
 
 export default function Header({ navList, hasNotification, userName }: HeaderProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const menuRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const { pos, updatePosition } = useDropdownPosition();
   const { goSellerHomeParams } = useNavigation();
+  const BASE_URL = '/seller';
+  
   const openMenu = (id: string) => {
     const target = menuRefs.current[id];
     if (target) updatePosition(target);
@@ -28,6 +31,23 @@ export default function Header({ navList, hasNotification, userName }: HeaderPro
   };
 
   const closeMenu = () => setOpenMenuId(null);
+
+  // 네비게이션 클릭 핸들러: children의 첫 번째 path로 이동
+  const handleNavClick = (menu: MenuItem) => {
+    // children이 있고 첫 번째 child에 path가 있으면 해당 경로로 이동
+    if (menu.children && menu.children.length > 0) {
+      const firstChildWithPath = menu.children.find(child => child.path);
+      if (firstChildWithPath?.path) {
+        router.push(BASE_URL + firstChildWithPath.path);
+        return;
+      }
+    }
+    
+    // children이 없거나 path가 없으면 메뉴 자체의 path로 이동
+    if (menu.path) {
+      router.push(BASE_URL + menu.path);
+    }
+  };
 
   return (
     <header className='relative w-full bg-background-normal-foreground shadow-sm border-b border-gray-300'>
@@ -54,7 +74,7 @@ export default function Header({ navList, hasNotification, userName }: HeaderPro
                     menuRefs.current[menu.id] = el;
                   }}
                   onMouseEnter={() => openMenu(menu.id)}
-                  onClick={() => openMenu(menu.id)}
+                  onClick={() => handleNavClick(menu)}
                   className={`
           transition px-[50px] 
           ${isActive ? 'text-foreground-normal title5' : 'text-foreground-normal title4'}
