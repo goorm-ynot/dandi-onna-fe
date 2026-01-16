@@ -31,7 +31,7 @@ export default function OnboardingPage() {
       localStorage.setItem('deviceId', storedId);
     }
     setDeviceId(storedId);
-  }, []);
+  }, [requestPermission]);
 
   const onKakaoClick = async () => {
     const userLoginData = {

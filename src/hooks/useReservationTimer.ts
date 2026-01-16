@@ -47,7 +47,7 @@ export const useReservationTimer = () => {
     return () => {
       cleanUpTimer();
     };
-  }, [reservations]);
+  }, [reservations, checkExpiredReservations]);
 
   // 수동으로 체크하는 함수
   const forceCheck = useCallback(() => {

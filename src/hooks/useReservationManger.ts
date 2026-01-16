@@ -77,7 +77,7 @@ export const useReservationManager = ({ userId = null }: { userId?: string | nul
     if (reservationError) {
       handleQueryError(reservationError);
     }
-  }, [reservationError]);
+  }, [reservationError, handleQueryError]);
 
   // 데이터 로드 시 Zustand에 저장
   useEffect(() => {

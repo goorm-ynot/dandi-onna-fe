@@ -97,7 +97,7 @@ export function useNoShowForm(defaultData?: Reservation) {
     setPendingFormData(null);
     setSelectedReservation(null);
     // 🎯 네비게이션은 batchNoShow의 onSuccess에서 처리됨
-  }, [pendingFormData, batchNoShow]);
+  }, [pendingFormData, batchNoShow, setSelectedReservation]);
 
   // ✅ Dialog 취소
   const handleCancelSubmit = useCallback(() => {
@@ -269,7 +269,7 @@ export function useNoShowMenuForm(defaultData?: NoShowMenu) {
     // 폼 초기화
     setSelectNoshowItem(null);
     setActiveEdit(false);
-  }, [pendingFormData, calculatedVisitTime]);
+  }, [pendingFormData, calculatedVisitTime, setActiveEdit, setSelectNoshowItem]);
 
   // ✅ Dialog 취소
   const handleCancelSubmit = useCallback(() => {

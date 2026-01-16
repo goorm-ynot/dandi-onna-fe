@@ -79,13 +79,13 @@ export const useSellerOrderManage = () => {
     if (error) {
       handleQueryError(error);
     }
-  }, [error]);
+  }, [error, handleQueryError]);
 
   useEffect(() => {
     if (orderDetailError) {
       handleQueryError(orderDetailError);
     }
-  }, [orderDetailError]);
+  }, [orderDetailError, handleQueryError]);
 
   // 데이터 로드 시 스토어에 저장
   useEffect(() => {
@@ -105,7 +105,7 @@ export const useSellerOrderManage = () => {
     if (orderDetail) {
       setSelectOrderItem(orderDetail.data || null);
     }
-  }, [orderList, orderDetail, setOrders, setPages, setSelectOrderItem, filterStatus]);
+  }, [orderList, orderDetail, setOrders, setPages, setSelectOrderItem, filterStatus, pagination.page]);
 
   // 페이지 변경 함수
   const handlePageChange = (newPage: number) => {

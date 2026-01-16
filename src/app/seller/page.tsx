@@ -178,7 +178,7 @@ function SellerPageContent() {
               <NoticeTitle >예약은 이렇게 관리돼요</NoticeTitle>
               <NoticeDescription className='pl-4'>
                 <ul className='list-disc flex flex-col gap-12'>
-                  <li>손님이 도착하면 예약 상태가 '방문완료'로 바뀝니다.</li>
+                  <li>손님이 도착하면 예약 상태가 &apos;방문완료&apos;로 바ﵓ니다.</li>
                   <li>예약 시간이 15분 지나면 노쇼 여부를 확인할 수 있어요.</li>
                   <li>노쇼가 발생하면 알림으로 안내해 드려요.</li>
                 </ul>
