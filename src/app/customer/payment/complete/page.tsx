@@ -54,7 +54,7 @@ export default function PaymentCompletePage() {
           </div>
 
           {/* Order Details */}
-          <div className='bg-[#f9f9f9] rounded-[10px] p-5 w-full max-w-[358px] flex flex-col gap-4'>
+          <div className='bg-[#f9f9f9] rounded-[10px] p-5 w-full flex flex-col gap-4'>
             <div className='flex flex-col gap-[10px]'>
               {/* 매장명 */}
               <div className='grid grid-cols-[100px_1fr] gap-[10px] h-[19px]'>
@@ -93,7 +93,7 @@ export default function PaymentCompletePage() {
         {/* 홈으로 가기 Button */}
         <Button
           variant='outline'
-          className='w-full max-w-[358px] h-11 border-[#c6c6c6] bg-white rounded-[6px] px-[12px] py-[10px]'
+          className='w-full h-11 border-[#c6c6c6] bg-white rounded-[6px] px-[12px] py-[10px]'
           onClick={handleGoHome}>
           <p className='body3 text-[#262626]'>홈으로 가기</p>
         </Button>

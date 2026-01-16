@@ -7,11 +7,12 @@ import { roundToNext10Minutes } from '@/lib/dateParse';
 import { useReservationApi } from './useReservationApi';
 import { useReservationStore } from '@/store/useReservationStore';
 import { useNoShowStore } from '@/store/useNoShowStore';
+import { reservationStorage } from '@/lib/reservationStorage';
 
 // 노쇼 발생 폼
 export function useNoShowForm(defaultData?: Reservation) {
   const { batchNoShow } = useReservationApi();
-  const { setSelectedReservation } = useReservationStore();
+  const { setSelectedReservation, selectedReservation } = useReservationStore();
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
   const [pendingFormData, setPendingFormData] = useState<NoShowFormValues | null>(null);
 
@@ -92,6 +93,8 @@ export function useNoShowForm(defaultData?: Reservation) {
     };
 
     // console.log('✅ 확정된 제출 데이터:', finalData);
+    // localStorage 업데이트 처리
+    reservationStorage.updateStatus(selectedReservation?.reservationNo, 'NOSHOW');
     batchNoShow(finalData);
     setIsSubmitDialogOpen(false);
     setPendingFormData(null);

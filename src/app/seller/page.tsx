@@ -4,7 +4,6 @@
 'use client';
 
 import SinglePageLayout from '@/components/features/dashboard/SinglePageLayout';
-import SingleColumnLayout from '@/components/layout/SingleColumnLayout';
 import { TwoColumnLayout } from '@/components/layout/TwoCloumnLayout';
 import { reservationStatus } from '@/constants/sellerNavConstant';
 import { useReservationManager } from '@/hooks/useReservationManger';
@@ -12,8 +11,8 @@ import { Reservation } from '@/types/boardData';
 import { useEffect, useState, Suspense } from 'react';
 import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDialog';
 import { useSearchParams } from 'next/navigation';
-import Notice, { NoticeContent, NoticeDescription, NoticeTitle } from '@/components/features/ui/Notice';
-import { Info } from 'lucide-react';
+import { EmptyPanelGuide } from '@/components/common/EmptyPanelGuide';
+import { SELLER_PANEL_CONFIG } from '@/constants/emptyPanelConfigs';
 import clsx from 'clsx';
 
 function SellerPageContent() {
@@ -149,47 +148,16 @@ function SellerPageContent() {
   };
 
   /** 방문 완료 된 부분은 선택 안되게
-   * (INFO: 당장은 mock데이터를 사용해서 그냥 다 넘기지만 API 호출 시, 이부분 수정 필요)
+   * - TODO: localstorage 업데이트 후 반영
    */
   const onSelectReservation = (reservation: Reservation) => {
+    setActiveEdit(false);
     setSelectedReservation(reservation);
     // if (reservation.status === 'PENDING' || reservation.status === 'LATE') {
-    //   setActiveEdit(false);
     //   return;
     // }
     // setSelectedReservation(null);
   };
-
-  /** 선택이 되지 않은 경우 보여주는 커스텀 컴포넌트 
-   * - TODO: 4가지 경우의 수를 판단해야해서 별도 컴포넌트로 분리하기
-  */
-  const EmptyPanelContent = () => {
-    // late가 하나라도 있으면 warning 노출
-    const hasLate = reservations.some((res) => res.status === 'LATE');
-    return (
-      <div className='flex flex-col items-center w-full h-full px-20 pt-[36px] pb-20 gap-24'>
-        <Notice
-          variant={hasLate ? 'warning' : 'info'}
-          icon={<Info className={clsx('icon-m', 
-            hasLate ? 'text-system-yellow-strong' : 'text-primitives-brand')} />}
-          title={hasLate ? '노쇼 확인 대기중인 예약이 있습니다.' : '현재 노쇼처리할 예약이 없습니다.'}
-          description={hasLate ? '예약 시간이 15분 지났습니다.\n아직 노쇼로 확정되지 않았어요.' : '모든 예약이 정상적으로 진행 중이에요.'}
-        />
-        <Notice variant={'default'}>
-            <NoticeContent className='px-16 py-20 flex flex-col gap-20'>
-              <NoticeTitle >예약은 이렇게 관리돼요</NoticeTitle>
-              <NoticeDescription className='pl-4'>
-                <ul className='list-disc flex flex-col gap-12'>
-                  <li>손님이 도착하면 예약 상태가 &apos;방문완료&apos;로 바뀝니다.</li>
-                  <li>예약 시간이 15분 지나면 노쇼 여부를 확인할 수 있어요.</li>
-                  <li>노쇼가 발생하면 알림으로 안내해 드려요.</li>
-                </ul>
-              </NoticeDescription>
-            </NoticeContent>
-        </Notice>
-      </div>
-    );
-  }
 
   /** 로딩 중 상태 표시 */
   if (isLoading) {
@@ -239,7 +207,12 @@ function SellerPageContent() {
         rightClassName='w-96'
         showTitles={!!selectedReservation}
         // 선택이 되지 않은 경우 보여줌
-        emptyContent={<EmptyPanelContent />}
+        emptyContent={
+          <EmptyPanelGuide 
+            config={SELLER_PANEL_CONFIG} 
+            reservations={sortedReservations} 
+          />
+        }
       />
 
       {/* 노쇼 확인 다이얼로그 */}

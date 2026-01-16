@@ -94,7 +94,7 @@ export default function OnboardingPage() {
         });
 
         localStorage.setItem('mockReservations', JSON.stringify(updatedReservations));
-        console.log('✅ Mock reservations saved to localStorage:', updatedReservations);
+        console.log('✅ Mock reservations saved to localStorage');
       }
 
       toast.success('로그인 성공!', {

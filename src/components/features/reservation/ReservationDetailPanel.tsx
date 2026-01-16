@@ -25,7 +25,7 @@ export default function ReservationDetailPanel({
   onDataUpdate,
 }: ReservationDetailPanel) {
   return (
-    <div className='px-20 flex flex-col justify-between min-h-[758px] pt-[36px] w-[360px]'>
+    <div className='px-20 flex flex-col justify-between min-h-[758px] pt-[36px] '>
       <div className='flex flex-col gap-24'>
         <Label className='title5'>예약 정보</Label>
         {/* 예약 정보 */}
@@ -65,10 +65,10 @@ export default function ReservationDetailPanel({
 
       {/* 버튼들 */}
       <div className='flex gap-10 justify-center item-center py-20'>
-        <Button variant={'ghost'} size={'lg'} className='w-full body3' onClick={() => onEditMode?.(true)}>
+        <Button variant={'ghost'} size={'lg'} className='w-full body3' onClick={() => onEditMode?.(true)} disabled={reservation.status === 'NOSHOW' || reservation.status === 'VISIT_DONE'}>
           노쇼등록
         </Button>
-        <Button variant={'default'} size={'lg'} className='w-full body5' onClick={() => onDataUpdate?.(reservation)}>
+        <Button variant={'default'} size={'lg'} className='w-full body5' onClick={() => onDataUpdate?.(reservation)} disabled={reservation.status === 'NOSHOW' || reservation.status === 'VISIT_DONE'}>
           방문완료
         </Button>
       </div>

@@ -107,6 +107,9 @@ export const useReservationManager = ({ userId = null }: { userId?: string | nul
   const handleFilterChange = (filter: string) => {
     setActiveTab(filter);
     setCursor(1); // 필터 변경 시 첫 페이지로 리셋
+    // 선택된 예약 초기화
+    setSelectedReservation(null);
+    
   };
 
   // ✅ 정렬 핸들러

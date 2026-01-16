@@ -57,6 +57,10 @@ export const useReservationApi = () => {
     onSuccess: (data) => {
       // console.log('✅ 노쇼 처리 성공:', data);
       showAlarm('노쇼 메뉴 처리가 완료되었습니다.', 'success', '성공', true);
+      // localStorage 업데이트
+      data.reservations.forEach((res: Reservation) => {
+        reservationStorage.updateStatus(res.reservationNo, 'NOSHOW');
+      });
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
       // 네비게이션을 onSuccess에서 처리
       router.push('/seller/no-show');

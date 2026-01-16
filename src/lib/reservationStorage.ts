@@ -51,7 +51,8 @@ export const reservationStorage = {
   /**
    * 특정 예약의 상태 업데이트
    */
-  updateStatus: (reservationNo: string, status: Reservation['status']): Reservation[] => {
+  updateStatus: (reservationNo: string | undefined, status: Reservation['status']): Reservation[] => {
+    if (!reservationNo) return reservationStorage.getAll();
     const reservations = reservationStorage.getAll();
     const updated = reservations.map((res) =>
       res.reservationNo === reservationNo ? { ...res, status, expired: false } : res
