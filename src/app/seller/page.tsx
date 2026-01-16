@@ -160,12 +160,14 @@ function SellerPageContent() {
     // setSelectedReservation(null);
   };
 
-  /** 선택이 되지 않은 경우 보여주는 커스텀 컴포넌트 */
+  /** 선택이 되지 않은 경우 보여주는 커스텀 컴포넌트 
+   * - TODO: 4가지 경우의 수를 판단해야해서 별도 컴포넌트로 분리하기
+  */
   const EmptyPanelContent = () => {
     // late가 하나라도 있으면 warning 노출
     const hasLate = reservations.some((res) => res.status === 'LATE');
     return (
-      <div className='flex flex-col items-center w-full h-full px-20 py-[36px] gap-24'>
+      <div className='flex flex-col items-center w-full h-full px-20 pt-[36px] pb-20 gap-24'>
         <Notice
           variant={hasLate ? 'warning' : 'info'}
           icon={<Info className={clsx('icon-m', 
@@ -178,7 +180,7 @@ function SellerPageContent() {
               <NoticeTitle >예약은 이렇게 관리돼요</NoticeTitle>
               <NoticeDescription className='pl-4'>
                 <ul className='list-disc flex flex-col gap-12'>
-                  <li>손님이 도착하면 예약 상태가 &apos;방문완료&apos;로 바ﵓ니다.</li>
+                  <li>손님이 도착하면 예약 상태가 &apos;방문완료&apos;로 바뀝니다.</li>
                   <li>예약 시간이 15분 지나면 노쇼 여부를 확인할 수 있어요.</li>
                   <li>노쇼가 발생하면 알림으로 안내해 드려요.</li>
                 </ul>

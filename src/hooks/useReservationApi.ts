@@ -1,10 +1,10 @@
 // hooks/useReservationApi.ts
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useReservationStore } from '@/store/useReservationStore';
 import { useAlarmStore } from '@/store/useAlarmStore';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { NoShowCreate, Reservation } from '@/types/boardData';
+import { reservationStorage } from '@/lib/reservationStorage';
 
 interface UpdateStatusParams {
   reservationNo: string;
@@ -14,7 +14,6 @@ interface UpdateStatusParams {
 export const useReservationApi = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { updateReservationStatus } = useReservationStore();
   const { showAlarm } = useAlarmStore();
 
   // 단일 상태 업데이트
@@ -28,8 +27,8 @@ export const useReservationApi = () => {
       return response.json();
     },
     onSuccess: (data, variables) => {
-      // Zustand 상태 업데이트
-      updateReservationStatus(variables.reservationNo, variables.status);
+      // ✅ localStorage 직접 업데이트
+      reservationStorage.updateStatus(variables.reservationNo, variables.status);
       // React Query 캐시 무효화
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
     },

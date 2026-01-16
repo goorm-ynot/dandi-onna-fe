@@ -1,33 +1,33 @@
 // hooks/useReservationManager.ts
 import { useEffect, useMemo, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 
 import { useReservationStore } from '@/store/useReservationStore';
 import { useReservationTimer } from './useReservationTimer';
 import { useReservationApi } from './useReservationApi';
 import { Reservation, SortState } from '@/types/boardData';
 import { sortData, handleSortToggle } from '@/lib/sortUtils';
+import { reservationStorage } from '@/lib/reservationStorage';
 
 export const useReservationManager = ({ userId = null }: { userId?: string | null }) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
+  
+  // ✅ Zustand는 UI 상태만 관리
   const {
-    reservations,
     selectedReservation,
-    totalPage,
-    cursor,
     activeTab,
     selectItemId,
     selectItemStatus,
     activeEdit,
-    setPages,
-    setReservations,
     setSelectedReservation,
-    getExpiredReservations,
     setActiveTab,
     setActiveEdit,
   } = useReservationStore();
+
+  // ✅ cursor는 로컬 상태로 관리 (페이지네이션 UI용)
+  const [cursor, setCursor] = useState(1);
 
   const { forceCheck } = useReservationTimer();
   const { updateStatus, batchNoShow, isUpdating } = useReservationApi();
@@ -42,34 +42,36 @@ export const useReservationManager = ({ userId = null }: { userId?: string | nul
     }
   };
 
-  // 예약 목록 로드
+  // localStorage에서 직접 예약 목록 로드 (React Query 캐싱)
   const {
-    data: reservationData,
+    data: reservations,
     isLoading,
     refetch,
     error: reservationError,
   } = useQuery({
     queryKey: ['reservations', activeTab, cursor],
     queryFn: async () => {
-      // fetch 넘길 때 Params 넘겨야함. 참고
-      // const response = await fetch('/api/v1/seller/reservations');
-      // LATE는 프론트엔드 상태이므로, API에는 PENDING으로 요청
-      const apiStatus = activeTab === 'LATE' ? 'PENDING' : activeTab;
-      const response = await axios.get('/api/v1/seller/reservations', {
-        params: {
-          date: new Date(),
-          status: apiStatus,
-          sort: 'time_desc',
-          cursor: Number(cursor),
-          size: 10,
-          userId, // 임시 추가
-        },
-      });
-      // console.log('response: ', response.data);
-      return response.data;
+      // ✅ localStorage에서 직접 데이터 가져오기
+      const allReservations = reservationStorage.getAll();
+      
+      // ✅ 상태별 필터링
+      const filtered = reservationStorage.filterByStatus(activeTab === 'LATE' ? 'LATE' : activeTab || 'all');
+      
+      // ✅ 페이지네이션 계산
+      const pageSize = 10;
+      const totalPages = Math.ceil(filtered.length / pageSize);
+      const start = (cursor - 1) * pageSize;
+      const end = start + pageSize;
+      const paginatedData = filtered.slice(start, end);
+      
+      return {
+        data: paginatedData,
+        totalPage: totalPages,
+        cursor: cursor,
+      };
     },
-    staleTime: 1000 * 60 * 1, // 1분간 캐시 유지
-    refetchOnWindowFocus: false, // 윈도우 포커스시 refetch 비활성화
+    staleTime: 1000 * 30, // 30초간 캐시 유지
+    refetchOnWindowFocus: false,
   });
 
   // 에러 감지 및 처리
@@ -77,33 +79,34 @@ export const useReservationManager = ({ userId = null }: { userId?: string | nul
     if (reservationError) {
       handleQueryError(reservationError);
     }
-  }, [reservationError, handleQueryError]);
+  }, [reservationError]);
 
-  // 데이터 로드 시 Zustand에 저장
-  useEffect(() => {
-    if (reservationData) {
-      setReservations(reservationData.data);
-      setPages(reservationData.totalPage, reservationData.cursor);
-    }
-  }, [reservationData, setReservations, setPages, setActiveTab, activeTab]);
+  // 만료된 예약 가져오기
+  const expiredReservations = useMemo(() => {
+    return reservationStorage.getExpired();
+  }, [reservations]);
 
-  // 만료된 예약 알림
-  const expiredReservations = getExpiredReservations();
-
+  // 상태 업데이트 핸들러
   const handleStatusUpdate = (reservationNo: string, status: 'NOSHOW' | 'VISIT_DONE') => {
-    updateStatus({ reservationNo, status });
-    // 업데이트 후 선택한거 clear
+    // localStorage 업데이트
+    reservationStorage.updateStatus(reservationNo, status);
+    
+    // React Query 캐시 무효화
+    queryClient.invalidateQueries({ queryKey: ['reservations'] });
+    
+    // 선택 해제
     setSelectedReservation(null);
   };
 
-  // 페이지 변경 함수
+  // ✅ 페이지 변경 함수
   const handlePageChange = (newPage: number) => {
-    setPages(totalPage, newPage);
+    setCursor(newPage);
   };
 
-  // Filter 선택 함수
+  // ✅ Filter 선택 함수
   const handleFilterChange = (filter: string) => {
     setActiveTab(filter);
+    setCursor(1); // 필터 변경 시 첫 페이지로 리셋
   };
 
   // ✅ 정렬 핸들러
@@ -114,25 +117,19 @@ export const useReservationManager = ({ userId = null }: { userId?: string | nul
 
   // ✅ 필터링 및 정렬된 예약 데이터
   const sortedReservations = useMemo(() => {
-    let filteredData = reservations;
-    
-    // LATE 탭일 때는 expired된 항목만 필터링
-    if (activeTab === 'LATE') {
-      filteredData = reservations.filter(res => res.expired || res.status === 'LATE');
-    }
-    
-    return sortData(filteredData, sortState);
-  }, [reservations, sortState, activeTab]);
+    if (!reservations) return [];
+    return sortData(reservations.data, sortState);
+  }, [reservations, sortState]);
 
   return {
     // 상태
-    reservations,
+    reservations: reservations?.data || [],
     selectedReservation,
     expiredReservations,
     isLoading,
     isUpdating,
-    totalPage,
-    cursor,
+    totalPage: reservations?.totalPage || 0,
+    cursor, // ✅ 로컬 상태에서 가져옴
     activeTab,
     selectItemId,
     selectItemStatus,
@@ -143,7 +140,6 @@ export const useReservationManager = ({ userId = null }: { userId?: string | nul
     handleStatusUpdate,
     forceCheck,
     handlePageChange,
-    setPages,
     handleFilterChange,
     setActiveEdit,
 

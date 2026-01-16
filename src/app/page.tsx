@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { useUserHook } from '@/hooks/useUser';
 import { useNavigation } from '@/hooks/useNavigation';
 import SafeArea from '@/components/layout/SafeArea';
+import { mockReservations } from '@/mock/reservation';
 
 const USER_ROLE = ['CONSUMER', 'OWNER', 'ADMIN'];
 export default function OnboardingPage() {
@@ -73,6 +74,29 @@ export default function OnboardingPage() {
       if (result.success && token && deviceId) {
         await postFcmToken(token, deviceId);
       }
+
+      // ✅ 로그인 성공 시 해당 계정의 예약 데이터를 localStorage에 저장
+      const userReservations = mockReservations[userLoginData.loginId as keyof typeof mockReservations];
+      if (userReservations) {
+        // 날짜를 오늘로 업데이트 (시간은 유지)
+        const today = new Date();
+        const todayStr = today.toISOString().split('T')[0]; // YYYY-MM-DD
+        
+        const updatedReservations = userReservations.map(reservation => {
+          const originalTime = new Date(reservation.time);
+          const timeStr = originalTime.toTimeString().split(' ')[0]; // HH:MM:SS
+          const newTime = `${todayStr}T${timeStr}`;
+          
+          return {
+            ...reservation,
+            time: newTime
+          };
+        });
+
+        localStorage.setItem('mockReservations', JSON.stringify(updatedReservations));
+        console.log('✅ Mock reservations saved to localStorage:', updatedReservations);
+      }
+
       toast.success('로그인 성공!', {
         description: '로그인 성공했습니다.',
       });

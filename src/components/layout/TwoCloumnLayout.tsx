@@ -34,11 +34,11 @@ export function TwoColumnLayout({
         </div>
 
         {/* 오른쪽 패널 - 동적 컨텐츠 */}
-        <div className={`${rightClassName} flex flex-col w-[380px]`}>
+        <div className={`${rightClassName} flex flex-col w-[400px]`}>
           <div className='pb-40'>
             { rightTitle && <PageHeader title={rightTitle} />}
           </div>
-          <div className='flex-1 overflow-auto border border-border-normal rounded-sm bg-background-normal max-w-[380px]'>
+          <div className='flex-1 overflow-auto border border-border-normal rounded-sm bg-background-normal w-full'>
             <RightPanelContent
               type={panelType}
               mode={panelMode}

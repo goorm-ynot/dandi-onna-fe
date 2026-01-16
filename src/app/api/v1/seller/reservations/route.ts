@@ -1,10 +1,9 @@
-// src/app/api/users/route.ts
+// src/app/api/v1/seller/reservations/route.ts
 import { NextResponse, NextRequest } from 'next/server';
-import { mockReservations } from '@/mock/reservation'; // mock 데이터
 import serverApiClient from '@/services/ApiClient';
 import { cookies } from 'next/headers';
 
-// ✅ GET 요청: mockReservations 리턴 (쿼리 파라미터 포함)
+// ✅ GET 요청: localStorage 데이터를 클라이언트에서 전달받아 리턴
 export async function GET(request: NextRequest) {
   try {
     // 📌 URL에서 쿼리 파라미터 추출
@@ -15,13 +14,25 @@ export async function GET(request: NextRequest) {
     const cursor = searchParams.get('cursor');
     const size = searchParams.get('size');
     const loginId = searchParams.get('userId') || 'CEO1';
+    
+    // 📌 localStorage 데이터를 클라이언트에서 전달받음 (JSON string)
+    const reservationsData = searchParams.get('reservationsData');
 
     const cookieStore = await cookies();
     const storedLoginId = cookieStore.get('login-id')?.value || loginId;
 
-    // console.log('Query Params:', { date, status, sort, cursor, size, userId });
-    const reservations = mockReservations[storedLoginId as keyof typeof mockReservations] || [];
-    const filterMockReservations = reservations.filter((value) => {
+    // localStorage에서 전달받은 데이터 파싱
+    let reservations = [];
+    if (reservationsData) {
+      try {
+        reservations = JSON.parse(decodeURIComponent(reservationsData));
+      } catch (parseError) {
+        console.error('Failed to parse reservations data:', parseError);
+        return NextResponse.json({ error: 'Invalid reservations data format' }, { status: 400 });
+      }
+    }
+
+    const filterMockReservations = reservations.filter((value: any) => {
       // status가 'all'이거나 null/undefined인 경우 모든 데이터 반환
       if (status === 'all' || !status) {
         return true;
@@ -33,8 +44,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         data: filterMockReservations,
-        total: reservations.length / 10,
-        cursor: 1,
+        totalPage: Math.ceil(reservations.length / 10),
+        cursor: Number(cursor) || 1,
       },
       { status: 200 }
     );
