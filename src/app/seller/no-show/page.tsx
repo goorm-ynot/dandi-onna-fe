@@ -8,21 +8,42 @@ import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDial
 import { useNoShowManage } from '@/hooks/useNoShowManage';
 import { NoShowMenuList } from '@/types/noShowPanelType';
 import React, { useState } from 'react';
+import { EmptyPanelVariant, ORDER_PANEL_CONFIG } from '@/constants/emptyPanelConfigs';
+import { EmptyPanelGuide } from '@/components/common/EmptyPanelGuide';
+
+
+/**
+ * 노쇼 메뉴 기반 variant 판단 함수
+ * 우선 순위: succsee > info
+ */
+const determineNoShowVariant = (noShowList: NoShowMenuList[]): EmptyPanelVariant => {
+  if (!noShowList || noShowList.length === 0) {
+    return 'info';
+  }
+
+  // success 우선순위: 노쇼 메뉴가 하나라도 있는 경우
+  const hasNoShowMenu = noShowList.some((menu) => menu.quantity > 0);
+  if (hasNoShowMenu) return 'success';
+
+  // info: 데이터가 없거나 모든 데이터가 품절인 경우
+  return 'info';
+}
+
 
 export default function NoShowMenuPage() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const {
-    noShowList,
+    // noShowList,
     selectNoShowItem,
     cursor,
     totalPages,
     activeEdit,
-    selectItemId,
+    // selectItemId,
     isLoading,
     // error
-    noShowListError,
-    detailError,
+    // noShowListError,
+    // detailError,
     setSelectNoshowItem,
     onSelected,
     handlePageChange,
@@ -87,7 +108,7 @@ export default function NoShowMenuPage() {
           variant='default'
           onClick={(e) => {
             e.stopPropagation(); // 행 클릭 이벤트 방지
-            // TODO: 개수가 0일 땐 안열리게 하기
+            // 개수가 0일 땐 안열리게 하기
             if (res.quantity > 0) onSelected(res.postId.toString());
             else alert('품절된 상품입니다');
           }}>
@@ -132,8 +153,12 @@ export default function NoShowMenuPage() {
         panelMode={'edit'}
         selectedData={selectNoShowItem}
         onDataUpdate={onDataUpdate}
-        emptyTitle='메뉴를 선택해주세요.'
-        emptyDescription='왼쪽에서 노쇼 메뉴를 선택하면&#10;상세 정보를 확인할 수 있습니다.'
+        emptyContent={
+          <EmptyPanelGuide 
+            config={ORDER_PANEL_CONFIG}
+            variant={determineNoShowVariant(sortedNoShowList)}
+          />
+        }
       />
 
       {/* 노쇼 메뉴 삭제 확인 Dialog */}

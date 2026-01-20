@@ -12,8 +12,33 @@ import { useEffect, useState, Suspense } from 'react';
 import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDialog';
 import { useSearchParams } from 'next/navigation';
 import { EmptyPanelGuide } from '@/components/common/EmptyPanelGuide';
-import { SELLER_PANEL_CONFIG } from '@/constants/emptyPanelConfigs';
+import { SELLER_PANEL_CONFIG, EmptyPanelVariant } from '@/constants/emptyPanelConfigs';
 import clsx from 'clsx';
+
+/**
+ * 예약 데이터 기반 variant 판단 함수
+ * 우선순위: error > warning > success > info
+ */
+const determineReservationVariant = (reservations: Reservation[]): EmptyPanelVariant => {
+  if (!reservations || reservations.length === 0) {
+    return 'info';
+  }
+
+  // error 우선순위 (나중에 구현)
+  // const hasError = reservations.some((res) => res.status === 'ERROR');
+  // if (hasError) return 'error';
+
+  // warning 우선순위: LATE가 한 개라도 있는 경우
+  const hasLate = reservations.some((res) => res.status === 'LATE');
+  if (hasLate) return 'warning';
+
+  // success 우선순위: NOSHOW가 있는 경우
+  const hasNoShow = reservations.some((res) => res.status === 'NOSHOW');
+  if (hasNoShow) return 'success';
+
+  // info: 데이터가 없거나 모든 데이터가 PENDING/VISIT_DONE인 경우
+  return 'info';
+};
 
 function SellerPageContent() {
   const searchParams = useSearchParams();
@@ -119,8 +144,6 @@ function SellerPageContent() {
   /** 노쇼 처리 확정 */
   const handleNoShowConfirm = () => {
     setActiveEdit(true);
-    // TODO: 실제 노쇼 처리 API 호출
-    // handleStatusUpdate(selectedReservation?.reservationNo, 'NOSHOW');
   };
 
   /** 노쇼 처리 취소 */
@@ -147,9 +170,7 @@ function SellerPageContent() {
     setIsVisitDoneDialogOpen(false);
   };
 
-  /** 방문 완료 된 부분은 선택 안되게
-   * - TODO: localstorage 업데이트 후 반영
-   */
+  /** 선택 시 동작 */
   const onSelectReservation = (reservation: Reservation) => {
     setActiveEdit(false);
     setSelectedReservation(reservation);
@@ -210,7 +231,7 @@ function SellerPageContent() {
         emptyContent={
           <EmptyPanelGuide 
             config={SELLER_PANEL_CONFIG} 
-            reservations={sortedReservations} 
+            variant={determineReservationVariant(sortedReservations)} 
           />
         }
       />

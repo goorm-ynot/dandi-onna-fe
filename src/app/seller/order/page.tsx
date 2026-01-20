@@ -9,6 +9,28 @@ import { formatTimeString } from '@/lib/dateParse';
 import { OrderItemList } from '@/types/boardData';
 import React, { useState } from 'react';
 import { useApiErrorHandler } from '@/hooks/useApiErrorHandler';
+import { EmptyPanelGuide } from '@/components/common/EmptyPanelGuide';
+import { NOSHOW_PANEL_CONFIG } from '@/constants/emptyPanelConfigs';
+
+/**
+ * 노쇼 주문 데이터 기반 variant 판단 함수
+ * 우선순위: warning > success > info
+ */
+const determineNoShowVariant = (orders: OrderItemList[]): 'info' | 'warning' | 'success' => {
+  if (!orders || orders.length === 0) {
+    return 'info';
+  }
+
+  // warning 우선순위: PENDING이 한 개라도 있는 경우
+  const hasPending = orders.some((order) => order.status === 'PENDING');
+  if (hasPending) return 'warning';
+
+  // success 우선순위: 모든 데이터가 COMPLETED인 경우
+  const allCompleted = orders.every((order) => order.status === 'COMPLETED');
+  if (allCompleted) return 'success'; 
+  // info: 그 외의 경우
+  return 'info';
+}
 
 export default function NoShowOrderListPage() {
   const [isCompleteVisitDialogOpen, setIsCompleteVisitDialogOpen] = useState(false);
@@ -126,8 +148,12 @@ export default function NoShowOrderListPage() {
         rightClassName='w-96'
         showTitles={true}
         onStatusUpdate={onStatusUpdate}
-        emptyTitle='주문내역을 선택해주세요.'
-        emptyDescription='왼쪽에서 노쇼 주문내역을 선택하면&#10;상세 정보를 확인할 수 있습니다.'
+        emptyContent={
+          <EmptyPanelGuide 
+            config={NOSHOW_PANEL_CONFIG}
+            variant={determineNoShowVariant(orders)}
+          />
+        }
       />
 
       {/* 방문 완료 확인 Dialog */}
