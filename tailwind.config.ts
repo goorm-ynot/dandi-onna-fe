@@ -1,4 +1,3 @@
-import { table } from 'console';
 import type { Config } from 'tailwindcss';
 
 const config = {
@@ -33,6 +32,7 @@ const config = {
           quaternary: '#4c4c4c',
           'primary-emphasis': '#5929ba',
           footer: '#d3d3d3',
+          mypage: '#E5E7EB',
         },
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -167,6 +167,10 @@ const config = {
           semilight: 'var(--label-semilight)',
           bold: 'var(--label-bold)',
           light: 'var(--label-light)',
+          // 추가 - mypage 사용(바뀔 수 있음)
+          semibold: '#1E2939', // title
+          medium: '#4A5565', // description
+          black: '#101828',
         },
       },
       borderRadius: {

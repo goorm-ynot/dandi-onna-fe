@@ -27,10 +27,10 @@ export default function PriceSummary({ formResult }: PriceSummaryProps) {
   }, [visitTime]);
 
   return (
-    <div className='flex flex-col gap-10 justify-center item-center border-t px-20 border-line-foreground pt-20 w-full'>
-      <div className='flex flex-col gap-[8px] w-full'>
+    <div className='flex flex-col gap-12 justify-center item-center px-20 pt-20 w-full'>
+      <div className='flex flex-col w-full  bg-background-normal-foreground rounded-sm px-12'>
         {/* 판매금액 행 */}
-        <div className='flex items-center justify-between gap-2 w-full'>
+        <div className='flex items-center justify-between gap-2 w-full py-12'>
           <Label className='title1 flex-shrink-0'>판매금액</Label>
           <div className='flex items-center gap-2 flex-shrink-0'>
             <Label className='text-right body3 text-secondary line-through whitespace-nowrap'>
@@ -40,7 +40,7 @@ export default function PriceSummary({ formResult }: PriceSummaryProps) {
           </div>
         </div>
         {/* 방문시간 행 */}
-        <div className='flex items-center justify-between gap-2 w-full'>
+        <div className='flex items-center justify-between gap-2 w-full py-12 border-t border-border-secondary'>
           <Label className='title1 flex-shrink-0'>방문시간</Label>
           <Label className='text-right title1 whitespace-nowrap'>{calculatedVisitAt}</Label>
         </div>

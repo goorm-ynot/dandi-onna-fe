@@ -8,7 +8,7 @@ export type EmptyPanelVariant = 'error' | 'warning' | 'info' | 'default' | 'succ
 export interface EmptyPanelConfigContent {
   title: string;
   description?: string;
-  guideTitle: string;
+  guideTitle?: string;
   tips: string[];
 }
 
@@ -54,7 +54,7 @@ export const SELLER_PANEL_CONFIG: EmptyPanelConfig = {
     title: '현재 노쇼처리된 주문이 있습니다.',
     guideTitle: '예약은 이렇게 관리돼요',
     tips: [
-        '설정한 노쇼 정책에 따라\n예약 시간 15분 초과 후 10분 유예가 지나\n자동으로 노쇼 등록 및 할인 판매가 시작되었습니다.',
+        '설정한 노쇼 정책에 따라 예약 시간 15분 초과 후 10분 유예가 지나 자동으로 노쇼 등록 및 할인 판매가 시작되었습니다.',
         '이제 추가로 처리하실 내용은 없습니다.'
     ],
   },
@@ -92,7 +92,6 @@ export const NOSHOW_PANEL_CONFIG: EmptyPanelConfig = {
   info: {
     title: '노쇼 주문 내역이 없습니다.',
     // description: '고객 방문 시 [노쇼 방문 완료]로 처리해 주세요.',
-    guideTitle: '',
     tips: [
         '방문 완료 처리를 해야 매출과 정산이 정확하게 반영됩니다.',
     ],
@@ -100,14 +99,12 @@ export const NOSHOW_PANEL_CONFIG: EmptyPanelConfig = {
   warning: {
     title: '노쇼 주문이 완료된 내역이 있습니다.',
     description: '고객 방문 시 [노쇼 방문 완료]로 처리해 주세요.',
-    guideTitle: '',
     tips: [
         '방문 완료 처리를 해야 매출과 정산이 정확하게 반영됩니다.',
     ],
   },
   success: {
     title: '노쇼 주문 방문이 완료되었습니다.',
-    guideTitle: '',
     tips: [
         '이 주문은 정상적으로 처리되었으며,\n매출과 정산에 반영됩니다.',
     ],

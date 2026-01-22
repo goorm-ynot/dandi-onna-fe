@@ -43,8 +43,8 @@ export const EmptyPanelGuide = ({ config, variant, className }: EmptyPanelGuideP
 
       {/* 가이드 Notice */}
       <Notice variant={'default'}>
-        <NoticeContent className="px-16 py-20 flex flex-col gap-20">
-          <NoticeTitle>{noticeContent.guideTitle}</NoticeTitle>
+        <NoticeContent className="flex flex-col gap-20">
+          {noticeContent.guideTitle && <NoticeTitle>{noticeContent.guideTitle}</NoticeTitle>}
           <NoticeDescription className="pl-4">
             <ul className="list-disc flex flex-col gap-12">
               {noticeContent.tips.map((tip, index) => (
