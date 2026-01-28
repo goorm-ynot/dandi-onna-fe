@@ -15,7 +15,7 @@ export interface SalesData {
   menuNames: string;
   paidAmount: number;
   paymentMethod: string;
-  status: 'COMPLETED' | 'CANCELLED';
+  status: 'COMPLETED' | 'PENDING' | 'CANCELLED';
 }
 
 export interface AnalyticsFilter {

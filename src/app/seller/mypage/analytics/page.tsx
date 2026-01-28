@@ -9,7 +9,7 @@ import clsx from "clsx";
 import { saleStatus } from "@/constants/sellerNavConstant";
 import { formatDateTimeStringNoDay } from "@/lib/dateParse";
 import { getPaymentMethodText, isSaleCompletedText } from "@/lib/utils";
-import { useSalesAnalyticsApi } from "@/hooks/seller/sales/useSAlesAnalyticsApi";
+import { useSalesAnalyticsApi } from "@/hooks/seller/sales/useSalesAnalyticsApi";
 
 const MOCK_DATA: SalesData[] = [
   {
@@ -119,7 +119,7 @@ const SALES_TABLE_COLUMNS = [
     location: 'center' as const, 
     render: (res: SalesData) => (
       <span className={clsx({
-        "text-system-blue-strong": res.status === 'COMPLETED',
+        "text-system-blue-strong": res.status === 'COMPLETED' || res.status === 'PENDING',
         "text-foreground-finished": res.status === 'CANCELLED',
       })}>
         {isSaleCompletedText(res.status)}
@@ -129,11 +129,11 @@ const SALES_TABLE_COLUMNS = [
 ];
 
 function SalesAnalytics() {
-  // TODO: 매출 API: 호출 성공 시 MOCK_DATA 대신 실제 데이터로 렌더링
-  // 호출 테스트
-  const {salesData, error} = useSalesAnalyticsApi({startDate: '2026-01-01', endDate: '2026-01-31', page: 0, size: 10});
-  console.log('매출 데이터:', salesData);
-  console.log('매출 에러:', error);
+  // TODO: 매출 API: 호출 성공!! MOCK_DATA 대신 실제 데이터로 렌더링
+  // 호출 테스트 - 성공
+  // const {salesData, error} = useSalesAnalyticsApi({startDate: '2026.01.01', endDate: '2026.01.31', page: 0, size: 10});
+  // console.log('매출 데이터:', salesData);
+  // console.log('매출 에러:', error);
 
     return ( 
         <DashBoardLayout>

@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
  * /api/v1/owner/sales?startDate=2025.12.01&endDate=2025.12.30&page=0&size=10
  */
 export async function GET(request: NextRequest) {
-    const BASE_URL = '/owner/orders/sales';
+    const BASE_URL = '/owner/sales';
     try {
         // URL에서 쿼리파라미터 추출
         const searchParams = request.nextUrl.searchParams;
@@ -15,7 +15,12 @@ export async function GET(request: NextRequest) {
         const size = Number(searchParams.get('size')) || 10;
 
         if(process.env.NODE_ENV === 'development') {
-            console.log('✅ Received query params:', { startDate, endDate, page, size });
+            console.log('✅ Received query params:', { startDate, endDate, page, size, BASE_URL });
+        }
+
+        // 날짜 없을 땐 fail
+        if (!startDate || !endDate) {
+            return NextResponse.json({ error: 'startDate and endDate are required' }, { status: 400 });
         }
 
         // ✅ await 추가 및 백엔드 API 호출
@@ -42,6 +47,6 @@ export async function GET(request: NextRequest) {
                 { status: 403 }
             );
         }
-        return NextResponse.json({ error: error.message || 'Failed to fetch data' }, { status: 500 });
+        return NextResponse.json({ error: error.message || 'Failed to fetch data' }, { status: error.response?.status || 500 });
     }
 }
