@@ -44,3 +44,8 @@ export const getPaymentMethodText = (method: string) => {
       return method;
   }
 };
+
+// 매출 여부 한글 변환
+export const isSaleCompletedText = (status: string) => {
+  return status === 'COMPLETED' ? '완료' : '취소됨';
+}

@@ -78,7 +78,7 @@ export default function ContentTable<T extends { [key: string]: any }>({
       )}
 
       {/* 테이블 */}
-      <div className='mx-auto w-full max-w-7xl flex-1 overflow-auto pt-20'>
+      <div className='mx-auto w-full flex-1 overflow-auto pt-20'>
         {!data || data.length === 0 ? (
           <div className='text-center text-gray-500 mt-20'>{emptyMessage}</div>
         ) : (

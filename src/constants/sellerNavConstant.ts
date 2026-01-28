@@ -71,3 +71,10 @@ export const orderStatus = {
   PENDING: '노쇼 주문 완료',
   COMPLETED: '노쇼 방문 완료',
 };
+
+
+export const saleStatus = {
+  COMPLETED: '일반 주문',
+  CANCELLED: '주문 취소',
+  NO_SHOW: '노쇼 판매',
+}

@@ -6,6 +6,11 @@ export const getNowDateString = (date?: Date) => {
   return `${newDate.getFullYear()}.${String(newDate.getMonth() + 1).padStart(2, '0')}.${String(newDate.getDate()).padStart(2, '0')}(${koDayString[newDate.getDay()]})`;
 };
 
+export const getNowDateNoDayString = (date?: Date) => {
+  const newDate = date || new Date();
+  return `${newDate.getFullYear()}.${String(newDate.getMonth() + 1).padStart(2, '0')}.${String(newDate.getDate()).padStart(2, '0')}`;
+};
+
 // 날짜 세팅 (ex: 2025-01-01)
 export const getNowDateHyphenString = () => {
   const newDate = new Date();
@@ -45,3 +50,8 @@ export const formatTimeWithKoreanUnit = (date: Date): string => {
 export const formatDateTimeString = (date: Date): string => {
   return getNowDateString(date) + ' ' + formatTimeString(date, true);
 };
+
+// 일시 문자열 포맷팅 (요일 제외)
+export const formatDateTimeStringNoDay = (date: Date): string => {
+  return getNowDateNoDayString(date) + ' ' + formatTimeString(date, true);
+}

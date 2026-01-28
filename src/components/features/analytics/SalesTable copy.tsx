@@ -14,7 +14,6 @@ import { formatKRW } from '@/lib/format';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import clsx from 'clsx';
 import { SalesTableResponse } from '@/types/analyticsType';
-import ContentTable from '../dashboard/ContentTable';
 
 
 export const SalesTable = ({
@@ -134,7 +133,53 @@ export const SalesTable = ({
 
       {/* 테이블 */}
       <div className="bg-white overflow-hidden">
-        <ContentTable columns={column} data={salesData} />
+        <Table className='w-full'>
+          <TableHeader>
+            <TableRow>
+              {column.map((col) => (
+                <TableHead
+                  key={col.key}
+                  className={clsx(
+                    'body4 text-foreground-normal whitespace-nowrap px-20 py-16 h-[48px]',
+                    // location 기반 정렬
+                    {
+                      'text-left': !col?.location || col?.location === 'left',
+                      'text-center': col?.location === 'center',
+                      'text-right': col?.location === 'right',
+                    }
+                  )}
+                >
+                  {col.header}
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          {/* 본문 */}
+          <TableBody>
+            {salesData.map((item, index) => (
+              <TableRow
+                key={index }
+                className='h-[48px] border-b border-border-secondary'
+              >
+                {column.map((col) => (
+                  <TableCell
+                    key={col.key}
+                    className={clsx(
+                      'body4 text-foreground-normal whitespace-nowrap px-20 py-16',
+                      {
+                        'text-left': !col?.location || col?.location === 'left',
+                        'text-center': col?.location === 'center',
+                        'text-right': col?.location === 'right',
+                      }
+                    )}
+                  >
+                    {col?.render ? col.render(item) : item[col.key as keyof typeof item]}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
 
         {/* 페이지네이션 & 엑셀 다운로드 */}
         <div className="flex items-center justify-between px-24 py-16 border-t border-border-normal bg-background-normal-foreground">

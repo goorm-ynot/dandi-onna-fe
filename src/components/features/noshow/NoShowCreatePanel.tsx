@@ -10,9 +10,7 @@
   import PriceSummary from './components/PriceSummary';
   import CreateActionButton from './components/CreateActionButton';
   import Notice from '../ui/Notice';
-  import { error } from 'console';
   import { CircleAlert } from 'lucide-react';
-import RadioGroup from '@/components/ui/RadioGroup';
 
   interface NoShowCreateFormProps<T = Reservation> {
     noShowData: T;
@@ -34,22 +32,13 @@ import RadioGroup from '@/components/ui/RadioGroup';
     return (
       <>
         <div className='pt-[36px] pb-24 px-20'>
-          <RadioGroup 
-            name='autoAlarm'
-            onChange={() => {}}
-            options={[
-              {
-                value:'auto-turn',
-                label: '10분 후 자동으로 판매 전환',
-                description: '별도의 조치없이 10분 후 자동으로 판매가 시작됩니다.'
-              },
-              {
-                value:'alert-turn',
-                label: '10분 뒤 다시 안내 받기',
-                description: '10분 후 판매 전환 여부를 다시 선택할 수 있습니다.'
-              }
-            ]}
-          />
+          {/* TODO: 라디오 지우고, 안내문으로 수정 */}
+          <Notice 
+                variant={'warning'}
+                icon={<CircleAlert size={16} className='icon-m text-system-yellow-strong' />}
+                title="판매하실 노쇼 메뉴를 등록해주세요."
+                description="방문 시간이 초과되어 노쇼 등록이 가능합니다."
+                />
         </div>
         {/* 노쇼 알람 울리게 할건지 선택 */}
         <FormProvider {...formResult.form}>
