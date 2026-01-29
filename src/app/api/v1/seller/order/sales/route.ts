@@ -13,6 +13,7 @@ export async function GET(request: NextRequest) {
         const endDate = searchParams.get('endDate') || '';
         const page = Number(searchParams.get('page')) || 0;
         const size = Number(searchParams.get('size')) || 10;
+        const orderType = searchParams.get('orderType') || 'all'; // 현재 노쇼밖에없음
 
         if(process.env.NODE_ENV === 'development') {
             console.log('✅ Received query params:', { startDate, endDate, page, size, BASE_URL });

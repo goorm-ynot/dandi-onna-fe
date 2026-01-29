@@ -42,3 +42,4 @@ service_key.json
 # backup
 *.bk
 /bk/*
+*/test-page/*

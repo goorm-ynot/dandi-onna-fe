@@ -18,7 +18,15 @@ export interface SalesData {
   status: 'COMPLETED' | 'PENDING' | 'CANCELLED';
 }
 
-export interface AnalyticsFilter {
+export type PageInfo = {
+  hasNext: boolean;
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+}
+
+export type AnalyticsFilter = {
   startDate: string; // YYYY-MM-DD
   endDate: string;   // YYYY-MM-DD
 }
@@ -30,9 +38,9 @@ export interface SalesSummary {
   noshowOrders?: number;     // 노쇼 주문 수 (선택적)
 }
 
-export interface SalesTableResponse {
+export interface SalesTableSectionProps {
     salesData: SalesData[];
     column: SalesDataColumn[];
-    filter?: AnalyticsFilter;
-    // 추가되야할거 있으면 여기 작성
+    isLoading?: boolean;
+    emptyText?: string;
 }

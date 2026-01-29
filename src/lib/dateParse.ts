@@ -17,6 +17,7 @@ export const getNowDateHyphenString = () => {
   return `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, '0')}-${String(newDate.getDate()).padStart(2, '0')}`;
 };
 
+
 // 10분 단위 올림 처리 함수
 export const roundToNext10Minutes = (date: Date): Date => {
   const newDate = new Date(date);

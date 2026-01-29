@@ -1,15 +1,19 @@
 'use client';
 
+import { useState } from "react";
+import clsx from "clsx";
+import { SalesData } from "@/types/analyticsType";
+import { formatKRW } from "@/lib/format";
+import { getPaymentMethodText, isSaleCompletedText } from "@/lib/utils";
+import { formatDateTimeStringNoDay, getNowDateNoDayString } from "@/lib/dateParse";
+import { useSalesAnalyticsManage } from "@/hooks/seller/sales/useSalesAnalyticsManage";
+import { useSalesAnalyticsQuery } from "@/hooks/seller/sales/useSalesAnalyticsQuery";
+import { saleStatus } from "@/constants/sellerNavConstant";
 import DashBoardLayout from "@/components/layout/DashboardLayout";
 import { Label } from "@/components/ui/label";
-import { formatKRW } from "@/lib/format";
-import { SalesTable } from "@/components/features/analytics/SalesTable";
-import { SalesData } from "@/types/analyticsType";
-import clsx from "clsx";
-import { saleStatus } from "@/constants/sellerNavConstant";
-import { formatDateTimeStringNoDay } from "@/lib/dateParse";
-import { getPaymentMethodText, isSaleCompletedText } from "@/lib/utils";
-import { useSalesAnalyticsApi } from "@/hooks/seller/sales/useSalesAnalyticsApi";
+import { SalesFilterBar } from "@/components/features/analytics/SalesFilterBar";
+import { SalesTableView } from "@/components/features/analytics/SalesTableView";
+import { SalesFooterBar } from "@/components/features/analytics/SalesFooterBar";
 
 const MOCK_DATA: SalesData[] = [
   {
@@ -129,11 +133,16 @@ const SALES_TABLE_COLUMNS = [
 ];
 
 function SalesAnalytics() {
-  // TODO: 매출 API: 호출 성공!! MOCK_DATA 대신 실제 데이터로 렌더링
-  // 호출 테스트 - 성공
-  // const {salesData, error} = useSalesAnalyticsApi({startDate: '2026.01.01', endDate: '2026.01.31', page: 0, size: 10});
-  // console.log('매출 데이터:', salesData);
-  // console.log('매출 에러:', error);
+  const manage = useSalesAnalyticsManage();
+  const salesQuery = useSalesAnalyticsQuery({
+    startDate: getNowDateNoDayString(manage.startDate),
+    endDate: getNowDateNoDayString(manage.endDate),});
+
+  const handleExportExcel = () => {
+    // TODO: popup 오픈
+    console.log('팝업이 오픈되야함');
+  };
+
 
     return ( 
         <DashBoardLayout>
@@ -171,11 +180,33 @@ function SalesAnalytics() {
                 </div>
 
                 {/* 상세 내역 - 표 */}
-                <SalesTable 
+                <div className="flex flex-col w-full border border-border-normal rounded-md ">
+                  <SalesFilterBar
+                    dateRangeLabel={manage.dateRangeLabel}
+                    showDatePicker={manage.showDatePicker}
+                    periodType={manage.periodType}
+                    orderType={manage.orderType}
+                    startDate={manage.startDate}
+                    endDate={manage.endDate}
+                    onChangePeriodType={manage.setPeriodType}
+                    onChangeOrderType={manage.setOrderType}
+                    onChangeStartDate={manage.setStartDate}
+                    onChangeEndDate={manage.setEndDate}
+                  />
+                  <SalesTableView
                     column={SALES_TABLE_COLUMNS}
-                    salesData={MOCK_DATA}
-                    // filter={STATUS_CONFIG}
-                />
+                    salesData={salesQuery.items}
+                  />
+                  <SalesFooterBar
+                    totalCount={salesQuery.pageInfo?.totalElements || 0} 
+                    page={salesQuery.pageInfo?.page + 1 || 1}
+                    totalPages={salesQuery.pageInfo?.totalPages || 1}
+                    onPrevPage={() => salesQuery.setPage((p) => Math.max(1, p - 1))}
+                    onNextPage={() => salesQuery.setPage((p) => Math.min(salesQuery.pageInfo?.totalPages || 1, p + 1))}
+                    onGoToPage={(p) => salesQuery.setPage(p)}
+                    onExportExcel={handleExportExcel}
+                  />
+                </div>
 
             </div>
         </DashBoardLayout>

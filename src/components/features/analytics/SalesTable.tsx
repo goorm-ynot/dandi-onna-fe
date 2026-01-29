@@ -10,18 +10,14 @@ import * as React from 'react';
 import Image from 'next/image';
 import { Label } from '@/components/ui/label';
 import { DateRangePicker } from './DateRangePicker';
-import { formatKRW } from '@/lib/format';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import clsx from 'clsx';
-import { SalesTableResponse } from '@/types/analyticsType';
+import { SalesTableSectionProps } from '@/types/analyticsType';
 import ContentTable from '../dashboard/ContentTable';
 
 
 export const SalesTable = ({
   salesData, 
   column, 
-  filter
-}: SalesTableResponse) => {
+  }: SalesTableSectionProps) => {
   const [periodType, setPeriodType] = React.useState<string>('today');
   const [orderType, setOrderType] = React.useState<string>('all');
   const [startDate, setStartDate] = React.useState<Date>();
@@ -138,7 +134,7 @@ export const SalesTable = ({
 
         {/* 페이지네이션 & 엑셀 다운로드 */}
         <div className="flex items-center justify-between px-24 py-16 border-t border-border-normal bg-background-normal-foreground">
-          <div className="caption4 text-foreground-secondary">총 287건의 주문 내역</div>
+          <div className="caption4 text-foreground-secondary">총 {salesData.length}건의 주문 내역</div>
             {/* 페이지네이션 */}
             <div className="flex items-center gap-8">
               <button className="hover:bg-gray-100 rounded">
