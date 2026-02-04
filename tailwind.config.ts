@@ -242,6 +242,7 @@ const config = {
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
       transitionDuration: {
+        20: '20ms',
         250: '250ms',
       },
     },

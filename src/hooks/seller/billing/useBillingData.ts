@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { BillingType } from '@/types/paymentType';
 import { SortState } from '@/types/boardData';
 import { 
@@ -36,11 +36,7 @@ export function useBillingData(): UseBillingDataReturn {
   const [isLoading, setIsLoading] = useState(true);
   const [sortState, setSortState] = useState<SortState>({ key: '', order: null });
 
-  useEffect(() => {
-    loadData();
-  }, [currentPage]);
-
-  async function loadData() {
+  const loadData = useCallback(async () => {
     setIsLoading(true);
     try {
       // 병렬로 모든 데이터 조회
@@ -67,7 +63,11 @@ export function useBillingData(): UseBillingDataReturn {
     } finally {
       setIsLoading(false);
     }
-  }
+  }, [currentPage]);
+
+  useEffect(() => {
+    loadData();
+  }, [currentPage, loadData]);
 
   const handlePrevPage = () => {
     if (pagination?.hasPrevPage) {
