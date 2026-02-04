@@ -6,8 +6,8 @@
 'use client';
 
 import * as React from 'react';
-import ContentTable from '../dashboard/ContentTable';
 import { SalesTableSectionProps } from '@/types/analyticsType';
+import GridTable from '../mypage/GridTable';
 
 
 export function SalesTableView({
@@ -35,7 +35,7 @@ export function SalesTableView({
 
   return (
     <div className="bg-white overflow-hidden min-h-[354px]">
-      <ContentTable columns={column} data={salesData} />
+      <GridTable columns={column} data={salesData} />
     </div>
   );
 }

@@ -21,7 +21,11 @@ import Wallet from "@/assets/icons/money-wallet-checkmark.svg";
 const SALES_TABLE_COLUMNS = [
   { key: 'saleDateTime', 
     header: '일시', 
-    render: (res: SalesData) => formatDateTimeStringNoDay(new Date(res.saleDateTime))
+    render: (res: SalesData) => (
+      <Label className="max-w-[140px]">{formatDateTimeStringNoDay(new Date(res.saleDateTime))}</Label>
+    ),
+    width: 140,
+    paddingX: 16
   },
   { 
     key: 'orderNo', 
@@ -31,14 +35,16 @@ const SALES_TABLE_COLUMNS = [
       <span className="w-full inline-flex items-center justify-center">
         {res.orderNo}
       </span>
-    )
+    ),
+    width: 200,
+    paddingX: 16
   },
   { key: 'orderType', 
     header: '주문 유형', 
     location: 'center' as const,
     render: (res: SalesData) => (
       <span 
-      className={clsx('w-full px-[12px] py-[4px] rounded-[20px] h-[26px] caption5 inline-flex items-center justify-center',
+      className={clsx('w-full px-[12px] py-[4px] rounded-[20px] h-[26px] caption5 flex items-center justify-center',
         {
           'bg-status-pending text-status-pending-foreground': res.orderType === 'COMPLETED',
           'bg-status-noshow text-status-noshow-foreground': res.orderType === 'NO_SHOW',
@@ -47,12 +53,13 @@ const SALES_TABLE_COLUMNS = [
       )}>
         {saleStatus[res.orderType as keyof typeof saleStatus] || res.orderType}
       </span>
-    )
+    ),
+    width: 140,
+    paddingX: 16
   },
   { 
     key: 'menuNames', 
     header: '메뉴',
-    isWide: true, // ✅ 메뉴명 컬럼만 넓게
     render: (res: SalesData) => (
       <span
         className={clsx('w-[522px]',
@@ -62,12 +69,14 @@ const SALES_TABLE_COLUMNS = [
       >
         {res.menuNames}
       </span>
-    ) 
+    ),
+    paddingX: 16 
   },
   { 
     key: 'paidAmount', 
     header: '최종 금액', 
     location: 'center' as const, 
+    width: 80,
     render: (res: SalesData) => (
     <span className={clsx('w-full inline-flex items-center justify-center',
           {
@@ -75,12 +84,14 @@ const SALES_TABLE_COLUMNS = [
           })}>
       {res.paidAmount.toLocaleString('ko-KR')} 
     </span>
-    )
+    ),
+    paddingX: 16
   },
   { 
     key: 'paymentMethod', 
     header: '결제 수단', 
     location: 'center' as const, 
+    width: 90,
     render: (res: SalesData) => (
       <span className={clsx('w-full inline-flex items-center justify-center',
           {
@@ -88,7 +99,8 @@ const SALES_TABLE_COLUMNS = [
           })}>
         {getPaymentMethodText(res.paymentMethod)}
       </span>
-    )
+    ),
+    paddingX: 16
   },
   { 
     key: 'status', 
@@ -101,7 +113,9 @@ const SALES_TABLE_COLUMNS = [
       })}>
         {isSaleCompletedText(res.status)}
       </span> 
-    )
+    ),
+    width: 80,
+    paddingX: 16
   },
 ];
 

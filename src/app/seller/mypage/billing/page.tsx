@@ -57,32 +57,33 @@ const invoiceColumns: Column<BillingType>[] = [
         header: '청구기간', 
         sortable: true,
         render: (data: BillingType) => (
-            <Label className="body1">{data.duringDate}</Label>)
+            <Label className="body1">{data.duringDate}</Label>),
     },
     {
         key: 'paymentDate', 
         header: '결제일', 
         sortable: true,
         render: (data: BillingType) => (
-            <Label className="body1">{data.paymentDate}</Label>)
+            <Label className="body1">{data.paymentDate}</Label>),
     },
     {
         key: 'amount',
         header: '금액',
         render: (data: BillingType) => (
-            <Label className="body1">{data.amount.toLocaleString()}{'원'}</Label>)
+            <Label className="body1">{data.amount.toLocaleString()}{'원'}</Label>),
     },
     {
         key: 'paymentStatus',
         header: '상태',
         render: (data: BillingType) => (
-            <Label className="body1">{isBilingStateText(data.paymentStatus)}</Label>)
+            <Label className="body1">{isBilingStateText(data.paymentStatus)}</Label>),
+
     },
     {
         key: 'paymentMethod',
         header: '결제수단',
         render: (data: BillingType) => (
-            <Label className="body1">{data.paymentMethod}</Label>)
+            <Label className="body1">{data.paymentMethod}</Label>),
     },
     {
         key: 'download',
@@ -90,7 +91,7 @@ const invoiceColumns: Column<BillingType>[] = [
         location: 'center' as const,
         render: () => (
             <Button variant="icon" className="w-full h-auto flex items-center justify-center p-0 body1"><DownLoadIcon className="text-foreground-normal" style={{width: 18, height: 18}}  /></Button>
-        )
+        ),
     }
 
 ];

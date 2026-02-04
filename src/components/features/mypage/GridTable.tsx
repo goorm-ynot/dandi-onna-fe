@@ -92,6 +92,11 @@ export default function GridTable<T extends { [key: string]: any }>({
                 {columns.map((col, idx) => (
                   <TableHead
                     key={col.key}
+                    style={{
+                      width: col.width ? col.width : undefined,
+                      paddingLeft: col.paddingX ? col.paddingX : undefined,
+                      paddingRight: col.paddingX ? col.paddingX : undefined,
+                    }}
                     className={clsx(
                       'body2 text-foreground-normal whitespace-nowrap py-10 ',
                       col.isWide && 'min-w-[350px]',
@@ -105,7 +110,9 @@ export default function GridTable<T extends { [key: string]: any }>({
                     )}
                     onClick={() => col.sortable && onSort?.(col.sortKey || col.key)}>
                     <p
-                      className={clsx('flex flex-row gap-16 items-center', {
+                      className={clsx('flex flex-row gap-16 items-center', 
+                      col.className || '', 
+                      {
                         'justify-start': !col.location || col.location === 'left',
                         'justify-center': col.location === 'center',
                         'justify-end': col.location === 'right',
@@ -134,6 +141,11 @@ export default function GridTable<T extends { [key: string]: any }>({
                     {columns.map((col, idx) => (
                       <TableCell2
                         key={col.key}
+                        style={{
+                          width: col.width ? col.width : undefined,
+                          paddingLeft: col.paddingX ? col.paddingX : undefined,
+                          paddingRight: col.paddingX ? col.paddingX : undefined,
+                        }}
                         className={clsx(
                           'body1 text-foreground-normal align-middle truncate py-8',
                           col.isWide && 'min-w-[350px]',

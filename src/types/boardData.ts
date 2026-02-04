@@ -103,6 +103,8 @@ export interface Column<T> {
   header: string;
   className?: string;
   isWide?: boolean;
+  width?: string | number; // ✅ 커스텀 너비 (px, %, rem 등)
+  paddingX?: string | number; // ✅ 좌우 패딩 (간격)
   sortable?: boolean; // ✅ 정렬 가능한 컬럼인지
   sortKey?: string; // ✅ 실제 정렬에 사용할 키 (key와 다를 수 있음)
   render?: (item: T) => React.ReactNode;
