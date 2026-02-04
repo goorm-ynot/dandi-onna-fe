@@ -7,7 +7,7 @@
 'use client';
 
 import * as React from 'react';
-import Image from 'next/image';
+import ExcelIcon from '@/assets/icons/IconL-excel.svg';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -97,12 +97,7 @@ export function SalesFooterBar({
         onClick={onExportExcel}
         disabled={!onExportExcel || isExporting}
       >
-        <Image
-          src="/images/icons/IconL-excel.svg"
-          alt="excel icon"
-          width={16}
-          height={16}
-        />
+        <ExcelIcon style={{ width: '24px', height: '24px' }} />
         <span className="body4 text-foreground-normal">
           {isExporting ? '내보내는 중...' : 'Excel로 내보내기'}
         </span>

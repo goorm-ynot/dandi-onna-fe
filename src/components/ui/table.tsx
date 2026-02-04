@@ -64,11 +64,18 @@ const TableCell = React.forwardRef<HTMLTableCellElement, React.TdHTMLAttributes<
 );
 TableCell.displayName = 'TableCell';
 
+const TableCell2 = React.forwardRef<HTMLTableCellElement, React.TdHTMLAttributes<HTMLTableCellElement>>(
+  ({ className, ...props }, ref) => (
+    <td ref={ref} className={cn('first:pl-[20px] last:pr-[20px] align-middle [&:has([role=checkbox])]:pr-0', className)} {...props} />
+  )
+);
+TableCell2.displayName = 'TableCell2';
+
 const TableCaption = React.forwardRef<HTMLTableCaptionElement, React.HTMLAttributes<HTMLTableCaptionElement>>(
   ({ className, ...props }, ref) => (
-    <caption ref={ref} className={cn('mt-4 first:pl-[20px] pl-[16px] text-sm text-muted-foreground', className)} {...props} />
+    <caption ref={ref} className={cn('first:pl-[20px] pl-[16px] text-sm text-muted-foreground', className)} {...props} />
   )
 );
 TableCaption.displayName = 'TableCaption';
 
-export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption };
+export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCell2, TableCaption };

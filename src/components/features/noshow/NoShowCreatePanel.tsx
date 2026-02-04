@@ -32,7 +32,6 @@
     return (
       <>
         <div className='pt-[36px] pb-24 px-20'>
-          {/* TODO: 라디오 지우고, 안내문으로 수정 */}
           <Notice 
                 variant={'warning'}
                 icon={<CircleAlert size={16} className='icon-m text-system-yellow-strong' />}

@@ -1,11 +1,12 @@
 const koDayString = ['일', '월', '화', '수', '목', '금', '토'];
 
-// 날짜 세팅
+// 날짜 세팅 (ex: 2025.01.01 (월))
 export const getNowDateString = (date?: Date) => {
   const newDate = date || new Date();
   return `${newDate.getFullYear()}.${String(newDate.getMonth() + 1).padStart(2, '0')}.${String(newDate.getDate()).padStart(2, '0')}(${koDayString[newDate.getDay()]})`;
 };
 
+// 날짜 세팅 (ex: 2025.01.01)
 export const getNowDateNoDayString = (date?: Date) => {
   const newDate = date || new Date();
   return `${newDate.getFullYear()}.${String(newDate.getMonth() + 1).padStart(2, '0')}.${String(newDate.getDate()).padStart(2, '0')}`;
@@ -17,6 +18,11 @@ export const getNowDateHyphenString = () => {
   return `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, '0')}-${String(newDate.getDate()).padStart(2, '0')}`;
 };
 
+// 날짜 세팅(ex: 2025년 01월 01일)
+export const getNowDateKoreanString = (date?: Date) => {
+  const newDate = date || new Date();
+  return `${newDate.getFullYear()}년 ${String(newDate.getMonth() + 1).padStart(2, '0')}월 ${String(newDate.getDate()).padStart(2, '0')}일`;
+};
 
 // 10분 단위 올림 처리 함수
 export const roundToNext10Minutes = (date: Date): Date => {
@@ -56,3 +62,10 @@ export const formatDateTimeString = (date: Date): string => {
 export const formatDateTimeStringNoDay = (date: Date): string => {
   return getNowDateNoDayString(date) + ' ' + formatTimeString(date, true);
 }
+
+// 다음 달 날짜 구하기 (특정날짜 기준)
+export const getNextMonthDate = (date: Date): string => {
+  const newDate = new Date(date);
+  newDate.setMonth(newDate.getMonth() + 1);
+  return getNowDateKoreanString(newDate);
+};

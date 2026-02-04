@@ -123,6 +123,21 @@ const nextConfig = {
       }
     });
 
+    // ✅ SVGR 설정: SVG를 React 컴포넌트로 사용
+    const fileLoaderRule = config.module.rules.find(
+      (rule) => rule.test && rule.test.test && rule.test.test('.svg')
+    );
+
+    if (fileLoaderRule) {
+      fileLoaderRule.exclude = /\.svg$/i;
+    }
+
+    config.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: ['@svgr/webpack'],
+    });
+
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
         ...config.optimization.splitChunks,

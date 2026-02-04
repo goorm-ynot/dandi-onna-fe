@@ -14,36 +14,9 @@ import { Label } from "@/components/ui/label";
 import { SalesFilterBar } from "@/components/features/analytics/SalesFilterBar";
 import { SalesTableView } from "@/components/features/analytics/SalesTableView";
 import { SalesFooterBar } from "@/components/features/analytics/SalesFooterBar";
+// Icons
+import Wallet from "@/assets/icons/money-wallet-checkmark.svg";
 
-const MOCK_DATA: SalesData[] = [
-  {
-    saleDateTime: '2026.01.01 19:30',
-    orderNo: 'A00101',
-    orderType: 'CANCELLED',
-    menuNames: '이메뉴-외-1개',
-    paidAmount: 1582000,
-    paymentMethod: '카드',
-    status: 'CANCELLED',
-  },
-  {
-    saleDateTime: '2026.01.01 19:30',
-    orderNo: 'A00101',
-    orderType: 'COMPLETED',
-    menuNames: '이메뉴 외 1개',
-    paidAmount: 1582000,
-    paymentMethod: '카드',
-    status: 'COMPLETED',
-  },
-  {
-    saleDateTime: '2026.01.01 19:30',
-    orderNo: 'A00101',
-    orderType: 'NO_SHOW',
-    menuNames: '이메뉴 외 1개',
-    paidAmount: 1582000,
-    paymentMethod: '카드',
-    status: 'COMPLETED',
-  },
-];
 
 const SALES_TABLE_COLUMNS = [
   { key: 'saleDateTime', 
@@ -138,8 +111,13 @@ function SalesAnalytics() {
     startDate: getNowDateNoDayString(manage.startDate),
     endDate: getNowDateNoDayString(manage.endDate),});
 
+
+/**
+ * TODO: 
+ * 엑셀 내보내기 팝업 구현 (1/2)
+ * 엑셀 내보내기 기능 구현 (2/2)
+ */
   const handleExportExcel = () => {
-    // TODO: popup 오픈
     console.log('팝업이 오픈되야함');
   };
 
@@ -154,29 +132,11 @@ function SalesAnalytics() {
                 </div>
 
                 {/* 오늘 / 이번 주 / 이번 달 / 노쇼 매출 현황
-                    TODO: 컴포넌트로 분리
+                    TODO: 이부분 수정 됨
                 */}
-                <div className="flex flex-row gap-12 justify-between">
-                    <div className="w-full px-20 py-24 flex flex-col gap-10 bg-white rounded-md">
-                        <Label className="title3 text-foreground-secondary">오늘 매출</Label>
-                        <Label className="title7 text-foreground-normal">{formatKRW(387000)}</Label>
-                        <Label className='body3 text-foreground-secondary'>주문 12건</Label>
-                    </div>
-                    <div className="w-full px-20 py-24 flex flex-col gap-10 bg-white rounded-md">
-                        <Label className="title3 text-foreground-secondary">이번 주 매출</Label>
-                        <Label className="title7 text-foreground-normal">{formatKRW(2145000)}</Label>
-                        <Label className='body3 text-foreground-secondary'>주문 68건</Label>
-                    </div>
-                    <div className="w-full px-20 py-24 flex flex-col gap-10 bg-white rounded-md">
-                        <Label className="title3 text-foreground-secondary">이번 달 매출</Label>
-                        <Label className="title7 text-foreground-normal">{formatKRW(8920000)}</Label>
-                        <Label className='body3 text-foreground-secondary'>주문 287건</Label>
-                    </div>
-                    <div className="w-full px-20 py-24 flex flex-col gap-10 bg-white rounded-md">
-                        <Label className="title3 text-foreground-secondary">노쇼 판매</Label>
-                        <Label className="title7 text-primitives-brand3">{formatKRW(445000)}</Label>
-                        <Label className='body3 text-foreground-secondary'>주문 15건</Label>
-                    </div>
+                <div className="bg-white rounded-md px-20 py-24 flex flex-row gap-6 items-center">
+                    <Wallet className="w-24 h-24 text-foreground-normal" />
+                    <Label className="title4 text-foreground-normal">사장님 단디온나를 통해 </Label><Label className="title6 text-foreground-primary">{formatKRW(445000)}</Label><Label className='title4 text-foreground-normal'>의 노쇼 손실을 방어하셨어요!</Label>
                 </div>
 
                 {/* 상세 내역 - 표 */}
@@ -207,8 +167,10 @@ function SalesAnalytics() {
                     onExportExcel={handleExportExcel}
                   />
                 </div>
-
             </div>
+
+            {/* 엑셀 내보내기 팝업 */}
+            
         </DashBoardLayout>
      );
 }

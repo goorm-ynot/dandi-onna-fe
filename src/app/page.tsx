@@ -1,6 +1,7 @@
 'use client';
 
 import ImageSlider from '@/components/ui/imageSlider';
+import KakaoIconSvg from '@/assets/icons/IconL-kakao.svg';
 import useFcmToken from '@/hooks/useFcmToken';
 import { useGeolocationConsent } from '@/hooks/useGeolocationConsent';
 import { redirect, useRouter } from 'next/navigation';
@@ -126,7 +127,7 @@ export default function OnboardingPage() {
             size='onboarding'
             className='w-full bg-[#FACC15] hover:bg-yellow-500 body5 text-foreground-normal px-[12px] py-[10px] rounded-[6px]'
             disabled={permission === 'granted' ? false : true}>
-            <img src='/images/IconL-kakao.svg' alt='kakao logo' className='w-5 h-5 mr-2 inline-block align-middle' />
+            <KakaoIconSvg className='mr-2 inline-block align-middle' style={{ width: '24px', height: '24px' }} />
             카카오톡으로 로그인
           </Button>
 

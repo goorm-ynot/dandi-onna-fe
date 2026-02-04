@@ -105,6 +105,14 @@ const config = {
           finished: '#e1e1e1',
           noshow: '#ffd8e2',
         },
+        gray: {
+          'lightest': '#f9f9f9',
+          'lighter': '#f6f6f6',
+          'light': '#e1e1e1',
+          'normal': '#c6c6c6',
+          'strong': '#a3a3a3',
+          'stronger': '#4c4c4c',
+        },
         system: {
           'mauve-light': '#f9f5ff',
           'pink-light': '#FFF5F7',
@@ -184,6 +192,9 @@ const config = {
       spacing: {
         2: 'var(--spacing-2)',
         6: 'var(--spacing-6)',
+        7: 'var(--spacing-7)',
+        8: '8px',
+        9: '9px',
         10: 'var(--spacing-10)',
         12: 'var(--spacing-12)',
         14: 'var(--spacing-14)',

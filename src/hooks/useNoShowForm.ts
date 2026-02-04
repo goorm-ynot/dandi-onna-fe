@@ -66,7 +66,9 @@ export function useNoShowForm(defaultData?: Reservation) {
   const watchedDuringTime = useWatch({ control, name: 'duringTime' });
 
   const originalTotal = watchedMenus?.reduce((sum, menu) => sum + menu.price * menu.quantity, 0) || 0;
-  const discountTotal = originalTotal * (1 - (watchedDiscount || 0) / 100);
+  const discountRate = originalTotal * (1 - (watchedDiscount || 0) / 100);
+  // 10원 단위 반올림
+  const discountTotal = Math.round(discountRate / 10) * 10;
 
   // ✅ duringTime 기반으로 visitTime 계산 (생성 모드)
   const calculatedVisitTime = Number(watchedDuringTime)

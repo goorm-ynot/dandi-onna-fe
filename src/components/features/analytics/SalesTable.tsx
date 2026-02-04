@@ -7,7 +7,7 @@
 'use client';
 
 import * as React from 'react';
-import Image from 'next/image';
+import ExcelIcon from '@/assets/icons/IconL-excel.svg';
 import { Label } from '@/components/ui/label';
 import { DateRangePicker } from './DateRangePicker';
 import { SalesTableSectionProps } from '@/types/analyticsType';
@@ -148,7 +148,7 @@ export const SalesTable = ({
 
             {/* 엑셀 다운로드 */}
             <button className="flex items-center gap-2 px-16 py-[6px] rounded bg-white">
-              <Image src="/images/icons/IconL-excel.svg" alt="excel icon" width={16} height={16} />
+              <ExcelIcon style={{ width: '16px', height: '16px' }} />
               <span className="body4 text-foreground-normal">Excel로 내보내기</span>
             </button>
           </div>
