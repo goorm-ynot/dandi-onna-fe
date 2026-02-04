@@ -14,7 +14,7 @@ export interface MenuMini {
 export interface Reservation {
   reservationNo: string; // 예약 번호
   time: string; // 예약 시간
-  status: 'PENDING' | 'NOSHOW' | 'VISIT_DONE'; // 예약 상태
+  status: ReservationStatus; // 예약 상태
   contact: string; // 고객 연락처
   expired: boolean; // 예약 시간 초과 여부 확인
   menus: MenuMini[]; // 메뉴
@@ -58,6 +58,11 @@ export interface TwoColumnLayoutProps<T = any> {
   rightTitle?: string;
   leftContent: React.ReactNode;
 
+  // 빈 상태
+  emptyContent?: React.ReactNode;
+  emptyTitle?: string | null;
+  emptyDescription?: string | null;
+
   // 오른쪽 패널 설정
   panelType: PanelType;
   panelMode: PanelMode;
@@ -75,12 +80,31 @@ export interface TwoColumnLayoutProps<T = any> {
   showTitles?: boolean;
 }
 
+/** 우측 판넬 타입 */
+export interface RightPanelContentProps<T = any> {
+  type: PanelType;
+  mode: PanelMode;
+  data: any;
+
+  emptyContent?: React.ReactNode;
+  emptyTitle?: string | null;
+  emptyDescription?: string | null;
+
+  onModeChange?: (mode: PanelMode) => void;
+  onDataUpdate?: (data: any) => void;
+  onStatusUpdate?: (id: string, status: string) => void;
+  onClose?: () => void;
+  onEditMode?: (editmode: boolean) => void;
+}
+
 // table 컬럼 타입
 export interface Column<T> {
   key: string;
   header: string;
   className?: string;
   isWide?: boolean;
+  width?: string | number; // ✅ 커스텀 너비 (px, %, rem 등)
+  paddingX?: string | number; // ✅ 좌우 패딩 (간격)
   sortable?: boolean; // ✅ 정렬 가능한 컬럼인지
   sortKey?: string; // ✅ 실제 정렬에 사용할 키 (key와 다를 수 있음)
   render?: (item: T) => React.ReactNode;
@@ -176,6 +200,7 @@ export interface OrderItem {
 }
 
 // 상태 관련 타입들
+export type ReservationStatus = 'PENDING' | 'LATE' | 'NOSHOW' | 'VISIT_DONE';
 export type OrderStatus = 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED';
 
 export type PaymentStatus = 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED' | 'CANCELLED';

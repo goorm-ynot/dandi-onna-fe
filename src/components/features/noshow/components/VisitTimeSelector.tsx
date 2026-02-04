@@ -44,7 +44,9 @@ export default function VisitTimeSelector({ formResult, mode }: VisitTimeSelecto
 
   return (
     <div className='flex flex-col gap-[4px] px-20'>
-      {/* <Label className='caption3'>주문 마감 시간 : {currentDuringTime}</Label> */}
+      <Label className="body2 text-foreground-normal">
+        방문시간    
+      </Label>
       <div className='flex flex-row justify-between items-center w-full gap-[7.66px]'>
         {mode === 'create' &&
           timeOptions.map((opt) => (
@@ -94,7 +96,7 @@ export default function VisitTimeSelector({ formResult, mode }: VisitTimeSelecto
               min-w-[82px]
               [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
               selectedTime === 'custom' ? 'border-primary ring-1 ring-primary' : 'border-muted-foreground/40'
-            } ${mode === 'create' ? 'w-[85px]' : 'w-full'}`}
+            } ${mode === 'create' ? 'w-[96px]' : 'w-full'}`}
           />
           <span className='absolute right-3 top-1/2 -translate-y-1/2 text-foreground-normal pointer-events-none'>
             분 후
@@ -102,12 +104,12 @@ export default function VisitTimeSelector({ formResult, mode }: VisitTimeSelecto
         </div>
       </div>
 
-      <Label className="caption3 flex gap-1 justify-end items-center text-error">
-        <CircleAlert size={18} />
+        <Label className="caption3 flex gap-1 justify-end items-center text-error">
+          <CircleAlert size={18} />
         {errors['duringTime']?.message
           ? errors['duringTime']?.message // ← 에러 있을 때 표시
           : '최대 300분까지 입력할 수 있어요'}     
-      </Label>
+        </Label>
     </div>
   );
 }

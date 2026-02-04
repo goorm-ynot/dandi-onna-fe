@@ -6,7 +6,8 @@ export default function Footer() {
       {/* ✅ 전체는 중앙 정렬 */}
       <div className='w-full pt-40 pb-20'>
         {/* ✅ 내부 컨테이너 */}
-        <div className='max-w-[1280px] mx-auto px-16 max-[400px]:px-16 lg:px-[40px] flex flex-col gap-[20px]'>
+        {/* <div className='max-w-[1400px] mx-auto px-16 max-[400px]:px-16 lg:px-[40px] flex flex-col gap-[20px]'> */}
+        <div className='max-w-[1400px] mx-auto max-[400px]:px-16 flex flex-col gap-[20px]'>
           {/* 상단: 로고 + 링크 + 고객센터 */}
           <div className='flex flex-row justify-between items-start max-[400px]:flex-col max-[400px]:items-left max-[400px]:gap-[20px]'>
             {/* 왼쪽 */}

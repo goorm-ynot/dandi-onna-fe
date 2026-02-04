@@ -4,7 +4,6 @@
 'use client';
 
 import SinglePageLayout from '@/components/features/dashboard/SinglePageLayout';
-import SingleColumnLayout from '@/components/layout/SingleColumnLayout';
 import { TwoColumnLayout } from '@/components/layout/TwoCloumnLayout';
 import { reservationStatus } from '@/constants/sellerNavConstant';
 import { useReservationManager } from '@/hooks/useReservationManger';
@@ -12,6 +11,34 @@ import { Reservation } from '@/types/boardData';
 import { useEffect, useState, Suspense } from 'react';
 import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDialog';
 import { useSearchParams } from 'next/navigation';
+import { EmptyPanelGuide } from '@/components/common/EmptyPanelGuide';
+import { SELLER_PANEL_CONFIG, EmptyPanelVariant } from '@/constants/emptyPanelConfigs';
+import clsx from 'clsx';
+
+/**
+ * 예약 데이터 기반 variant 판단 함수
+ * 우선순위: error > warning > success > info
+ */
+const determineReservationVariant = (reservations: Reservation[]): EmptyPanelVariant => {
+  if (!reservations || reservations.length === 0) {
+    return 'info';
+  }
+
+  // error 우선순위 (나중에 구현)
+  // const hasError = reservations.some((res) => res.status === 'ERROR');
+  // if (hasError) return 'error';
+
+  // warning 우선순위: LATE가 한 개라도 있는 경우
+  const hasLate = reservations.some((res) => res.status === 'LATE');
+  if (hasLate) return 'warning';
+
+  // success 우선순위: NOSHOW가 있는 경우
+  const hasNoShow = reservations.some((res) => res.status === 'NOSHOW');
+  if (hasNoShow) return 'success';
+
+  // info: 데이터가 없거나 모든 데이터가 PENDING/VISIT_DONE인 경우
+  return 'info';
+};
 
 function SellerPageContent() {
   const searchParams = useSearchParams();
@@ -54,6 +81,7 @@ function SellerPageContent() {
   const tabs = [
     { id: 'all', label: '전체' },
     { id: 'PENDING', label: '방문예정' },
+    { id: 'LATE', label: '확인필요' },
     { id: 'NOSHOW', label: '노쇼' },
     { id: 'VISIT_DONE', label: '방문완료' },
   ];
@@ -81,13 +109,16 @@ function SellerPageContent() {
       location: 'center' as 'center',
       render: (res: Reservation) => (
         <span
-          className={`px-[12px] py-[4px] rounded-[20px] h-[26px] w-[120px] caption5 inline-flex items-center justify-center ${
-            res.status === 'PENDING'
-              ? 'bg-status-pending text-status-pending-foreground'
-              : res.status === 'NOSHOW'
-              ? 'bg-status-noshow text-status-noshow-foreground'
-              : 'bg-status-completed text-status-completed-foreground'
-          }`}>
+          className={clsx(
+            'px-[12px] py-[4px] rounded-[20px] h-[26px] w-[120px] caption5 inline-flex items-center justify-center',
+            {
+              'bg-status-pending text-status-pending-foreground': res.status === 'PENDING',
+              'bg-status-noshow text-status-noshow-foreground': res.status === 'LATE',
+              'bg-system-blue-light text-system-blue-strong': res.status === 'NOSHOW',
+              'bg-status-completed text-status-completed-foreground': res.status === 'VISIT_DONE',
+            }
+          )}
+        >
           {reservationStatus[res.status as keyof typeof reservationStatus] || res.status}
         </span>
       ),
@@ -113,8 +144,6 @@ function SellerPageContent() {
   /** 노쇼 처리 확정 */
   const handleNoShowConfirm = () => {
     setActiveEdit(true);
-    // TODO: 실제 노쇼 처리 API 호출
-    // handleStatusUpdate(selectedReservation?.reservationNo, 'NOSHOW');
   };
 
   /** 노쇼 처리 취소 */
@@ -141,16 +170,14 @@ function SellerPageContent() {
     setIsVisitDoneDialogOpen(false);
   };
 
-  /** 방문 완료 된 부분은 선택 안되게
-   * (INFO: 당장은 mock데이터를 사용해서 그냥 다 넘기지만 API 호출 시, 이부분 수정 필요)
-   */
+  /** 선택 시 동작 */
   const onSelectReservation = (reservation: Reservation) => {
-    if (reservation.status === 'PENDING') {
-      setSelectedReservation(reservation);
-      setActiveEdit(false);
-      return;
-    }
-    setSelectedReservation(null);
+    setActiveEdit(false);
+    setSelectedReservation(reservation);
+    // if (reservation.status === 'PENDING' || reservation.status === 'LATE') {
+    //   return;
+    // }
+    // setSelectedReservation(null);
   };
 
   /** 로딩 중 상태 표시 */
@@ -162,36 +189,11 @@ function SellerPageContent() {
     );
   }
 
-  /** 예약이 아직 선택되지 않은 경우 — 단일 컬럼 레이아웃 */
-  if (!selectedReservation) {
-    return (
-      <SingleColumnLayout
-        title='오늘의 예약 내역이에요'
-        tabs={tabs}
-        showFilters={true}
-        columns={columns}
-        data={sortedReservations}
-        expiredData={expiredReservations}
-        onSelected={onSelectReservation}
-        onTabChange={handleFilterChange}
-        isUpdating={isUpdating}
-        totalPages={Number(totalPage)}
-        page={Number(cursor)}
-        onPageChange={handlePageChange}
-        emptyMessage='오늘 예약이 비어있습니다.'
-        activeTab={activeTab}
-        selectItemId={selectItemId}
-        sortState={sortState}
-        onSort={handleSort}
-      />
-    );
-  }
-
-  /** 예약이 선택된 경우 — 두 개의 패널로 세부 정보 표시 */
+  /** 항상 TwoColumnLayout 사용 */
   return (
     <>
       <TwoColumnLayout
-        rightTitle={selectItemStatus === 'PENDING' ? '예약 상세정보를 확인해주세요' : '앗, 노쇼가 발생했나요?'}
+        rightTitle={selectedReservation && selectItemStatus === 'LATE' ? '앗, 노쇼가 발생했나요?' : '예약 상세정보를 확인해주세요'}
         leftContent={
           <SinglePageLayout
             title='오늘의 예약 내역이에요'
@@ -213,9 +215,8 @@ function SellerPageContent() {
             sortState={sortState}
           />
         }
-        // selectItemStatus 말고 다른 방법?
+        // 예약이 선택되지 않았을 때는 EmptyGuide를 렌더링하고, 선택되었을 때는 실제 패널을 표시
         panelType={!activeEdit ? 'reservation-detail' : 'noshow-edit'}
-        // panelMode={'edit'}
         panelMode={'noshow-form'}
         selectedData={selectedReservation}
         onBack={() => console.log('onBack')}
@@ -225,7 +226,14 @@ function SellerPageContent() {
         onEditMode={onChangeEdit}
         leftClassName='flex-1'
         rightClassName='w-96'
-        showTitles={true}
+        showTitles={!!selectedReservation}
+        // 선택이 되지 않은 경우 보여줌
+        emptyContent={
+          <EmptyPanelGuide 
+            config={SELLER_PANEL_CONFIG} 
+            variant={determineReservationVariant(sortedReservations)} 
+          />
+        }
       />
 
       {/* 노쇼 확인 다이얼로그 */}

@@ -1,6 +1,7 @@
 'use client';
 
 import ImageSlider from '@/components/ui/imageSlider';
+import KakaoIconSvg from '@/assets/icons/IconL-kakao.svg';
 import useFcmToken from '@/hooks/useFcmToken';
 import { useGeolocationConsent } from '@/hooks/useGeolocationConsent';
 import { redirect, useRouter } from 'next/navigation';
@@ -10,6 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { useUserHook } from '@/hooks/useUser';
 import { useNavigation } from '@/hooks/useNavigation';
 import SafeArea from '@/components/layout/SafeArea';
+import { mockReservations } from '@/mock/reservation';
 
 const USER_ROLE = ['CONSUMER', 'OWNER', 'ADMIN'];
 export default function OnboardingPage() {
@@ -31,7 +33,7 @@ export default function OnboardingPage() {
       localStorage.setItem('deviceId', storedId);
     }
     setDeviceId(storedId);
-  }, []);
+  }, [requestPermission]);
 
   const onKakaoClick = async () => {
     const userLoginData = {
@@ -73,6 +75,29 @@ export default function OnboardingPage() {
       if (result.success && token && deviceId) {
         await postFcmToken(token, deviceId);
       }
+
+      // ✅ 로그인 성공 시 해당 계정의 예약 데이터를 localStorage에 저장
+      const userReservations = mockReservations[userLoginData.loginId as keyof typeof mockReservations];
+      if (userReservations) {
+        // 날짜를 오늘로 업데이트 (시간은 유지)
+        const today = new Date();
+        const todayStr = today.toISOString().split('T')[0]; // YYYY-MM-DD
+        
+        const updatedReservations = userReservations.map(reservation => {
+          const originalTime = new Date(reservation.time);
+          const timeStr = originalTime.toTimeString().split(' ')[0]; // HH:MM:SS
+          const newTime = `${todayStr}T${timeStr}`;
+          
+          return {
+            ...reservation,
+            time: newTime
+          };
+        });
+
+        localStorage.setItem('mockReservations', JSON.stringify(updatedReservations));
+        console.log('✅ Mock reservations saved to localStorage');
+      }
+
       toast.success('로그인 성공!', {
         description: '로그인 성공했습니다.',
       });
@@ -102,7 +127,7 @@ export default function OnboardingPage() {
             size='onboarding'
             className='w-full bg-[#FACC15] hover:bg-yellow-500 body5 text-foreground-normal px-[12px] py-[10px] rounded-[6px]'
             disabled={permission === 'granted' ? false : true}>
-            <img src='/images/IconL-kakao.svg' alt='kakao logo' className='w-5 h-5 mr-2 inline-block align-middle' />
+            <KakaoIconSvg className='mr-2 inline-block align-middle' style={{ width: '24px', height: '24px' }} />
             카카오톡으로 로그인
           </Button>
 

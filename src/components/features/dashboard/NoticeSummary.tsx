@@ -11,9 +11,13 @@ interface Notice {
 
 export default function NoticeSummary() {
   return (
-    <div className='max-w-[1280px] mx-auto'>
-      <div
+    <div className='max-w-[1400px] mx-auto'>
+      {/* <div
         className='w-full pt-20 pb-40 px-40
+              max-[400px]:px-16 max-[400px]:py-10
+              flex flex-row gap-4 justify-between max-[400px]:items-center max-[400px]:gap-0'> */}
+      <div
+        className='w-full pt-20 pb-40
               max-[400px]:px-16 max-[400px]:py-10
               flex flex-row gap-4 justify-between max-[400px]:items-center max-[400px]:gap-0'>
         {/* 왼쪽: 공지사항 + 제목 */}

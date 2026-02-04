@@ -1,10 +1,10 @@
 // hooks/useReservationApi.ts
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useReservationStore } from '@/store/useReservationStore';
 import { useAlarmStore } from '@/store/useAlarmStore';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { NoShowCreate, Reservation } from '@/types/boardData';
+import { reservationStorage } from '@/lib/reservationStorage';
 
 interface UpdateStatusParams {
   reservationNo: string;
@@ -14,7 +14,6 @@ interface UpdateStatusParams {
 export const useReservationApi = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { updateReservationStatus } = useReservationStore();
   const { showAlarm } = useAlarmStore();
 
   // 단일 상태 업데이트
@@ -28,8 +27,8 @@ export const useReservationApi = () => {
       return response.json();
     },
     onSuccess: (data, variables) => {
-      // Zustand 상태 업데이트
-      updateReservationStatus(variables.reservationNo, variables.status);
+      // ✅ localStorage 직접 업데이트
+      reservationStorage.updateStatus(variables.reservationNo, variables.status);
       // React Query 캐시 무효화
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
     },
@@ -55,9 +54,23 @@ export const useReservationApi = () => {
 
       return data;
     },
-    onSuccess: (data) => {
-      // console.log('✅ 노쇼 처리 성공:', data);
+    onSuccess: (data, variables) => {
+      console.log('✅ 노쇼 처리 성공:', data);
       showAlarm('노쇼 메뉴 처리가 완료되었습니다.', 'success', '성공', true);
+      
+      // localStorage 업데이트
+      // API 응답에서 reservations가 없을 경우 variables(요청 데이터)의 items 사용
+      const reservationsToUpdate = data?.data?.reservations || data?.reservations || variables?.items || [];
+      
+      if (Array.isArray(reservationsToUpdate) && reservationsToUpdate.length > 0) {
+        reservationsToUpdate.forEach((res: any) => {
+          const reservationNo = res.reservationNo || res.id;
+          if (reservationNo) {
+            reservationStorage.updateStatus(reservationNo, 'NOSHOW');
+          }
+        });
+      }
+      
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
       // 네비게이션을 onSuccess에서 처리
       router.push('/seller/no-show');

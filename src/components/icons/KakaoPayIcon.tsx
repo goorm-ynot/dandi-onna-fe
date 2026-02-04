@@ -1,5 +1,5 @@
-import Image from 'next/image';
+import KakaoPaySvg from '@/assets/icons/kakaoPay.svg';
 
 export default function KakaoPayIcon({ className }: { className?: string }) {
-  return <Image src='/images/kakaoPay.svg' alt='카카오페이' width={24} height={24} className={className} />;
+  return <KakaoPaySvg className={className} style={{ width: '24px', height: '24px' }} />;
 }

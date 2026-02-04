@@ -46,9 +46,14 @@ export default function DiscountSelector({ formResult, mode }: DiscountSelectorP
 
   return (
     <>
-      <Label className='title5 text-foreground-normal px-20'>할인율과 방문시간을 등록해 주세요.</Label>
-
+      <div className='flex flex-col gap-6'>
+        <Label className='title5 text-foreground-normal px-20'>할인율과 방문시간을 등록해 주세요.</Label>
+        <Label className='caption3 text-foreground-secondary px-20'>프리셋으로 미리 등록된 기본값입니다.</Label>
+      </div>
       <div className='flex flex-col gap-[4px] px-20'>
+        <Label className="body2 text-foreground-normal">
+          할인율    
+        </Label>
         <div className='flex flex-row justify-between items-center w-full gap-[2.5px]'>
           {discountOptions.map((opt) => (
             <Button
@@ -90,7 +95,7 @@ export default function DiscountSelector({ formResult, mode }: DiscountSelectorP
                 }}
                 onFocus={() => setSelectedDiscount('custom')}
                 className={`pr-6 text-left rounded-[6px] bg-background-normal 
-                  min-w-[82px] w-[85px]
+                  min-w-[82px] w-[96px]
                   [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
                   selectedDiscount === 'custom' ? 'border-primary ring-1 ring-primary' : 'border-muted-foreground/40'
                 }`}

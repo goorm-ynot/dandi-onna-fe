@@ -1,6 +1,8 @@
 // src/components/common/ReservationTable.tsx
 import React from 'react';
 import clsx from 'clsx';
+import TableDownIcon from '@/assets/icons/table-down.svg';
+import TableUpIcon from '@/assets/icons/table-up.svg';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Column, Reservation, SortState } from '@/types/boardData';
 
@@ -58,13 +60,13 @@ export default function ContentTable<T extends { [key: string]: any }>({
   // ✅ 정렬 아이콘 렌더링 함수
   const renderSortIcon = (columnKey: string) => {
     if (!sortState || sortState.key !== columnKey) {
-      return <img src='/images/table-down.svg' alt='아이콘' width={16} height={16} className='icon-xs' />;
+      return <TableDownIcon style={{ width: '16px', height: '16px' }} className='icon-xs' />;
     }
 
     return sortState.order === 'asc' ? (
-      <img src='/images/table-up.svg' alt='아이콘' width={16} height={16} className='icon-xs' />
+      <TableUpIcon style={{ width: '16px', height: '16px' }} className='icon-xs' />
     ) : (
-      <img src='/images/table-down.svg' alt='아이콘' width={16} height={16} className='icon-xs' />
+      <TableDownIcon style={{ width: '16px', height: '16px' }} className='icon-xs' />
     );
   };
 
@@ -78,7 +80,7 @@ export default function ContentTable<T extends { [key: string]: any }>({
       )}
 
       {/* 테이블 */}
-      <div className='mx-auto w-full max-w-7xl flex-1 overflow-auto pt-20'>
+      <div className='mx-auto w-full flex-1 overflow-auto pt-20'>
         {!data || data.length === 0 ? (
           <div className='text-center text-gray-500 mt-20'>{emptyMessage}</div>
         ) : (

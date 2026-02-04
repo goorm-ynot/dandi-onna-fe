@@ -21,3 +21,13 @@ export interface PaymentResponse {
   visitTime: string; // 방문 예정 시간
   menuSummary: string; // 주문한 메뉴 요약
 }
+
+// 결제 및 쳥구 타입
+export type BillingType = {
+  invoiceId: string;
+  duringDate: string;
+  paymentDate: string;
+  amount: number;
+  paymentStatus: 'PENDING' | 'COMPLETED' | 'CANCELLED'; // 주문 상태
+  paymentMethod: string;
+}

@@ -44,3 +44,68 @@ export const getPaymentMethodText = (method: string) => {
       return method;
   }
 };
+
+// 매출 여부 한글 변환
+export const isSaleCompletedText = (status: string) => {
+  return status === 'CANCELLED' ? '취소됨' : '완료';
+}
+
+// 결제 상태
+export const isBilingStateText = (status: string) => {
+  switch (status) {
+    case 'PAID':
+    case 'COMPLETED':
+      return '결제완료';
+    case 'FAILED':
+      return '결제실패';
+    case 'CANCELLED':
+      return '결제취소';
+    default:
+      return status;
+  }
+}
+
+// 다음 결제일: 매달 15일 계산
+export const getNextPaymentDate = () => {
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth(); // 0-based
+  const currentDay = today.getDate();
+
+  let nextYear = currentYear;
+  let nextMonth = currentMonth;
+
+  // 오늘이 15일 이후면 다음 달 15일
+  if (currentDay >= 15) {
+    nextMonth += 1;
+    if (nextMonth > 11) {
+      nextMonth = 0;
+      nextYear += 1;
+    }
+  }
+
+  const nextDate = new Date(nextYear, nextMonth, 15);
+  return nextDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+};
+
+// 이전 결제일(결제완료한 날): 매달 15일 계산
+export const getPreviousPaymentDate = (today: Date) => {
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth(); // 0-based
+  const currentDay = today.getDate();
+
+  let prevYear = currentYear;
+  let prevMonth = currentMonth;
+
+  // 오늘이 15일 이전이면 지난 달 15일
+  if (currentDay < 15) {
+    prevMonth -= 1;
+    if (prevMonth < 0) {
+      prevMonth = 11;
+      prevYear -= 1;
+    }
+  }
+
+  const prevDate = new Date(prevYear, prevMonth, 15);
+  return prevDate.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+}

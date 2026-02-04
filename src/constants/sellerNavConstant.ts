@@ -1,5 +1,4 @@
 // src/constants/menu.ts
-import { DynamicIcon } from '@/lib/iconMapper';
 
 export interface MenuItem {
   id: string; // 고유 식별자
@@ -42,14 +41,26 @@ export const MENU_ITEMS: MenuItem[] = [
       { id: 'noshow-menu-create', label: '노쇼 메뉴 등록' },
     ],
   },
+  {
+    id: 'mypage',
+    label: '마이페이지',
+    path: '/mypage',
+    children: [
+      { id: 'mypage-business-info', label: '가게 설정', path: '/mypage' },
+      { id: 'business-management', label: '매출 관리', path:'/mypage/analytics' },
+      { id: 'noshow-preset', label: '노쇼 프리셋', },
+      { id: 'billing-management', label: '청구 및 결제', path:'/mypage/billing' },
+    ],
+  },
 ];
 
 export const reservationStatus = {
   PROCESSING: '방문예정',
   PENDING: '방문예정',
-  NOSHOW: '노쇼',
-  DISABLED: '방문완료',
+  LATE: '확인필요', // 이름이 바뀔 수 있음
+  NOSHOW: '노쇼 등록 완료 ',
   VISIT_DONE: '방문완료',
+  DISABLED: '방문완료',
   CONFIRMED: '노쇼 등록 완료',
   COMPLETED: '노쇼 주문 완료',
   CANCELLED: '노쇼 방문 완료',
@@ -59,3 +70,10 @@ export const orderStatus = {
   PENDING: '노쇼 주문 완료',
   COMPLETED: '노쇼 방문 완료',
 };
+
+
+export const saleStatus = {
+  COMPLETED: '일반 주문',
+  CANCELLED: '주문 취소',
+  NO_SHOW: '노쇼 판매',
+}

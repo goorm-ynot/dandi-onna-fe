@@ -79,13 +79,13 @@ export const useNoShowManage = () => {
     if (noShowListError) {
       handleQueryError(noShowListError);
     }
-  }, [noShowListError]);
+  }, [noShowListError, handleQueryError]);
 
   useEffect(() => {
     if (detailError) {
       handleQueryError(detailError);
     }
-  }, [detailError]);
+  }, [detailError, handleQueryError]);
 
   // 데이터 로드 시 Zustand에 저장
   useEffect(() => {

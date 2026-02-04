@@ -1,5 +1,5 @@
-import Image from 'next/image';
+import NaverPaySvg from '@/assets/icons/naverPay.svg';
 
 export default function NaverPayIcon({ className }: { className?: string }) {
-  return <Image src='/images/naverPay.svg' alt='네이버페이' width={24} height={24} className={className} />;
+  return <NaverPaySvg className={className} style={{ width: '24px', height: '24px' }} />;
 }

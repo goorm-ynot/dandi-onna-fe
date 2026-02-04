@@ -7,11 +7,12 @@ import { roundToNext10Minutes } from '@/lib/dateParse';
 import { useReservationApi } from './useReservationApi';
 import { useReservationStore } from '@/store/useReservationStore';
 import { useNoShowStore } from '@/store/useNoShowStore';
+import { reservationStorage } from '@/lib/reservationStorage';
 
 // 노쇼 발생 폼
 export function useNoShowForm(defaultData?: Reservation) {
   const { batchNoShow } = useReservationApi();
-  const { setSelectedReservation } = useReservationStore();
+  const { setSelectedReservation, selectedReservation } = useReservationStore();
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
   const [pendingFormData, setPendingFormData] = useState<NoShowFormValues | null>(null);
 
@@ -65,7 +66,9 @@ export function useNoShowForm(defaultData?: Reservation) {
   const watchedDuringTime = useWatch({ control, name: 'duringTime' });
 
   const originalTotal = watchedMenus?.reduce((sum, menu) => sum + menu.price * menu.quantity, 0) || 0;
-  const discountTotal = originalTotal * (1 - (watchedDiscount || 0) / 100);
+  const discountRate = originalTotal * (1 - (watchedDiscount || 0) / 100);
+  // 10원 단위 반올림
+  const discountTotal = Math.round(discountRate / 10) * 10;
 
   // ✅ duringTime 기반으로 visitTime 계산 (생성 모드)
   const calculatedVisitTime = Number(watchedDuringTime)
@@ -92,12 +95,14 @@ export function useNoShowForm(defaultData?: Reservation) {
     };
 
     // console.log('✅ 확정된 제출 데이터:', finalData);
+    // localStorage 업데이트 처리
+    reservationStorage.updateStatus(selectedReservation?.reservationNo, 'NOSHOW');
     batchNoShow(finalData);
     setIsSubmitDialogOpen(false);
     setPendingFormData(null);
     setSelectedReservation(null);
     // 🎯 네비게이션은 batchNoShow의 onSuccess에서 처리됨
-  }, [pendingFormData, batchNoShow]);
+  }, [pendingFormData, batchNoShow, setSelectedReservation]);
 
   // ✅ Dialog 취소
   const handleCancelSubmit = useCallback(() => {
@@ -269,7 +274,7 @@ export function useNoShowMenuForm(defaultData?: NoShowMenu) {
     // 폼 초기화
     setSelectNoshowItem(null);
     setActiveEdit(false);
-  }, [pendingFormData, calculatedVisitTime]);
+  }, [pendingFormData, calculatedVisitTime, setActiveEdit, setSelectNoshowItem]);
 
   // ✅ Dialog 취소
   const handleCancelSubmit = useCallback(() => {

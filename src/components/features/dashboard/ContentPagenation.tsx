@@ -1,6 +1,5 @@
 // src/components/common/Pagination.tsx
 import { Button } from '@/components/ui/button';
-import IconChevronRight from '/images/icons/IconL-chevron-right.svg';
 
 interface PaginationProps {
   totalPages: number;
