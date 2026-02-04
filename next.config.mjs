@@ -108,22 +108,7 @@ const nextConfig = {
 
   // next.config.mjs의 webpack 설정 강화
   webpack: (config, { dev, isServer }) => {
-    // 🎯 Browserslist 설정 (레거시 polyfill 제거)
-    config.module.rules.forEach((rule) => {
-      if (rule.loader === 'babel-loader' || rule.use?.some?.((u) => u.loader === 'babel-loader')) {
-        // Babel에서 모던 브라우저 대상으로 설정
-        if (rule.options) {
-          rule.options.targets = {
-            chrome: '90',
-            firefox: '88',
-            safari: '14',
-            edge: '90',
-          };
-        }
-      }
-    });
-
-    // ✅ SVGR 설정: SVG를 React 컴포넌트로 사용
+    // 🎯 SVG 파일 처리 (SVGR로 변환)
     const fileLoaderRule = config.module.rules.find(
       (rule) => rule.test && rule.test.test && rule.test.test('.svg')
     );
