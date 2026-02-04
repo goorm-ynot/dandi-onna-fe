@@ -3,21 +3,21 @@
 import DashBoardLayout from "@/components/layout/DashboardLayout";
 import { Label } from "@/components/ui/label";
 import Card from "@/assets/icons/IconL-card.svg";
-import {billingData} from "@/mock/billing";
 import { formatKRW } from "@/lib/format";
 import { getPaymentMethodText, getPreviousPaymentDate, isBilingStateText } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import DownLoadIcon from "@/assets/icons/icon-download.svg";
-import { useBillingDetails } from "@/hooks/seller/billing/useBillingDetails";
-import ContentTable from "@/components/features/dashboard/ContentTable";
 import { BillingType } from "@/types/paymentType";
 import { Column } from "@/types/boardData";
 import GridTable from "@/components/features/mypage/GridTable";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useBillingData } from "@/hooks/seller/billing/useBillingData";
 
 /**
  * TODO: 
- * 청구 및 결제 페이지 구현 (1/5)
- * 결제 영수증 팝업 구현 (2/5)
+ * 청구 및 결제 페이지 구현 (1/5) - [v]
+ * 행 선택 시, 결제 영수증 팝업 구현 (2/5) 
+ * 다운로드 버튼 클릭 시 바로 다운로드
  * 결제 내역 다운로드 기능 구현 - 개별 (3/5) PDF 다운로드
  * 결제 내역 다운로드 기능 구현 - 전체 (4/5) PDF -> zip 다운로드
  * 결제 수단 변경 기능 구현 (5/5) -> 보류
@@ -69,6 +69,7 @@ const invoiceColumns: Column<BillingType>[] = [
     {
         key: 'amount',
         header: '금액',
+        sortable: true,
         render: (data: BillingType) => (
             <Label className="body1">{data.amount.toLocaleString()}{'원'}</Label>),
     },
@@ -97,14 +98,20 @@ const invoiceColumns: Column<BillingType>[] = [
 ];
 
 function BillingPage() {
-  const {invoiceData} = useBillingDetails();
-  const billingDataItem = billingData[0]; // id: 1번 데이터
-  const billingMethod = billingData[1]; // id: 2번 데이터
-
-  const typedInvoiceData: BillingType[] = invoiceData.map((item) => ({
-    ...item,
-    paymentStatus: item.paymentStatus as "COMPLETED" | "PENDING" | "CANCELLED",
-  }));
+  const {
+    currentPage,
+    invoiceData,
+    subscriptionInfo,
+    paymentMethod,
+    pagination,
+    isLoading,
+    handlePrevPage,
+    handleNextPage,
+    goToPage,
+    sortState,
+    handleSort,
+    sortedInvoiceData,
+  } = useBillingData();
 
   return (
     <DashBoardLayout>
@@ -126,7 +133,9 @@ function BillingPage() {
                                 <div key={col.key} className="w-[300px] flex flex-col gap-16">
                                     <Label className="body1 text-foreground-secondary">{col.header}</Label>
                                     <div>
-                                        {col.render ? col.render(billingDataItem as any) : billingDataItem[col.key as keyof typeof billingDataItem]}
+                                        {subscriptionInfo 
+                                          ? col.render?.(subscriptionInfo as any) 
+                                          : subscriptionInfo?.[col.key as keyof typeof subscriptionInfo]}
                                     </div>
                                 </div>
                             );
@@ -145,8 +154,8 @@ function BillingPage() {
                                 <Card className="w-24 h-24 text-foreground-normal" />
                             </div>
                             <div className="flex flex-col gap-6">
-                                <Label className="body1 text-foreground-normal">{getPaymentMethodText(billingMethod.paymentMethod || '')} {billingMethod?.cardCompany && `(${billingMethod.cardCompany})`}</Label>
-                                <Label className="body5 text-foreground-normal">{billingMethod.cardNumber}</Label>
+                                <Label className="body1 text-foreground-normal">{paymentMethod && getPaymentMethodText(paymentMethod.paymentMethod || '')} {paymentMethod?.cardCompany && `(${paymentMethod.cardCompany})`}</Label>
+                                <Label className="body5 text-foreground-normal">{paymentMethod?.cardNumber}</Label>
                             </div>
                         </div>
                     </div>
@@ -160,27 +169,60 @@ function BillingPage() {
                         <div className="flex flex-row justify-between">
                             <div className="flex flex-col gap-6">
                                 <Label className="body1 text-foreground-normal">최근 결제 영수증</Label>
-                                <Label className="body5 text-foreground-normal">{getPreviousPaymentDate(new Date())} 결제분 ({formatKRW(billingDataItem.price || 0)})</Label>
+                                <Label className="body5 text-foreground-normal">{getPreviousPaymentDate(new Date())} 결제분 ({subscriptionInfo && formatKRW(subscriptionInfo.price || 0)})</Label>
                             </div>
                             <div className="flex flex-row gap-10">
+                                <Button variant="outline" className="px-16 py-10 rounded-md border-border-normal text-foreground-normal body1">영수증 보기</Button>
                                 <Button variant="outline" className="px-12 py-7 rounded-md border-border-normal text-foreground-normal"><DownLoadIcon className="text-foreground-normal" style={{width: 18, height: 18}} /></Button>
-                                <Button variant="outline" className="px-16 py-10 rounded-md border-border-normal text-foreground-normal body1">전체 영수증 보기</Button>
                             </div>
                         </div>
                         {/* table */}
                          <GridTable
                              columns={invoiceColumns} 
-                             data={typedInvoiceData} 
+                             data={sortedInvoiceData} 
+                             onSort={handleSort}
                          />
                    
                         {/* footer */}
                         <div className="flex flex-row justify-between items-center">
                             {/* pagination control */}
-                            <div></div>
+                            <div className="flex items-center justify-center gap-2">
+                                <Button
+                                type="button"
+                                variant='link'
+                                onClick={handlePrevPage}
+                                disabled={!pagination?.hasPrevPage}
+                                className='disabled:text-foreground-disable disabled:opacity-100'
+                                >
+                                <ChevronLeft size={24} />
+                                </Button>
+
+                                {/* 페이지 번호 표시 */}
+                                {pagination && Array.from({ length: pagination.totalPages }).map((_, i) => (
+                                    <Button 
+                                        key={i} 
+                                        size='page' 
+                                        variant={currentPage === i + 1 ? 'page' : 'pagelink'} 
+                                        onClick={() => goToPage(i + 1)}
+                                    >
+                                        {i+1}
+                                    </Button>
+                                ))}
+
+                                <Button
+                                type="button"
+                                variant='link'
+                                onClick={handleNextPage}
+                                disabled={!pagination?.hasNextPage}
+                                className='disabled:text-foreground-disable disabled:opacity-100'
+                                >
+                                <ChevronRight size={24} />
+                                </Button>
+                            </div>
                             {/* Button */}
                             <Button variant='outline' className="px-16 py-7">
                                 <DownLoadIcon className="text-foreground-normal" style={{width: 18, height: 18}} />
-                                <span className="ml-8">일괄 다운받기(ZIP)</span>
+                                <span className="ml-6 body1">일괄 다운받기(ZIP)</span>
                             </Button>
                         </div>
                     </div>

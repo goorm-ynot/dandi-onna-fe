@@ -43,6 +43,22 @@ export function sortData<T extends Record<string, any>>(data: T[], sortState: So
       return sortState.order === 'asc' ? aTime - bTime : bTime - aTime;
     }
 
+    // 시간 정렬 (YYYY년 MM월 형식)
+    if(key === 'duringDate' || key === 'paymentDate') {
+      const parseDate = (dateStr: string) => {
+        const parts = dateStr.match(/(\d{4})[년\.]\s*(\d{1,2})[월\.]/);
+        if (parts) {
+          const year = parseInt(parts[1], 10);
+          const month = parseInt(parts[2], 10) - 1; // 월은 0부터 시작
+          return new Date(year, month).getTime();
+        }
+        return 0;
+      };
+      const aTime = parseDate(aValue as unknown as string);
+      const bTime = parseDate(bValue as unknown as string);
+      return sortState.order === 'asc' ? aTime - bTime : bTime - aTime;
+    }
+
     // 문자열 정렬
     if (typeof aValue === 'string' && typeof bValue === 'string') {
       const result = aValue.localeCompare(bValue);
