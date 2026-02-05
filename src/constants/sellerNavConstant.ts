@@ -47,7 +47,7 @@ export const MENU_ITEMS: MenuItem[] = [
     children: [
       { id: 'mypage-business-info', label: '가게 설정', path: '/mypage' },
       { id: 'business-management', label: '매출 관리', path:'/mypage/analytics' },
-      { id: 'noshow-preset', label: '노쇼 프리셋', },
+      { id: 'noshow-preset', label: '노쇼 프리셋', path: '/mypage/preset' },
       { id: 'billing-management', label: '청구 및 결제', path:'/mypage/billing' },
     ],
   },
