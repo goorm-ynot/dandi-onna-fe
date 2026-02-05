@@ -3,15 +3,22 @@
 import DashBoardLayout from "@/components/layout/DashboardLayout";
 import { Label } from "@/components/ui/label";
 import Card from "@/assets/icons/IconL-card.svg";
-import { formatKRW } from "@/lib/format";
+import { formatKRW, getCardLastFour } from "@/lib/format";
 import { getPaymentMethodText, getPreviousPaymentDate, isBilingStateText } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import {
+    SectionCard,
+    SectionCardContent,
+    SectionCardHeader,
+    SectionCardTitle,
+} from "@/components/ui/section-card";
 import DownLoadIcon from "@/assets/icons/icon-download.svg";
 import { BillingType } from "@/types/paymentType";
 import { Column } from "@/types/boardData";
 import GridTable from "@/components/features/mypage/GridTable";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useBillingData } from "@/hooks/seller/billing/useBillingData";
+import { InvoicePopup } from "@/components/features/popup/InvoicePopup";
 
 /**
  * TODO: 
@@ -83,8 +90,10 @@ const invoiceColumns: Column<BillingType>[] = [
     {
         key: 'paymentMethod',
         header: '결제수단',
-        render: (data: BillingType) => (
-            <Label className="body1">{data.paymentMethod}</Label>),
+        render: (data: BillingType) => {
+            return (
+                <Label className="body1">{getPaymentMethodText(data.paymentMethod)} ({data.cardCompany} {getCardLastFour(data.cardNumber || '')})</Label>);
+        },
     },
     {
         key: 'download',
@@ -111,6 +120,10 @@ function BillingPage() {
     sortState,
     handleSort,
     sortedInvoiceData,
+    onSelectRow,
+    onClose,
+    popupOpen,
+    popupData,
   } = useBillingData();
 
   return (
@@ -123,11 +136,11 @@ function BillingPage() {
             
             <div className="w-[1000px] flex flex-col gap-20">
                 {/* 구독정보 */}
-                <div className="w-full bg-white rounded-md shadow-md flex flex-col gap-16">
-                    <div className="py-20 border-b border-border-secondary px-24">
-                        <Label className="title5 text-foreground-normal">구독정보</Label>
-                    </div>
-                    <div className="p-24 flex flex-row gap-20 justify-between">
+                <SectionCard className="gap-16 shadow-md">
+                    <SectionCardHeader className="px-24 py-20">
+                        <SectionCardTitle>구독정보</SectionCardTitle>
+                    </SectionCardHeader>
+                    <SectionCardContent className="flex flex-row gap-20 justify-between p-24">
                         {billingColumns.map((col) => {
                             return (
                                 <div key={col.key} className="w-[300px] flex flex-col gap-16">
@@ -140,14 +153,14 @@ function BillingPage() {
                                 </div>
                             );
                         })}
-                    </div>
-                </div>
+                    </SectionCardContent>
+                </SectionCard>
                 {/* 결제수단 */}
-                <div className="w-full bg-white rounded-md shadow-md flex flex-col gap-16">
-                    <div className="py-20 border-b border-border-secondary px-24">
-                        <Label className="title5 text-foreground-normal">결제 수단</Label>
-                    </div>
-                    <div className="p-24 flex flex-row justify-between">
+                <SectionCard className="gap-16  shadow-md">
+                    <SectionCardHeader className="px-24 py-20">
+                        <SectionCardTitle>결제 수단</SectionCardTitle>
+                    </SectionCardHeader>
+                    <SectionCardContent className="flex flex-row justify-between p-24">
                         <div className="flex flex-row gap-10">
                             {/* 아이콘 */}
                             <div className="w-[44px] h-[40px] px-10 py-6 bg-background-normal-foreground rounded-sm">
@@ -158,14 +171,14 @@ function BillingPage() {
                                 <Label className="body5 text-foreground-normal">{paymentMethod?.cardNumber}</Label>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </SectionCardContent>
+                </SectionCard>
                 {/* 영수증 */}
-                <div className="w-full bg-white rounded-md shadow-md flex flex-col">
-                    <div className="py-20 border-b border-border-secondary px-24">
-                        <Label className="title5 text-foreground-normal">영수증</Label>
-                    </div>
-                    <div className="p-24 flex flex-col gap-24">
+                <SectionCard className="gap-16  shadow-md">
+                    <SectionCardHeader className="px-24 py-20">
+                        <SectionCardTitle>영수증</SectionCardTitle>
+                    </SectionCardHeader>
+                    <SectionCardContent className="flex flex-col gap-24 p-24">
                         <div className="flex flex-row justify-between">
                             <div className="flex flex-col gap-6">
                                 <Label className="body1 text-foreground-normal">최근 결제 영수증</Label>
@@ -181,6 +194,7 @@ function BillingPage() {
                              columns={invoiceColumns} 
                              data={sortedInvoiceData} 
                              onSort={handleSort}
+                             onSelectRow={onSelectRow}
                          />
                    
                         {/* footer */}
@@ -225,11 +239,12 @@ function BillingPage() {
                                 <span className="ml-6 body1">일괄 다운받기(ZIP)</span>
                             </Button>
                         </div>
-                    </div>
-                </div>
-                
+                    </SectionCardContent>
+                </SectionCard>
             </div>
         </div>
+
+        <InvoicePopup isOpen={popupOpen} onClose={onClose} data={popupData} />
     </DashBoardLayout>
   );
 }

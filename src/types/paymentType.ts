@@ -22,7 +22,7 @@ export interface PaymentResponse {
   menuSummary: string; // 주문한 메뉴 요약
 }
 
-// 결제 및 쳥구 타입
+//----- 결제 및 쳥구 타입 start ------ 
 export type BillingType = {
   invoiceId: string;
   duringDate: string;
@@ -30,4 +30,32 @@ export type BillingType = {
   amount: number;
   paymentStatus: 'PENDING' | 'COMPLETED' | 'CANCELLED'; // 주문 상태
   paymentMethod: string;
+  cardCompany?: string; // 카드사명
+  cardNumber?: string; // 카드번호
 }
+
+
+export type billingInvoiceType = {
+  invoiceId: string;
+  // 공급자 정보
+  supplierName: string; // 공급자 상호명
+  supplierCeoName: string; // 대표자 이름
+  supplierBusinessNumber: string; // 사업자 등록번호
+  supplierAddress: string; // 공급자 주소
+  supplierContact: string; // 고객센터
+  // 결제 상세 정보
+  duringDate: Date; // 결제 일시
+  paymentDate: Date; // 청구 기간
+  productName: string; // 상품명
+  unitPrice: number; //공급가액
+  taxAmount: number; // 부가세
+  totalAmount: number; // 총 결제 금액
+  // 결제 수단 정보
+  paymentMethod: string; // 결제 수단
+  cardCompany?: string; // 카드사명
+  cardNumber?: string; // 카드번호
+  installment: string; // 할부 개월 수
+  paymentId: string; // 승인번호
+}
+
+//----- 결제 및 청구 타입 end ------

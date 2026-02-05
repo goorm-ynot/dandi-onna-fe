@@ -1,5 +1,6 @@
 'use server';
 
+import { maskCardNumber } from '@/lib/format';
 import { BillingType } from '@/types/paymentType';
 
 // 유저 정보 (실제로는 DB에서 조회)
@@ -39,7 +40,9 @@ function generateBillingData(startDate: Date): BillingType[] {
       paymentDate: `${year}.${String(month).padStart(2, '0')}.15`,
       amount: 29900,
       paymentStatus: 'COMPLETED',
-      paymentMethod: '신용카드 (신한 1234)',
+      paymentMethod: 'CARD',
+      cardCompany: '신한카드',
+      cardNumber: '1234-1234-1234-1234',
     });
 
     // 다음 달 15일로 이동
@@ -132,7 +135,7 @@ export async function fetchPaymentMethod() {
       data: {
         paymentMethod: 'CARD',
         cardCompany: '신한카드',
-        cardNumber: '****-****-****-1234',
+        cardNumber: maskCardNumber('1234-1234-1234-1234'),
       },
     };
   } catch (error) {
@@ -142,6 +145,43 @@ export async function fetchPaymentMethod() {
       error: '결제 수단을 불러올 수 없습니다.',
       data: null,
     };
+  }
+}
+
+/**
+ * 영수증 조회
+ */
+export async function fetchInvoiceDetails(invoiceData: BillingType) {
+  try {
+    return {
+      success: true,
+      data: {
+        invoiceId: invoiceData.invoiceId,
+        supplierName: '(주)와이낫컴퍼니',
+        supplierCeoName: '홍길동',
+        supplierBusinessNumber: '123-45-67890',
+        supplierAddress: '서울특별시 강남구 테헤란로 123',
+        supplierContact: '02-1234-5678',
+        duringDate: new Date(invoiceData.duringDate),
+        paymentDate: new Date(invoiceData.paymentDate),
+        productName: '단디온나 구독 서비스',
+        unitPrice: Math.round(invoiceData.amount / 1.1),
+        taxAmount: Math.round(invoiceData.amount / 11),
+        totalAmount: invoiceData.amount,
+        paymentMethod: invoiceData.paymentMethod,
+        cardCompany: invoiceData.cardCompany || '',
+        cardNumber: invoiceData.cardNumber || '',
+        installment: '일시불',
+        paymentId: '202509150001',
+      }
+    }
+  } catch (error) {
+    console.error('영수증 조회 실패:', error);
+    return {
+      success: false,
+      error: '영수증을 불러올 수 없습니다.',
+      data: null,
+    }
   }
 }
 
