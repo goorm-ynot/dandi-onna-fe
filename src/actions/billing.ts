@@ -172,7 +172,7 @@ export async function fetchInvoiceDetails(invoiceData: BillingType) {
         cardCompany: invoiceData.cardCompany || '',
         cardNumber: invoiceData.cardNumber || '',
         installment: '일시불',
-        paymentId: '202509150001',
+        paymentId: 'PAY1234567890',
       }
     }
   } catch (error) {
@@ -182,6 +182,33 @@ export async function fetchInvoiceDetails(invoiceData: BillingType) {
       error: '영수증을 불러올 수 없습니다.',
       data: null,
     }
+  }
+}
+
+/**
+ * invoiceId로 영수증 상세 조회
+ */
+export async function fetchInvoiceDetailsById(invoiceId: string) {
+  try {
+    const allBillingData = generateBillingData(mockUser.subscriptionStartDate);
+    const invoice = allBillingData.find((item) => item.invoiceId === invoiceId);
+
+    if (!invoice) {
+      return {
+        success: false,
+        error: '영수증을 찾을 수 없습니다.',
+        data: null,
+      };
+    }
+
+    return await fetchInvoiceDetails(invoice);
+  } catch (error) {
+    console.error('영수증 조회 실패:', error);
+    return {
+      success: false,
+      error: '영수증을 불러올 수 없습니다.',
+      data: null,
+    };
   }
 }
 

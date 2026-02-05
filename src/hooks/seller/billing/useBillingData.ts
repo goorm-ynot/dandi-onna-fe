@@ -30,6 +30,9 @@ export interface UseBillingDataReturn extends BillingState {
   onClose: () => void;
   popupOpen: boolean;
   popupData: billingInvoiceType | null;
+  handlePrint: () => void;
+  handleDownload: () => void;
+  setSelectedInvoice: (item: BillingType | null) => void;
 }
 
 export function useBillingData(): UseBillingDataReturn {
@@ -118,6 +121,23 @@ export function useBillingData(): UseBillingDataReturn {
     setSelectedInvoice(null);
   }
 
+  
+    const handlePrint = () => {
+    if (!selectedInvoice) return;
+    window.open(`/print/invoice/${selectedInvoice.invoiceId}`, "_blank", "noopener,noreferrer");
+  };
+  
+  const handleDownload = async () => {
+    if (!selectedInvoice) return;
+    const link = document.createElement('a');
+    link.href = `/api/pdf/invoice/${selectedInvoice.invoiceId}`;
+    link.download = `invoice-${selectedInvoice.invoiceId}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+
   return {
     currentPage,
     invoiceData,
@@ -136,5 +156,8 @@ export function useBillingData(): UseBillingDataReturn {
     onClose,
     popupOpen,
     popupData,
+    handlePrint,
+    handleDownload,
+    setSelectedInvoice,
   };
 }

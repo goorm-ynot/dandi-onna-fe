@@ -1,0 +1,33 @@
+/* Print styles for invoice pages */
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+  
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  .print-hidden {
+    display: none !important;
+  }
+  
+  .print-page-break {
+    page-break-after: always;
+  }
+  
+  /* 배경색 유지 */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+@media screen {
+  .print-only {
+    display: none;
+  }
+}

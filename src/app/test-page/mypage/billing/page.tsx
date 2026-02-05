@@ -24,7 +24,7 @@ import { InvoicePopup } from "@/components/features/popup/InvoicePopup";
  * TODO: 
  * 청구 및 결제 페이지 구현 (1/5) - [v]
  * 행 선택 시, 결제 영수증 팝업 구현 (2/5) [v]
- * 다운로드 버튼 클릭 시 바로 다운로드
+ * 다운로드 버튼 클릭 시 바로 다운로드 
  * 결제 내역 다운로드 기능 구현 - 개별 (3/5) PDF 다운로드
  * 결제 내역 다운로드 기능 구현 - 전체 (4/5) PDF -> zip 다운로드
  * 결제 수단 변경 기능 구현 (5/5) -> 보류
@@ -57,6 +57,30 @@ const billingColumns = [
         ),
     },
 ]
+
+
+function BillingPage() {
+  const {
+    currentPage,
+    invoiceData,
+    subscriptionInfo,
+    paymentMethod,
+    pagination,
+    isLoading,
+    handlePrevPage,
+    handleNextPage,
+    goToPage,
+    sortState,
+    handleSort,
+    sortedInvoiceData,
+    onSelectRow,
+    onClose,
+    popupOpen,
+    popupData,
+    handleDownload,
+    handlePrint,
+    setSelectedInvoice
+  } = useBillingData();
 
 const invoiceColumns: Column<BillingType>[] = [
     {
@@ -99,32 +123,20 @@ const invoiceColumns: Column<BillingType>[] = [
         key: 'download',
         header: '다운로드',
         location: 'center' as const,
-        render: () => (
-            <Button variant="icon" className="w-full h-auto flex items-center justify-center p-0 body1"><DownLoadIcon className="text-foreground-normal" style={{width: 18, height: 18}}  /></Button>
+        render: (data: BillingType  ) => (
+            <Button 
+            variant="icon" 
+            className="w-full h-auto flex items-center justify-center p-0 body1 z-10" 
+            onClick={() => {
+                setSelectedInvoice(data);
+                handleDownload();
+            }}>
+                <DownLoadIcon className="text-foreground-normal" style={{width: 18, height: 18}}  />
+            </Button>
         ),
     }
 
 ];
-
-function BillingPage() {
-  const {
-    currentPage,
-    invoiceData,
-    subscriptionInfo,
-    paymentMethod,
-    pagination,
-    isLoading,
-    handlePrevPage,
-    handleNextPage,
-    goToPage,
-    sortState,
-    handleSort,
-    sortedInvoiceData,
-    onSelectRow,
-    onClose,
-    popupOpen,
-    popupData,
-  } = useBillingData();
 
   return (
     <DashBoardLayout>
@@ -195,6 +207,7 @@ function BillingPage() {
                              data={sortedInvoiceData} 
                              onSort={handleSort}
                              onSelectRow={onSelectRow}
+
                          />
                    
                         {/* footer */}
@@ -244,7 +257,7 @@ function BillingPage() {
             </div>
         </div>
 
-        <InvoicePopup isOpen={popupOpen} onClose={onClose} data={popupData} />
+        <InvoicePopup isOpen={popupOpen} onClose={onClose} data={popupData} onDownload={handleDownload} onPrint={handlePrint} />
     </DashBoardLayout>
   );
 }

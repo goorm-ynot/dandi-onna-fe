@@ -146,6 +146,12 @@ export default function GridTable<T extends { [key: string]: any }>({
                           paddingLeft: col.paddingX ? col.paddingX : undefined,
                           paddingRight: col.paddingX ? col.paddingX : undefined,
                         }}
+                        onClick={(e) => {
+                          // 버튼이나 상호작용 요소 클릭 시 row 선택 방지
+                          if ((e.target as HTMLElement).closest('button')) {
+                            e.stopPropagation();
+                          }
+                        }}
                         className={clsx(
                           'body1 text-foreground-normal align-middle truncate py-8',
                           col.isWide && 'min-w-[350px]',

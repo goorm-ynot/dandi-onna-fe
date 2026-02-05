@@ -1,10 +1,12 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { SectionCard, SectionCardContent, SectionCardHeader, SectionCardTitle } from "@/components/ui/section-card";
 import { InfoCard, InfoCardRow } from "@/components/ui/info-card";
 import { billingInvoiceType } from "@/types/paymentType";
 import { formatInvoiceField } from "@/lib/invoiceFormatter";
 import { XIcon } from "lucide-react";
-import IconDownload from "@/assets/icons/icon-download.svg"
+import IconDownload from "@/assets/icons/icon-download.svg";
 import IconPrinter from "@/assets/icons/icon-printer.svg";
 
 type InvoicePopupProps = {
@@ -53,6 +55,35 @@ export function InvoicePopup({
 }: InvoicePopupProps) {
     if (!isOpen) return null;
 
+    const openPrintWindow = (mode: "print" | "download") => {
+        if (!data?.invoiceId) return;
+        
+        if (mode === 'download') {
+            // 다운로드: PDF API 호출
+            const link = document.createElement('a');
+            link.href = `/api/pdf/invoice/${data.invoiceId}`;
+            link.download = `invoice-${data.invoiceId}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } else {
+            // 인쇄: 별도 창에서 print 페이지 열기
+            const url = `/print/invoice/${data.invoiceId}?mode=print`;
+            window.open(url, '_blank', 'width=800,height=600');
+        }
+    };
+
+    const handlePrint = () => {
+        if (onPrint) return onPrint();
+        openPrintWindow("print");
+    };
+
+    const handleDownload = () => {
+        if (onDownload) return onDownload();
+        openPrintWindow("download");
+    };
+
+ 
     return (
         <>
             {/* 배경 어두워짐 */}
@@ -102,11 +133,11 @@ export function InvoicePopup({
 
                         {/* 버튼들 */}
                         <div className="flex flex-row justify-end item-center gap-10">
-                            <Button type='button' variant="outline" onClick={onPrint} className="px-16 py-7 flex flex-row gap-6">
+                            <Button type='button' variant="outline" onClick={handlePrint} className="px-16 py-7 flex flex-row gap-6">
                                 <IconPrinter style={{width:24, height:24}} />
                                 인쇄하기
                             </Button>
-                            <Button type='button' onClick={onDownload} className="px-16 py-7 flex flex-row gap-6">
+                            <Button type='button' onClick={handleDownload} className="px-16 py-7 flex flex-row gap-6">
                                 <IconDownload className="text-white" style={{width:24, height:24}} />
                                 다운로드
                             </Button>
