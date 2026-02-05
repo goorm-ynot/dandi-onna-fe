@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { SectionCard, SectionCardContent, SectionCardHeader, SectionCardTitle } from "@/components/ui/section-card";
+import { InfoCard, InfoCardRow } from "@/components/ui/info-card";
 import { billingInvoiceType } from "@/types/paymentType";
+import { formatInvoiceField } from "@/lib/invoiceFormatter";
 import { XIcon } from "lucide-react";
+import IconDownload from "@/assets/icons/icon-download.svg"
+import IconPrinter from "@/assets/icons/icon-printer.svg";
 
 type InvoicePopupProps = {
     isOpen: boolean;
@@ -23,8 +26,8 @@ const InvoiceSupplierKeys: { [key: string]: string } = {
 
 const InvoiceDataKeys: { [key: string]: string } = {
     // 결제 상세 정보
-  duringDate: '결제 일시',
-  paymentDate: '청구기간',
+  paymentDate: '결제 일시',
+  duringDate: '청구기간',
   productName: '상품명',
   unitPrice: '공급가액',
   taxAmount: '부가가치세',
@@ -64,57 +67,49 @@ export function InvoicePopup({
                     </SectionCardHeader>
                     <SectionCardContent className="flex flex-col gap-24 py-24 px-40">
                         {/* 공급자 정보 */}
-                        <Label className="body2">공급자 정보</Label>
-                        <div className="w-[480px] px-14 py-10 rounded-md bg-background-normal-foreground">
-                                {data && Object.entries(InvoiceSupplierKeys).map(([key, label]) => (
-                                <div key={key} className="flex justify-between py-6 border-b border-border-secondary last:border-0">
-                                    <Label className="body1 text-foreground-secondary">{label}</Label>
-                                    <Label className="body2 text-foreground-normal">
-                                        {key in data ? 
-                                            (key === 'duringDate' || key === 'paymentDate' ? 
-                                                new Date((data as any)[key]).toLocaleDateString() 
-                                                : (data as any)[key]) 
-                                            : '-'}
-                                    </Label>
-                                </div>
+                        <InfoCard title="공급자 정보">
+                            {data && Object.entries(InvoiceSupplierKeys).map(([key, label]) => (
+                                <InfoCardRow
+                                    key={key}
+                                    label={label}
+                                    value={formatInvoiceField(key, data)}
+                                />
                             ))}
-                        </div>
+                        </InfoCard>
+
                         {/* 결제 상세 정보 */}
-                        <Label className="body2">결제 상세 정보</Label>
-                        <div className="w-[480px] px-14 py-10 rounded-md bg-background-normal-foreground">
-                                {data && Object.entries(InvoiceDataKeys).map(([key, label]) => (
-                                <div key={key} className="flex justify-between py-6 border-b border-border-secondary last:border-0">
-                                    <Label className="body1 text-foreground-secondary">{label}</Label>
-                                    <Label className="body2 text-foreground-normal">
-                                        {key in data ? 
-                                            (key === 'duringDate' || key === 'paymentDate' ? 
-                                                new Date((data as any)[key]).toLocaleDateString() 
-                                                : (data as any)[key]) 
-                                            : '-'}
-                                    </Label>
-                                </div>
+                        <InfoCard title="결제 상세 정보">
+                            {data && Object.entries(InvoiceDataKeys).map(([key, label]) => (
+                                <InfoCardRow
+                                    key={key}
+                                    label={label}
+                                    value={formatInvoiceField(key, data)}
+                                    highlighted={key === 'totalAmount'}
+                                />
                             ))}
-                        </div>
+                        </InfoCard>
+
                         {/* 결제 수단 정보 */}
-                        <Label className="body2">결제 수단 정보</Label>
-                        <div className="w-[480px] px-14 py-10 rounded-md bg-background-normal-foreground flex flex-col gap-10">
-                                {data && Object.entries(InvoicePaymentMethodKeys).map(([key, label]) => (
-                                <div key={key} className="flex justify-between border-b border-border-secondary last:border-0">
-                                    <Label className="body1 text-foreground-secondary">{label}</Label>
-                                    <Label className="body2 text-foreground-normal">
-                                        {key in data ? 
-                                            (key === 'duringDate' || key === 'paymentDate' ? 
-                                                new Date((data as any)[key]).toLocaleDateString() 
-                                                : (data as any)[key]) 
-                                            : '-'}
-                                    </Label>
-                                </div>
+                        <InfoCard title="결제 수단 정보">
+                            {data && Object.entries(InvoicePaymentMethodKeys).map(([key, label]) => (
+                                <InfoCardRow
+                                    key={key}
+                                    label={label}
+                                    value={formatInvoiceField(key, data)}
+                                />
                             ))}
-                        </div>
+                        </InfoCard>
+
                         {/* 버튼들 */}
                         <div className="flex flex-row justify-end item-center gap-10">
-                            <Button type='button' variant="outline" onClick={onPrint}>인쇄하기</Button>
-                            <Button type='button' onClick={onDownload}>다운로드</Button>
+                            <Button type='button' variant="outline" onClick={onPrint} className="px-16 py-7 flex flex-row gap-6">
+                                <IconPrinter style={{width:24, height:24}} />
+                                인쇄하기
+                            </Button>
+                            <Button type='button' onClick={onDownload} className="px-16 py-7 flex flex-row gap-6">
+                                <IconDownload className="text-white" style={{width:24, height:24}} />
+                                다운로드
+                            </Button>
                         </div>
                     </SectionCardContent>
                 </SectionCard>

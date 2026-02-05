@@ -1,5 +1,4 @@
 // src/constants/menu.ts
-
 export interface MenuItem {
   id: string; // 고유 식별자
   label: string; // 화면에 표시될 텍스트

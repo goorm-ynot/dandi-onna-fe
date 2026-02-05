@@ -148,38 +148,40 @@ function SalesAnalytics() {
                 {/* 오늘 / 이번 주 / 이번 달 / 노쇼 매출 현황
                     TODO: 이부분 수정 됨
                 */}
-                <div className="bg-white rounded-md px-20 py-24 flex flex-row gap-6 items-center">
-                    <Wallet className="w-24 h-24 text-foreground-normal" />
-                    <Label className="title4 text-foreground-normal">사장님 단디온나를 통해 </Label><Label className="title6 text-foreground-primary">{formatKRW(445000)}</Label><Label className='title4 text-foreground-normal'>의 노쇼 손실을 방어하셨어요!</Label>
-                </div>
+                <div className="w-[1000px]">
+                  <div className="bg-white rounded-md px-20 py-24 flex flex-row gap-6 items-center">
+                      <Wallet className="w-24 h-24 text-foreground-normal" />
+                      <Label className="title4 text-foreground-normal">사장님 단디온나를 통해 </Label><Label className="title6 text-foreground-primary">{formatKRW(445000)}</Label><Label className='title4 text-foreground-normal'>의 노쇼 손실을 방어하셨어요!</Label>
+                  </div>
 
-                {/* 상세 내역 - 표 */}
-                <div className="flex flex-col w-full border border-border-normal rounded-md ">
-                  <SalesFilterBar
-                    dateRangeLabel={manage.dateRangeLabel}
-                    showDatePicker={manage.showDatePicker}
-                    periodType={manage.periodType}
-                    orderType={manage.orderType}
-                    startDate={manage.startDate}
-                    endDate={manage.endDate}
-                    onChangePeriodType={manage.setPeriodType}
-                    onChangeOrderType={manage.setOrderType}
-                    onChangeStartDate={manage.setStartDate}
-                    onChangeEndDate={manage.setEndDate}
-                  />
-                  <SalesTableView
-                    column={SALES_TABLE_COLUMNS}
-                    salesData={salesQuery.items}
-                  />
-                  <SalesFooterBar
-                    totalCount={salesQuery.pageInfo?.totalElements || 0} 
-                    page={salesQuery.pageInfo?.page + 1 || 1}
-                    totalPages={salesQuery.pageInfo?.totalPages || 1}
-                    onPrevPage={() => salesQuery.setPage((p) => Math.max(1, p - 1))}
-                    onNextPage={() => salesQuery.setPage((p) => Math.min(salesQuery.pageInfo?.totalPages || 1, p + 1))}
-                    onGoToPage={(p) => salesQuery.setPage(p)}
-                    onExportExcel={handleExportExcel}
-                  />
+                  {/* 상세 내역 - 표 */}
+                  <div className="flex flex-col w-full border border-border-normal rounded-md ">
+                    <SalesFilterBar
+                      dateRangeLabel={manage.dateRangeLabel}
+                      showDatePicker={manage.showDatePicker}
+                      periodType={manage.periodType}
+                      orderType={manage.orderType}
+                      startDate={manage.startDate}
+                      endDate={manage.endDate}
+                      onChangePeriodType={manage.setPeriodType}
+                      onChangeOrderType={manage.setOrderType}
+                      onChangeStartDate={manage.setStartDate}
+                      onChangeEndDate={manage.setEndDate}
+                    />
+                    <SalesTableView
+                      column={SALES_TABLE_COLUMNS}
+                      salesData={salesQuery.items}
+                    />
+                    <SalesFooterBar
+                      totalCount={salesQuery.pageInfo?.totalElements || 0} 
+                      page={salesQuery.pageInfo?.page + 1 || 1}
+                      totalPages={salesQuery.pageInfo?.totalPages || 1}
+                      onPrevPage={() => salesQuery.setPage((p) => Math.max(1, p - 1))}
+                      onNextPage={() => salesQuery.setPage((p) => Math.min(salesQuery.pageInfo?.totalPages || 1, p + 1))}
+                      onGoToPage={(p) => salesQuery.setPage(p)}
+                      onExportExcel={handleExportExcel}
+                    />
+                  </div>
                 </div>
             </div>
 

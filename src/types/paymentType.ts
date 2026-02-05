@@ -44,8 +44,8 @@ export type billingInvoiceType = {
   supplierAddress: string; // 공급자 주소
   supplierContact: string; // 고객센터
   // 결제 상세 정보
-  duringDate: Date; // 결제 일시
-  paymentDate: Date; // 청구 기간
+  paymentDate: Date; // 결제 일시
+  duringDate: string; // 청구 기간
   productName: string; // 상품명
   unitPrice: number; //공급가액
   taxAmount: number; // 부가세

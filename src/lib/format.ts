@@ -48,3 +48,11 @@ export function getCardLastFour(cardNumber: string): string {
   return cleanNumber.slice(-4);
 }
 
+/**
+ * 금액을 원화 단위로 포맷 (쉼표 + '원')
+ * @example formatAmount(12345) => '12,345원'
+ */
+export function formatAmount(value: number): string {
+  return `${value.toLocaleString()}원`;
+}
+
