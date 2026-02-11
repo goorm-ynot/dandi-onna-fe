@@ -67,6 +67,8 @@ export async function POST(request: NextRequest) {
       items: reservation.items,
       discountPercent: reservation.discountPercent,
       expireAt: reservation.expireAfterMinutes,
+      expireAfterMinutes: 10, // 일단 10으로 고정(10분 뒤 입력) TODO: 프론트에서 받아오도록 수정
+      
     });
 
     // 받은 데이터 그대로 반환

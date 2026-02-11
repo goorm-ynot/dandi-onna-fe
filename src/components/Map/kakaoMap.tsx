@@ -12,7 +12,7 @@ const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.KAKA
 export default function KakaoMap({ lat, lng, height }: kakaoMap) {
   return (
     <div>
-      <Script src={KAKAO_SDK_URL} strategy='beforeInteractive' />
+      <Script src={KAKAO_SDK_URL} strategy='afterInteractive' />
       <Map center={{ lat: lat, lng: lng }} style={{ width: '100%', height: `${height}px` }} level={5}></Map>
     </div>
   );

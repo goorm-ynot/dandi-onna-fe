@@ -42,7 +42,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, autoPlay = true, inte
         clearInterval(intervalRef.current);
       }
     };
-  }, [autoPlay, interval, currentIndex, images.length]);
+  }, [autoPlay, interval, images.length]);
 
   // 자동 재생 일시 정지/재개
   const pauseAutoPlay = () => {

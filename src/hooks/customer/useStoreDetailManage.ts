@@ -97,10 +97,13 @@ export const useStoreDetailManage = (storeId: string) => {
   }, [
     queryLoading,
     queryError,
-    store?.storeId, // storeId만 비교해서 불필요한 업데이트 방지
+    store,
+    like,
+    currentStore?.storeId,
     setIsLoading,
     setError,
     setCurrentStore,
+    setFavorite,
   ]);
   // ================= 데이터 동기화 end ===================
 

@@ -24,6 +24,11 @@ export const getNowDateKoreanString = (date?: Date) => {
   return `${newDate.getFullYear()}년 ${String(newDate.getMonth() + 1).padStart(2, '0')}월 ${String(newDate.getDate()).padStart(2, '0')}일`;
 };
 
+// 년월 문자열 포맷팅
+export const formatYearMonthString = (date: Date): string => {
+  return `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(2, '0')}월`;
+}
+
 // 10분 단위 올림 처리 함수
 export const roundToNext10Minutes = (date: Date): Date => {
   const newDate = new Date(date);
@@ -41,7 +46,7 @@ export const roundToNext10Minutes = (date: Date): Date => {
   return newDate;
 };
 
-// 시간 문자열 포맷팅
+// 시간 문자열 포맷팅(HH:mm 형식)
 export const formatTimeString = (date: Date, hours24 = false): string => {
   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: !hours24 });
 };
@@ -53,7 +58,7 @@ export const formatTimeWithKoreanUnit = (date: Date): string => {
   return `${hours}시 ${minutes}분`;
 };
 
-// 일시 문자열 포맷팅
+// 일시 문자열 포맷팅(YYYY-MM-DD HH:mm)
 export const formatDateTimeString = (date: Date): string => {
   return getNowDateString(date) + ' ' + formatTimeString(date, true);
 };
@@ -61,6 +66,11 @@ export const formatDateTimeString = (date: Date): string => {
 // 일시 문자열 포맷팅 (요일 제외)
 export const formatDateTimeStringNoDay = (date: Date): string => {
   return getNowDateNoDayString(date) + ' ' + formatTimeString(date, true);
+}
+
+// 일시 문자열 포맷팅(YYYY-MM-DD HH:mm:ss)
+export const formatDateTimeFullString = (date: Date): string => {
+  return formatDateTimeStringNoDay(date) + ':' + String(date.getSeconds()).padStart(2, '0');
 }
 
 // 다음 달 날짜 구하기 (특정날짜 기준)

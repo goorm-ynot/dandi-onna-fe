@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SectionCard, SectionCardContent, SectionCardHeader } from "@/components/ui/section-card";
-import { Info } from "lucide-react";
+import { Info, PlusIcon } from "lucide-react";
 
 
 /**
@@ -26,7 +26,7 @@ function PresetPage() {
                 <div className="body3 text-foreground-secondary">시스템이 자동으로 적용할 노쇼 판매 규칙을 설정합니다.</div>
             </div>
             {/* section */}
-            <SectionCard className="overflow-hidden shadow-lg w-[1000px]">
+            <SectionCard className="overflow-hidden shadow-md w-[1000px]">
                 <SectionCardHeader className="p-30">
                   <div className="flex flex-col gap-6">
                     <div className="flex flex-row items-center gap-6">
@@ -100,6 +100,29 @@ function PresetPage() {
                       <Label className="body1 text-foreground-secondary">설정한 정책에 따라 추후 시스템이 자동으로 적용합니다.</Label>
                       <Button type="button" className="w-[160px] px-12 py-10">저장</Button>
                 </SectionCardContent>  
+            </SectionCard>
+            {/* 선택사항 */}
+            <SectionCard className="overflow-hidden w-[1000px] bg-gray-lighter p-24 border border-border-normal">
+                <div className="flex flex-col gap-6 justify-center items-center">
+                  <Label className="body9 text-foreground-normal">추가 정책 설정 (선택사항)</Label>
+                  <Label className="body1 text-foreground-secondary w-[340px] text-center whitespace-pre-line">특정 시간대에 다른 정책을 적용하고 싶은 경우에만 추가하세요 기본 정책만으로도 시스템을 운영할 수 있습니다</Label>
+                </div>
+                <div className="flex flex-row gap-12 justify-center pt-24">
+                    <Button
+                     type='button'
+                     variant='outline'
+                     className="flex flex-row gap-8 justify-center items-center w-[160px]">
+                      <PlusIcon className="w-24 h-24 text-foreground-normal" />
+                      <Label className="body3 text-foreground-normal">피크타임 정책</Label>
+                    </Button>
+                    <Button
+                     type='button'
+                     variant='outline'
+                     className="flex flex-row gap-8 justify-center items-center w-[160px]">
+                      <PlusIcon className="w-24 h-24 text-foreground-normal" />
+                      <Label className="body3 text-foreground-normal">마감 정책</Label>
+                    </Button>
+                </div>
             </SectionCard>
         </div>
   </DashBoardLayout>
