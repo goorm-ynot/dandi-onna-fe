@@ -36,6 +36,7 @@ const buttonVariants = cva(
         table: 'max-h-[26px]',
         onboarding: 'h-[44px] px-3 py-2.5',
         map:'w-[76px] h-[26px] rounded-sm',
+        calendar: 'rounded-sm p-[4px]',
       },
     },
     defaultVariants: {

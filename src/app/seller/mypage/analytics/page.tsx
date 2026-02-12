@@ -16,6 +16,7 @@ import { SalesTableView } from "@/components/features/analytics/SalesTableView";
 import { SalesFooterBar } from "@/components/features/analytics/SalesFooterBar";
 // Icons
 import Wallet from "@/assets/icons/money-wallet-checkmark.svg";
+import { ExcelExportPopup } from "@/components/features/popup/excelExportPopup";
 
 
 const SALES_TABLE_COLUMNS = [
@@ -124,7 +125,7 @@ function SalesAnalytics() {
   const salesQuery = useSalesAnalyticsQuery({
     startDate: getNowDateNoDayString(manage.startDate),
     endDate: getNowDateNoDayString(manage.endDate),});
-
+  const [isExcelPopupOpen, setIsExcelPopupOpen] = useState(false);
 
 /**
  * TODO: 
@@ -132,8 +133,13 @@ function SalesAnalytics() {
  * 엑셀 내보내기 기능 구현 (2/2)
  */
   const handleExportExcel = () => {
-    console.log('팝업이 오픈되야함');
+    setIsExcelPopupOpen(true);
   };
+
+  // 총 매출 합계 계산
+  const sumTotalSales = () => {
+    return salesQuery.items.reduce((acc: any, curr: any) => acc + curr.paidAmount, 0);
+  }
 
 
     return ( 
@@ -145,17 +151,17 @@ function SalesAnalytics() {
                     <Label className="body3 text-foreground-secondary">매출 현황과 주문 이력을 확인하실 수 있습니다.</Label>
                 </div>
 
-                {/* 오늘 / 이번 주 / 이번 달 / 노쇼 매출 현황
-                    TODO: 이부분 수정 됨
-                */}
-                <div className="w-[1000px]">
+                {/* 오늘 / 이번 주 / 이번 달 / 노쇼 매출 현황 */}
+                <div className="flex flex-col gap-40">
                   <div className="bg-white rounded-md px-20 py-24 flex flex-row gap-6 items-center">
                       <Wallet className="w-24 h-24 text-foreground-normal" />
-                      <Label className="title4 text-foreground-normal">사장님 단디온나를 통해 </Label><Label className="title6 text-foreground-primary">{formatKRW(445000)}</Label><Label className='title4 text-foreground-normal'>의 노쇼 손실을 방어하셨어요!</Label>
+                      <Label className="title4 text-foreground-normal">사장님 단디온나를 통해 </Label>
+                      <Label className="title6 text-foreground-primary">{formatKRW(sumTotalSales())}</Label>
+                      <Label className='title4 text-foreground-normal'>의 노쇼 손실을 방어하셨어요!</Label>
                   </div>
 
                   {/* 상세 내역 - 표 */}
-                  <div className="flex flex-col w-full border border-border-normal rounded-md ">
+                  <div className="flex flex-col w-full border border-border-normal rounded-md">
                     <SalesFilterBar
                       dateRangeLabel={manage.dateRangeLabel}
                       showDatePicker={manage.showDatePicker}
@@ -186,7 +192,14 @@ function SalesAnalytics() {
             </div>
 
             {/* 엑셀 내보내기 팝업 */}
-            
+            <ExcelExportPopup 
+              isOpen={isExcelPopupOpen}
+              startDate={manage.startDate}
+              endDate={manage.endDate}
+              onStartDateChange={(d) => manage.setStartDate(d)}
+              onEndDateChange={(d) => manage.setEndDate(d)}
+              onClose={() => setIsExcelPopupOpen(false)} />
+
         </DashBoardLayout>
      );
 }
