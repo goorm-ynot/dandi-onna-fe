@@ -1,108 +1,90 @@
+"use client";
+
 import DashBoardLayout from "@/components/layout/DashboardLayout";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { SectionCard, SectionCardContent, SectionCardHeader } from "@/components/ui/section-card";
-import { Info } from "lucide-react";
+import {
+  BasePolicySection,
+  ExtraPolicyPicker,
+  ExtraPolicySection,
+  PageHeader,
+} from "@/components/features/mypage/preset/PresetSections";
+import { useState } from "react";
 
 
 /**
  * TODO:
  * UI 제작
+ * 기능 구현 1차
+ * - 추가 정책 설정 버튼 클릭 시 아래에 새로운 section 생성
+ * - section 생성 시, 시간대 설정 부분 추가해야 함
  * 기능 구현 
  *   - name 값 설정
  *   - 값 유효성 검사
  *   - 값 저장 (API 연동)
- * status = basic, last, picktime, custom? -> 수정될 수 있음
  * 
  */
 
+type ExtraPolicyType = "PEAK" | "CLOSE";
+
+interface ExtraPolicySectionState {
+  id: string;
+  type: ExtraPolicyType;
+  slotIds: string[];
+}
+
 function PresetPage() {
+  const [extraPolicies, setExtraPolicies] = useState<ExtraPolicySectionState[]>([]);
+  const [policyCounter, setPolicyCounter] = useState(0);
+  const [slotCounter, setSlotCounter] = useState(0);
+
+  const addPolicy = (type: ExtraPolicyType) => {
+    if (extraPolicies.some((policy) => policy.type === type)) return;
+
+    const nextPolicyId = policyCounter + 1;
+    const nextSlotId = slotCounter + 1;
+    setPolicyCounter(nextPolicyId);
+    setSlotCounter(nextSlotId);
+
+    setExtraPolicies((prev) => [
+      ...prev,
+      {
+        id: `policy-${nextPolicyId}`,
+        type,
+        slotIds: [`slot-${nextSlotId}`],
+      },
+    ]);
+  };
+
+  const addSlot = (policyId: string) => {
+    const nextSlotId = slotCounter + 1;
+    setSlotCounter(nextSlotId);
+    setExtraPolicies((prev) =>
+      prev.map((policy) =>
+        policy.id === policyId ? { ...policy, slotIds: [...policy.slotIds, `slot-${nextSlotId}`] } : policy
+      )
+    );
+  };
+
+  const getPolicyTitle = (type: ExtraPolicyType) => (type === "PEAK" ? "피크타임 노쇼 정책" : "마감 정책");
+  const hiddenTypes = Array.from(new Set(extraPolicies.map((policy) => policy.type)));
+
   return (
-  <DashBoardLayout>
-        <div className="max-w-[1400px] w-full h-full flex flex-col gap-40 pt-40 pb-20">
-            <div className="flex flex-col gap-20">
-                <div className="title7 font-foreground-normal">노쇼 프리셋</div>
-                <div className="body3 text-foreground-secondary">시스템이 자동으로 적용할 노쇼 판매 규칙을 설정합니다.</div>
-            </div>
-            {/* section */}
-            <SectionCard className="overflow-hidden shadow-lg w-[1000px]">
-                <SectionCardHeader className="p-30">
-                  <div className="flex flex-col gap-6">
-                    <div className="flex flex-row items-center gap-6">
-                      <Label className="body9 text-foreground-normal">기본 노쇼 정책</Label>
-                      <div className="flex flex-row items-center gap-2 rounded-lg bg-background-quaternary px-8 py-2">
-                        <Info className="w-[14px] h-[14px] text-foreground-primary" /> 
-                        <Label className="body2 text-foreground-primary">필수</Label>
-                      </div>
-                    </div>
-                    <Label className="body1 text-foreground-secondary">모든 노쇼 처리에 적용되는 기본 설정입니다.</Label>
-                  </div>
-                </SectionCardHeader>
-                {/* content */}
-                <SectionCardHeader className="px-30 py-24">
-                    <div className="flex flex-col justify-start gap-24">
+    <DashBoardLayout>
+      <div className="max-w-[1400px] w-full h-full flex flex-col gap-40 pt-40 pb-20">
+        <PageHeader />
+        <BasePolicySection />
 
-                      {/* 할인율 */}
-                      <div className="flex flex-col gap-6">
-                        <Label className="body5 text-foreground-normal">할인율</Label>
-                        <Label className="body1 text-foreground-secondary">새 손님에게 제공할 할인율입니다.</Label>
-                      </div>
-                      <div className="flex flex-row gap-6">
-                        <Input 
-                          type="number" 
-                          placeholder="30~90" 
-                          min={30}
-                          max={90}
-                          className="w-[140px] py-10 px-14 text-center bg-white rounded-md"/>
-                        <Label className="body3 text-foreground-normal self-center">%</Label>
-                      </div>
+        {extraPolicies.map((policy) => (
+          <ExtraPolicySection
+            key={policy.id}
+            title={getPolicyTitle(policy.type)}
+            slotIds={policy.slotIds}
+            // onAddSlot={() => addSlot(policy.id)}
+          />
+        ))}
 
-                      {/* 방문 가능 시간 */}
-                      <div className="flex flex-col gap-6">
-                        <Label className="body5 text-foreground-normal">방문 가능시간</Label>
-                        <Label className="body1 text-foreground-secondary">노쇼 예약 손님이 도착할 때까지 사장님께 필요한 준비 시간을 선택해 주세요.</Label>
-                      </div>
-                      <div className="flex flex-row gap-6">
-                        <Input 
-                          type="number" 
-                          placeholder="00" 
-                          min={0}
-                          max={23}
-                          className="w-[55px] py-10 text-center bg-white rounded-md"/>
-                        <Label className="body3 text-foreground-normal self-center">시간</Label>
-                        <Input 
-                          type="number" 
-                          placeholder="00" 
-                          min={0}
-                          max={59}
-                          className="w-[55px] py-10 text-center bg-white rounded-md"/>
-                        <Label className="body3 text-foreground-normal self-center">분 후 방문 가능</Label>
-                      </div>
-
-                      {/* 판매 대기 시간 */}
-                      <div className="flex flex-col gap-6">
-                        <Label className="body5 text-foreground-normal">판매 대기 시간</Label>
-                        <Label className="body1 text-foreground-secondary">기존 예약자와 새 손님이 겹치지 않도록, 판매 시작 전 잠시 대기하는 시간입니다.</Label>
-                      </div>
-                      <div className="flex flex-row gap-6">
-                        <Input 
-                          type="number" 
-                          placeholder="10~300"
-                          min={0} 
-                          max={300}
-                          className="w-[140px] py-10 px-14 text-center bg-white rounded-md"/>
-                        <Label className="body3 text-foreground-normal self-center">분</Label>
-                      </div>
-                    </div>
-                </SectionCardHeader>
-                <SectionCardContent className="px-30 py-24 w-full flex flex-row justify-between items-center">
-                      <Label className="body1 text-foreground-secondary">설정한 정책에 따라 추후 시스템이 자동으로 적용합니다.</Label>
-                      <Button type="button" className="w-[160px] px-12 py-10">저장</Button>
-                </SectionCardContent>  
-            </SectionCard>
-        </div>
-  </DashBoardLayout>
+        <ExtraPolicyPicker onAdd={addPolicy} hiddenTypes={hiddenTypes} />
+      </div>
+    </DashBoardLayout>
   );
 }
 

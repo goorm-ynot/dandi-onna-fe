@@ -200,7 +200,7 @@ export interface OrderItem {
 }
 
 // 상태 관련 타입들
-export type ReservationStatus = 'PENDING' | 'LATE' | 'NOSHOW' | 'VISIT_DONE';
+export type ReservationStatus = 'PENDING' | 'LATE' | 'NOSHOW' | 'VISIT_DONE' | 'QUEUED' | 'PROCESSING' | 'PUBLISHED' | 'CANCELLED' | 'FAILED';
 export type OrderStatus = 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED';
 
 export type PaymentStatus = 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED' | 'CANCELLED';

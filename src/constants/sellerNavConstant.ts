@@ -54,15 +54,15 @@ export const MENU_ITEMS: MenuItem[] = [
 ];
 
 export const reservationStatus = {
-  PROCESSING: '방문예정',
   PENDING: '방문예정',
-  LATE: '확인필요', // 이름이 바뀔 수 있음
+  LATE: '방문시간초과',
   NOSHOW: '노쇼 등록 완료 ',
   VISIT_DONE: '방문완료',
-  DISABLED: '방문완료',
-  CONFIRMED: '노쇼 등록 완료',
-  COMPLETED: '노쇼 주문 완료',
-  CANCELLED: '노쇼 방문 완료',
+  QUEUED: '노쇼등록대기중',
+  PROCESSING: '노쇼등록처리중',
+  PUBLISHED: '노쇼등록완료',
+  CANCELLED: '취소됨',
+  FAILED: '실패',
 };
 
 export const orderStatus = {
