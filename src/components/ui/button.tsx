@@ -28,6 +28,7 @@ const buttonVariants = cva(
         sm: 'h-[38px] rounded-sm px-3',
         md: 'h-[38px] rounded-sm p-[7px]',
         lg: 'h-[38px] rounded-sm px-8',
+        xl: 'h-[38px] rounded-sm px-10',
         icon: 'h-10 w-10',
         page: 'h-[24px] w-[24px] py-1 rounded-sm',
         xs: 'h-[38px] w-[38px] p-[7px] rounded-[6px]',
@@ -35,6 +36,7 @@ const buttonVariants = cva(
         table: 'max-h-[26px]',
         onboarding: 'h-[44px] px-3 py-2.5',
         map:'w-[76px] h-[26px] rounded-sm',
+        calendar: 'rounded-sm p-[4px]',
       },
     },
     defaultVariants: {

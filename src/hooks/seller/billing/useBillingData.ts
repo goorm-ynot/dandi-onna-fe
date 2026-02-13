@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
-import { BillingType } from '@/types/paymentType';
+import { useState, useEffect, useCallback } from 'react';
+import { billingInvoiceType, BillingType } from '@/types/paymentType';
 import { SortState } from '@/types/boardData';
 import { 
   fetchBillingInvoices, 
   fetchSubscriptionInfo, 
-  fetchPaymentMethod 
+  fetchPaymentMethod, 
+  fetchInvoiceDetails
 } from '@/actions/billing';
 import { handleSortToggle, sortData } from '@/lib/sortUtils';
 
@@ -25,6 +26,10 @@ export interface UseBillingDataReturn extends BillingState {
   sortState: SortState;
   handleSort: (key: string) => void;
   sortedInvoiceData: BillingType[];
+  onSelectRow: (item: BillingType) => void;
+  onClose: () => void;
+  popupOpen: boolean;
+  popupData: billingInvoiceType | null;
 }
 
 export function useBillingData(): UseBillingDataReturn {
@@ -35,12 +40,11 @@ export function useBillingData(): UseBillingDataReturn {
   const [pagination, setPagination] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [sortState, setSortState] = useState<SortState>({ key: '', order: null });
+  const [popupOpen, setPopupOpen] = useState<boolean>(false);
+  const [selectedInvoice, setSelectedInvoice] = useState<BillingType | null>(null); // 선택된 인보이스 상태
+  const [popupData, setPopupData] = useState<billingInvoiceType | null>(null);
 
-  useEffect(() => {
-    loadData();
-  }, [currentPage]);
-
-  async function loadData() {
+  const loadData = useCallback(async () => {
     setIsLoading(true);
     try {
       // 병렬로 모든 데이터 조회
@@ -67,7 +71,11 @@ export function useBillingData(): UseBillingDataReturn {
     } finally {
       setIsLoading(false);
     }
-  }
+  }, [currentPage]);
+
+  useEffect(() => {
+    loadData();
+  }, [currentPage, loadData]);
 
   const handlePrevPage = () => {
     if (pagination?.hasPrevPage) {
@@ -93,6 +101,23 @@ export function useBillingData(): UseBillingDataReturn {
 
   const sortedInvoiceData = sortData(invoiceData, sortState);
 
+  const onSelectRow = (item: BillingType) => {
+    setSelectedInvoice(item);
+    fetchInvoiceDetails(item).then(res => {
+      if (res.success) {
+        setPopupData(res.data);
+      } else {
+        setPopupData(null);
+      }
+    })
+    setPopupOpen(true);
+  }
+
+  const onClose = () => {
+    setPopupOpen(false);
+    setSelectedInvoice(null);
+  }
+
   return {
     currentPage,
     invoiceData,
@@ -107,5 +132,9 @@ export function useBillingData(): UseBillingDataReturn {
     sortState,
     handleSort,
     sortedInvoiceData,
+    onSelectRow,
+    onClose,
+    popupOpen,
+    popupData,
   };
 }

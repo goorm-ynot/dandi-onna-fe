@@ -39,6 +39,7 @@ const config = {
         background: {
           DEFAULT: 'hsl(var(--background))',
           normal: '#ffffff',
+          quaternary: '#F9F5FF',
           'normal-foreground': '#F9F9F9', /* 사장님 배경색 */
           'badge-expected': '#c9eca8',
           'badge-finished': '#e1e1e1',
@@ -242,6 +243,7 @@ const config = {
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
       transitionDuration: {
+        20: '20ms',
         250: '250ms',
       },
     },

@@ -1,5 +1,4 @@
 // src/constants/menu.ts
-
 export interface MenuItem {
   id: string; // 고유 식별자
   label: string; // 화면에 표시될 텍스트
@@ -48,22 +47,22 @@ export const MENU_ITEMS: MenuItem[] = [
     children: [
       { id: 'mypage-business-info', label: '가게 설정', path: '/mypage' },
       { id: 'business-management', label: '매출 관리', path:'/mypage/analytics' },
-      { id: 'noshow-preset', label: '노쇼 프리셋', },
+      { id: 'noshow-preset', label: '노쇼 프리셋', path: '/mypage/preset' },
       { id: 'billing-management', label: '청구 및 결제', path:'/mypage/billing' },
     ],
   },
 ];
 
 export const reservationStatus = {
-  PROCESSING: '방문예정',
   PENDING: '방문예정',
-  LATE: '확인필요', // 이름이 바뀔 수 있음
+  LATE: '방문시간초과',
   NOSHOW: '노쇼 등록 완료 ',
   VISIT_DONE: '방문완료',
-  DISABLED: '방문완료',
-  CONFIRMED: '노쇼 등록 완료',
-  COMPLETED: '노쇼 주문 완료',
-  CANCELLED: '노쇼 방문 완료',
+  QUEUED: '노쇼등록대기중',
+  PROCESSING: '노쇼등록처리중',
+  PUBLISHED: '노쇼등록완료',
+  CANCELLED: '취소됨',
+  FAILED: '실패',
 };
 
 export const orderStatus = {

@@ -34,27 +34,42 @@ export const DateRangePicker = ({
     to: endDate,
   });
 
+  const handleStartDateChange = React.useCallback((date: Date | undefined) => {
+    onStartDateChange?.(date);
+  }, [onStartDateChange]);
+
+  const handleEndDateChange = React.useCallback((date: Date | undefined) => {
+    onEndDateChange?.(date);
+  }, [onEndDateChange]);
+
   React.useEffect(() => {
-    if(range?.from && range?.to){
+    // 첫 번째 클릭: startDate만 설정
+    if (range?.from && !range?.to) {
+      handleStartDateChange(range.from);
+      handleEndDateChange(undefined);
+    }
+    
+    // 두 번째 클릭: endDate 설정 후 popover 닫기
+    if (range?.from && range?.to) {
       // 두 날짜의 차이가 6개월(183일) 이내인지 확인
       const diffTime = Math.abs(range.to.getTime() - range.from.getTime());
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       if (diffDays > 183) {
-        // 6개월 초과 시 알람 후 리턴
+        // 6개월 초과 시 알람 후 리셋
         alert('최대 6개월까지 선택할 수 있습니다.');
         setRange({ from: undefined, to: undefined });
-        onStartDateChange && onStartDateChange(undefined);
-        onEndDateChange && onEndDateChange(undefined);
+        handleStartDateChange(undefined);
+        handleEndDateChange(undefined);
         return;
       }
 
-      onStartDateChange && onStartDateChange(range.from);
-      onEndDateChange && onEndDateChange(range.to);
+      handleStartDateChange(range.from);
+      handleEndDateChange(range.to);
       
-      // popover 닫기
+      // 두 번째 클릭 완료 시 popover 자동 닫기
       setIsCalendarOpen(false);
     }    
-  },[range]);
+  }, [range, handleStartDateChange, handleEndDateChange]);
 
   return (
     <div className="flex items-center gap-8">

@@ -33,7 +33,7 @@ export default function GridTable<T extends { [key: string]: any }>({
   expiredData,
   sortState,
   onSort,
-  getItemId = (item) => item.reservationNo || item.id || '', // 기본값: reservationNo 또는 id
+  getItemId = (item) => item.invoiceId || item.id || '', // 기본값: invoiceId 또는 id
   isItemExpired, // 커스텀 만료 체크 함수
 }: ContentTableProps<T>) {
   // ✅ 특정 아이템이 만료된 예약인지 확인하는 함수

@@ -21,18 +21,19 @@ interface StoreInfoSectionProps {
 
 export const StoreInfoSection = ({ storeInfo }: StoreInfoSectionProps) => {
   return (
-    <div className='m-40 p-24 flex flex-col gap-[8px] w-full bg-white border border-border-mypage rounded-md'>
-      <Label className='body5 text-label-semibold'>사업자 정보</Label>
+    <div className='p-24 flex flex-col gap-[8px] w-[1000px] bg-white border border-border-mypage rounded-md'>
+      {/* <Label className='body5 text-label-semibold'>사업자 정보</Label>
       <Label className='caption4 text-label-medium'>
         ※ 사업자 정보는 수정할 수 없습니다. 변경이 필요한 경우 고객센터에 문의해주세요.
-      </Label>
+      </Label> */}
       
       <div className='flex flex-col gap-16'>
-        <InfoRow label='가게명' value={storeInfo.name} />
+        <InfoRow label='상호명' value={storeInfo.name} />
         <InfoRow label='대표자명' value={storeInfo.ownerName || storeInfo.name} />
         <InfoRow label='사업자 등록번호' value={storeInfo.businessNumber || '123-30-03123'} />
         <InfoRow label='통신판매업 신고번호' value={storeInfo.salesNumber || '12123-12312-123123'} />
         <InfoRow label='사업자 주소' value={storeInfo.addressRoad} isLast />
+        <Label className='body1 text-foreground-primary-emphasis'>※ 사업자 정보는 수정할 수 없습니다. 변경이 필요한 경우 고객센터에 문의해주세요.</Label>
       </div>
     </div>
   );
@@ -46,9 +47,9 @@ interface InfoRowProps {
 
 const InfoRow = ({ label, value, isLast = false }: InfoRowProps) => {
   return (
-    <div className={`flex flex-row justify-between py-12 ${!isLast ? 'border-b border-border-mypage' : ''}`}>
-      <p className='body4 text-foreground-secondary'>{label}</p>
-      <p className='body4 text-foreground-normal-subtle'>{value}</p>
+    <div className={`flex flex-row justify-between items-start pb-20 ${!isLast ? 'border-b border-border-mypage' : ''}`}>
+      <p className='body5 text-foreground-normal'>{label}</p>
+      <p className='body3 text-foreground-secondary'>{value}</p>
     </div>
   );
 };

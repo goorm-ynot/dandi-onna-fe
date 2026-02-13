@@ -120,7 +120,7 @@ const useFcmToken = () => {
     const setupListener = async () => {
       if (!token) return; // Exit if no token is available.
 
-      console.log(`onMessage registered with token ${token}`);
+      // console.log(`onMessage registered with token ${token}`);
 
       // 🎯 Dynamic import Firebase messaging functions only when token is available
       const { onMessage } = await import('firebase/messaging');
