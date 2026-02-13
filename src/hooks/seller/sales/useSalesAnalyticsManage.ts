@@ -10,8 +10,13 @@ export type OrderType = 'all' | 'cancelled' | 'normal' | 'noshow';
 export function useSalesAnalyticsManage() {
     const [periodType, setPeriodType] = useState<PeriodType>('today');
     const [orderType, setOrderType] = useState<OrderType>('all');
+    // date range states
     const [startDate, setStartDate] = useState<Date>();
     const [endDate, setEndDate] = useState<Date>();
+    // popup states
+    const [isExcelPopupOpen, setIsExcelPopupOpen] = useState(false);
+    const [popupStartDate, setPopupStartDate] = useState<Date>();
+    const [popupEndDate, setPopupEndDate] = useState<Date>();
 
     const showDatePicker = periodType === 'custom';
 
@@ -53,6 +58,7 @@ export function useSalesAnalyticsManage() {
     if (!startDate || !endDate) return '';
     return `${startDate.toLocaleDateString('ko-KR')} ~ ${endDate.toLocaleDateString('ko-KR')}`;
   }, [startDate, endDate]);
+  
 
   return {
     // states
@@ -67,5 +73,12 @@ export function useSalesAnalyticsManage() {
     setPeriodType,
     setStartDate,
     setEndDate,
+    // popup setters
+    isExcelPopupOpen,
+    setIsExcelPopupOpen,
+    popupStartDate,
+    setPopupStartDate,
+    popupEndDate,
+    setPopupEndDate,
   }
 }

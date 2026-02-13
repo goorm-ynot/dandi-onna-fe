@@ -44,3 +44,20 @@ export interface SalesTableSectionProps {
     isLoading?: boolean;
     emptyText?: string;
 }
+
+// 엑셀 다운로드에서 사용되는 타입
+export type ExcelExportParams = {
+  jobId: string;
+  status: 'QUEUED' | 'PROCESSING' | 'DONE' | 'FAILED' | 'EXPIRED';
+  createdAt: string;
+}
+
+// 실제 엑셀 다운로드에서 사용되는 타입
+export type ExcelDownloadParams = {
+  jobId: string;
+  status: 'QUEUED' | 'PROCESSING' | 'DONE' | 'FAILED' | 'EXPIRED';
+  progress?: number | null; // 0 ~ 100
+  downloadUrl?: string | null;
+  expiresAt?: string | null;
+  errorMessage?: string | null;
+}

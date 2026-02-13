@@ -12,10 +12,11 @@ type excelExportPopupProps={
     onEndDateChange?: (d: Date | undefined) => void;
     onClose: () => void;
     onDownload?: () => void;
+    isExporting?: boolean;
 }
 
 // 엑셀 내보내기 팝업
-export function ExcelExportPopup({isOpen=false, startDate, endDate, onStartDateChange, onEndDateChange, onClose, onDownload}: excelExportPopupProps ) {
+export function ExcelExportPopup({isOpen=false, startDate, endDate, onStartDateChange, onEndDateChange, onClose, onDownload, isExporting=false}: excelExportPopupProps ) {
   if (!isOpen) return null;
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -23,8 +24,14 @@ export function ExcelExportPopup({isOpen=false, startDate, endDate, onStartDateC
             <DialogHeader className="pt-18 pb-20 flex flex-col gap-8 items-center justify-center">
                 <DialogTitle className="pt-10">엑셀 내보내기</DialogTitle>
                 <DialogDescription className="text-center">
-                    기간을 선택하신 뒤 다운로드 버튼을 눌러주세요.<br/> 
-                    기간은 6달까지 선택하실 수 있습니다.
+                    {isExporting ? (
+                        <span className="text-system-blue-strong font-medium">엑셀 파일을 생성하고 있습니다...<br/>잠시만 기다려주세요.</span>
+                    ) : (
+                        <>
+                            기간을 선택하신 뒤 다운로드 버튼을 눌러주세요.<br/> 
+                            기간은 6달까지 선택하실 수 있습니다.
+                        </>
+                    )}
                 </DialogDescription>
             </DialogHeader>
             {/* content */}
@@ -51,9 +58,22 @@ export function ExcelExportPopup({isOpen=false, startDate, endDate, onStartDateC
                     variant='default'
                     className='w-full body5 rounded-[6px] px-[12px] py-[10px] h-[38px] flex flex-row gap-[3px]'
                     onClick={onDownload}
+                    disabled={isExporting || !startDate || !endDate}
                 >
-                    <DownloadIcon style={{width:16, height:16}} />
-                    다운로드
+                    {isExporting ? (
+                        <>
+                            <svg className="animate-spin h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            생성 중...
+                        </>
+                    ) : (
+                        <>
+                            <DownloadIcon style={{width:16, height:16}} />
+                            다운로드
+                        </>
+                    )}
                 </Button>
             </DialogFooter>
             

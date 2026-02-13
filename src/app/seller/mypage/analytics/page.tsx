@@ -7,7 +7,7 @@ import { formatKRW } from "@/lib/format";
 import { getPaymentMethodText, isSaleCompletedText } from "@/lib/utils";
 import { formatDateTimeStringNoDay, getNowDateNoDayString } from "@/lib/dateParse";
 import { useSalesAnalyticsManage } from "@/hooks/seller/sales/useSalesAnalyticsManage";
-import { useSalesAnalyticsQuery } from "@/hooks/seller/sales/useSalesAnalyticsQuery";
+import { useExportSalesExcel, useSalesAnalyticsQuery } from "@/hooks/seller/sales/useSalesAnalyticsQuery";
 import { saleStatus } from "@/constants/sellerNavConstant";
 import DashBoardLayout from "@/components/layout/DashboardLayout";
 import { Label } from "@/components/ui/label";
@@ -125,22 +125,30 @@ function SalesAnalytics() {
   const salesQuery = useSalesAnalyticsQuery({
     startDate: getNowDateNoDayString(manage.startDate),
     endDate: getNowDateNoDayString(manage.endDate),});
-  const [isExcelPopupOpen, setIsExcelPopupOpen] = useState(false);
-
+  
+  // 엑셀 내보내기 훅
+  const exportExcel = useExportSalesExcel();
+  
 /**
  * TODO: 
- * 엑셀 내보내기 팝업 구현 (1/2)
- * 엑셀 내보내기 기능 구현 (2/2)
+ * 엑셀 내보내기 팝업 구현 (1/2) - 완료
+ * 엑셀 내보내기 기능 구현 (2/2) - 완료
  */
   const handleExportExcel = () => {
-    setIsExcelPopupOpen(true);
+    manage.setIsExcelPopupOpen(true);
+  };
+
+  // 엑셀 다운로드 실행 - 팝업에서 설정한 날짜로 동적으로 전달
+  const handleDownload = () => {
+    const startDate = getNowDateNoDayString(manage.popupStartDate);
+    const endDate = getNowDateNoDayString(manage.popupEndDate);
+    exportExcel.initiateExport(startDate, endDate);
   };
 
   // 총 매출 합계 계산
   const sumTotalSales = () => {
     return salesQuery.items.reduce((acc: any, curr: any) => acc + curr.paidAmount, 0);
   }
-
 
     return ( 
         <DashBoardLayout>
@@ -193,12 +201,15 @@ function SalesAnalytics() {
 
             {/* 엑셀 내보내기 팝업 */}
             <ExcelExportPopup 
-              isOpen={isExcelPopupOpen}
-              startDate={manage.startDate}
-              endDate={manage.endDate}
-              onStartDateChange={(d) => manage.setStartDate(d)}
-              onEndDateChange={(d) => manage.setEndDate(d)}
-              onClose={() => setIsExcelPopupOpen(false)} />
+              isOpen={manage.isExcelPopupOpen}
+              startDate={manage.popupStartDate}
+              endDate={manage.popupEndDate}
+              onStartDateChange={(d) => manage.setPopupStartDate(d)}
+              onEndDateChange={(d) => manage.setPopupEndDate(d)}
+              onClose={() => manage.setIsExcelPopupOpen(false)} 
+              onDownload={handleDownload}
+              isExporting={exportExcel.isExporting}
+            />
 
         </DashBoardLayout>
      );
