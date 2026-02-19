@@ -4,7 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SectionCard, SectionCardContent, SectionCardHeader } from "@/components/ui/section-card";
-import clsx from "clsx";
+import {
+  createDefaultTimeSlot,
+  PolicyFormErrors,
+  PolicyFormValues,
+  TimePeriod,
+  TimeSlot,
+  TimeValue,
+  usePresetForm,
+} from "@/hooks/seller/preset/usePresetForm";
 import { Clock, Info, PlusIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -13,25 +21,13 @@ type FieldTitleProps = {
   description: string;
 };
 
-type TimePeriod = "AM" | "PM";
-
-type TimeValue = {
-  period: TimePeriod;
-  hour: string;
-  minute: string;
-};
-
 const PERIODS: { value: TimePeriod; label: string }[] = [
   { value: "AM", label: "오전" },
   { value: "PM", label: "오후" },
 ];
 
-const HOURS = Array.from({ length: 12 }, (_, index) => String(index + 1).padStart(2, "0"));
-const MINUTES = ["00", "10", "20", "30", "40", "50"];
-
-const TIME_OPTIONS: TimeValue[] = PERIODS.flatMap((period) =>
-  HOURS.flatMap((hour) => MINUTES.map((minute) => ({ period: period.value, hour, minute })))
-);
+const HOURS = Array.from({ length: 12 }, (_, index) => index + 1);
+const MINUTES = [0, 10, 20, 30, 40, 50];
 
 export function PageHeader() {
   return (
@@ -60,6 +56,7 @@ type PolicySectionProps = {
   cardClassName?: string;
   showSaveButton?: boolean;
   badgeIcon?: React.ReactNode;
+  onSave?: () => void;
 };
 
 function PolicySection({
@@ -71,6 +68,7 @@ function PolicySection({
   cardClassName,
   showSaveButton = true,
   badgeIcon,
+  onSave,
 }: PolicySectionProps) {
   return (
     <SectionCard className={`overflow-visible shadow-4 w-[1000px] ${cardClassName ?? ""}`.trim()}>
@@ -92,7 +90,7 @@ function PolicySection({
       {showSaveButton && (
         <SectionCardContent className="px-30 py-24 w-full flex flex-row justify-between items-center">
           <Label className="body1 text-foreground-secondary">설정한 정책에 따라 추후 시스템이 자동으로 적용합니다.</Label>
-          <Button type="button" className="w-[160px] px-12 py-10">
+          <Button type="button" className="w-[160px] px-12 py-10" onClick={onSave}>
             저장
           </Button>
         </SectionCardContent>
@@ -105,15 +103,33 @@ type CommonPolicyFieldsProps = {
   showNameField?: boolean;
   showTimeSlots?: boolean;
   slotIds?: string[];
+  values: PolicyFormValues;
+  errors: PolicyFormErrors;
+  onChange: (field: keyof Omit<PolicyFormValues, "timeSlots">, value: string) => void;
+  onTimeSlotChange: (index: number, kind: "start" | "end", value: TimeValue) => void;
 };
 
-function CommonPolicyFields({ showNameField, showTimeSlots, slotIds = [] }: CommonPolicyFieldsProps) {
+function CommonPolicyFields({
+  showNameField,
+  showTimeSlots,
+  slotIds = [],
+  values,
+  errors,
+  onChange,
+  onTimeSlotChange,
+}: CommonPolicyFieldsProps) {
   return (
     <>
       {showNameField && (
         <>
           <FieldTitle title="정책 이름" description="구분할 수 있는 이름을 입력하세요." />
-          <Input placeholder="예: 평일 점심" className="w-[280px] py-10 px-14 bg-white rounded-md" />
+          <Input
+            placeholder="예: 평일 점심"
+            value={values.name}
+            onChange={(event) => onChange("name", event.target.value)}
+            className="w-[280px] py-10 px-14 bg-white rounded-md"
+          />
+          {errors.name && <Label className="body1 text-status-noshow-foreground">{errors.name}</Label>}
         </>
       )}
 
@@ -124,10 +140,13 @@ function CommonPolicyFields({ showNameField, showTimeSlots, slotIds = [] }: Comm
           placeholder="30~90"
           min={30}
           max={90}
+          value={values.discountRate}
+          onChange={(event) => onChange("discountRate", event.target.value)}
           className="w-[140px] py-10 px-14 text-center bg-white rounded-md"
         />
         <Label className="body3 text-foreground-normal self-center">%</Label>
       </div>
+      {errors.discountRate && <Label className="body1 text-status-noshow-foreground">{errors.discountRate}</Label>}
 
       <FieldTitle
         title="방문 가능시간"
@@ -139,6 +158,8 @@ function CommonPolicyFields({ showNameField, showTimeSlots, slotIds = [] }: Comm
           placeholder="00"
           min={0}
           max={23}
+          value={values.visitAvailableHour}
+          onChange={(event) => onChange("visitAvailableHour", event.target.value)}
           className="w-[55px] py-10 text-center bg-white rounded-md"
         />
         <Label className="body3 text-foreground-normal self-center">시간</Label>
@@ -147,10 +168,14 @@ function CommonPolicyFields({ showNameField, showTimeSlots, slotIds = [] }: Comm
           placeholder="00"
           min={0}
           max={59}
+          value={values.visitAvailableMinute}
+          onChange={(event) => onChange("visitAvailableMinute", event.target.value)}
           className="w-[55px] py-10 text-center bg-white rounded-md"
         />
         <Label className="body3 text-foreground-normal self-center">분 후 방문 가능</Label>
       </div>
+      {errors.visitAvailableHour && <Label className="body1 text-status-noshow-foreground">{errors.visitAvailableHour}</Label>}
+      {errors.visitAvailableMinute && <Label className="body1 text-status-noshow-foreground">{errors.visitAvailableMinute}</Label>}
 
       <FieldTitle
         title="판매 대기 시간"
@@ -162,10 +187,13 @@ function CommonPolicyFields({ showNameField, showTimeSlots, slotIds = [] }: Comm
           placeholder="10~300"
           min={0}
           max={300}
+          value={values.waitingMinutes}
+          onChange={(event) => onChange("waitingMinutes", event.target.value)}
           className="w-[140px] py-10 px-14 text-center bg-white rounded-md"
         />
         <Label className="body3 text-foreground-normal self-center">분</Label>
       </div>
+      {errors.waitingMinutes && <Label className="body1 text-status-noshow-foreground">{errors.waitingMinutes}</Label>}
 
       {showTimeSlots && (
         <>
@@ -173,21 +201,25 @@ function CommonPolicyFields({ showNameField, showTimeSlots, slotIds = [] }: Comm
           <div className="flex flex-col gap-10">
             {slotIds.map((slotId, index) => (
               <div key={slotId} className="flex flex-row items-center gap-10">
-                <TimeSlotRow index={index} />
+                <TimeSlotRow
+                  index={index}
+                  value={values.timeSlots[index] ?? createDefaultTimeSlot()}
+                  onChange={onTimeSlotChange}
+                />
               </div>
             ))}
           </div>
+          {errors.timeSlots && <Label className="body1 text-status-noshow-foreground">{errors.timeSlots}</Label>}
         </>
       )}
     </>
   );
 }
 
-function TimeInput({ defaultValue, ariaLabel }: { defaultValue: TimeValue; ariaLabel: string }) {
+function TimeInput({ value, ariaLabel, onChange }: { value: TimeValue; ariaLabel: string; onChange: (value: TimeValue) => void }) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<TimeValue>(defaultValue);
 
-  const displayText = `${value.period === "AM" ? "오전" : "오후"} ${value.hour} : ${value.minute}`;
+  const displayText = `${value.period === "AM" ? "오전" : "오후"} ${String(value.hour).padStart(2, "0")} : ${String(value.minute).padStart(2, "0")}`;
 
   return (
     <div className="relative">
@@ -211,7 +243,7 @@ function TimeInput({ defaultValue, ariaLabel }: { defaultValue: TimeValue; ariaL
                         type="button" 
                         size='xl'
                         variant={value.period === period.value ? "page" : "pagelink"}
-                        onClick={() => setValue((prev) => ({ ...prev, period: period.value }))} 
+                        onClick={() => onChange({ ...value, period: period.value })} 
                         className={`text-left body3 ${value.period === period.value ? "text-foreground-primary font-medium" : "text-foreground-secondary"}`}>
                         {period.label}
                     </Button>  
@@ -225,9 +257,9 @@ function TimeInput({ defaultValue, ariaLabel }: { defaultValue: TimeValue; ariaL
                         type="button"
                         size='xl'
                         variant={value.hour === hour ? "page" : "pagelink"}
-                        onClick={() => setValue((prev) => ({ ...prev, hour }))}
+                        onClick={() => onChange({ ...value, hour })}
                         className="body3 p-10">
-                        {hour}
+                        {String(hour).padStart(2, "0")}
                         </Button>
                 ))}
             </div>
@@ -239,9 +271,9 @@ function TimeInput({ defaultValue, ariaLabel }: { defaultValue: TimeValue; ariaL
                         type="button"
                         size='xl'
                         variant={value.minute === minute ? "page" : "pagelink"}
-                        onClick={() => setValue((prev) => ({ ...prev, minute }))}
+                        onClick={() => onChange({ ...value, minute })}
                         className="body3 p-10">
-                        {minute}
+                        {String(minute).padStart(2, "0")}
                     </Button>
                 ))}
             </div>
@@ -251,23 +283,47 @@ function TimeInput({ defaultValue, ariaLabel }: { defaultValue: TimeValue; ariaL
   );
 }
 
-function TimeSlotRow({ index }: { index: number }) {
+function TimeSlotRow({
+  index,
+  value,
+  onChange,
+}: {
+  index: number;
+  value: TimeSlot;
+  onChange: (index: number, kind: "start" | "end", value: TimeValue) => void;
+}) {
   return (
     <div className="flex flex-row items-center gap-10" data-slot-index={index}>
       <TimeInput
         ariaLabel="시작 시간"
-        defaultValue={{ period: "AM", hour: "11", minute: "30" }}
+        value={value.start}
+        onChange={(nextValue) => onChange(index, "start", nextValue)}
       />
       <Label className="body3 text-foreground-normal self-center">~</Label>
       <TimeInput
         ariaLabel="종료 시간"
-        defaultValue={{ period: "PM", hour: "01", minute: "30" }}
+        value={value.end}
+        onChange={(nextValue) => onChange(index, "end", nextValue)}
       />
     </div>
   );
 }
 
+// base policy section => 추후에 api에서 받아온 기본 정책 데이터로 초기값 설정해야 함
 export function BasePolicySection() {
+  const { values, errors, handleFieldChange, handleTimeSlotChange, handleSubmit } = usePresetForm({
+    initialValues: {
+      name: "기본 노쇼 정책",
+      discountRate: 30,
+      visitAvailableHour: 0,
+      visitAvailableMinute: 30,
+      waitingMinutes: 15,
+      timeSlots: [],
+    },
+    sectionLabel: "기본 노쇼 정책",
+    requireTimeSlots: false,
+  });
+
   return (
     <PolicySection
       title="기본 노쇼 정책"
@@ -275,8 +331,14 @@ export function BasePolicySection() {
       badgeClassName="bg-background-quaternary text-foreground-primary"
       badgeIcon={<Info className="w-[14px] h-[14px] text-foreground-primary" />}
       description="모든 노쇼 처리에 적용되는 기본 설정입니다."
+      onSave={handleSubmit}
     >
-      <CommonPolicyFields />
+      <CommonPolicyFields
+        values={values}
+        errors={errors}
+        onChange={handleFieldChange}
+        onTimeSlotChange={handleTimeSlotChange}
+      />
     </PolicySection>
   );
 }
@@ -293,14 +355,37 @@ export function ExtraPolicySection({
   title: string;
   slotIds: string[];
 }) {
+  const { values, errors, handleFieldChange, handleTimeSlotChange, handleSubmit } = usePresetForm({
+    initialValues: {
+      name: "",
+      discountRate: 30,
+      visitAvailableHour: 0,
+      visitAvailableMinute: 30,
+      waitingMinutes: 15,
+      timeSlots: slotIds.map(() => createDefaultTimeSlot()),
+    },
+    sectionLabel: title,
+    requireTimeSlots: true,
+    slotIds,
+  });
+
   return (
     <PolicySection
       title={title}
     //   badgeLabel="선택"
     //   badgeClassName="bg-background-secondary-subtle text-foreground-secondary"
       description="특정 시간대에만 적용할 추가 정책입니다."
+      onSave={handleSubmit}
     >
-      <CommonPolicyFields showNameField showTimeSlots slotIds={slotIds} />
+      <CommonPolicyFields
+        showNameField
+        showTimeSlots
+        slotIds={slotIds}
+        values={values}
+        errors={errors}
+        onChange={handleFieldChange}
+        onTimeSlotChange={handleTimeSlotChange}
+      />
     </PolicySection>
   );
 }

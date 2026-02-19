@@ -129,11 +129,6 @@ function SalesAnalytics() {
   // 엑셀 내보내기 훅
   const exportExcel = useExportSalesExcel();
   
-/**
- * TODO: 
- * 엑셀 내보내기 팝업 구현 (1/2) - 완료
- * 엑셀 내보내기 기능 구현 (2/2) - 완료
- */
   const handleExportExcel = () => {
     manage.setIsExcelPopupOpen(true);
   };
