@@ -50,8 +50,8 @@ const createPolicyFormSchema = (requireTimeSlots: boolean) =>
   z.object({
     name: z.string().trim().min(1, "정책 이름을 입력하세요."),
     discountRate: z.number().min(30, "할인율을 입력하세요.(30 이상)").max(90, "할인율은 최대 90%입니다."),
-    visitAvailableHour: z.number().min(1, "방문 가능 시간을 입력하세요.").max(5,"방문 가능 시간은 최대 5시간입니다."),
-    visitAvailableMinute: z.number().min(0, "방문 가능 분을 입력하세요.").max(59, "방문 가능 분은 최대 59분입니다."),
+    visitAvailableHour: z.number().min(0, "방문 가능 시간을 입력하세요.").max(5,"방문 가능 시간은 최대 5시간입니다."),
+    visitAvailableMinute: z.number().min(1, "방문 가능 분을 입력하세요.").max(59, "방문 가능 분은 최대 59분입니다."),
     waitingMinutes: z.number().min(1, "판매 대기 시간을 입력하세요.").max(300, "판매 대기 시간은 최대 300분입니다."),
     timeSlots: requireTimeSlots ? z.array(timeSlotSchema).min(1, "시간대를 1개 이상 설정하세요.") : z.array(timeSlotSchema),
   });
