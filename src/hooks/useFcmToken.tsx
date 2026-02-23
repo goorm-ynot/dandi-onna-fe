@@ -74,6 +74,12 @@ const useFcmToken = () => {
     // This step is typical initially as the service worker may not be ready/installed yet.
     // 서비스 워커가 아직 준비되지 않았거나 설치되지 않았을 수 있으므로 초기에는 일반적인 단계입니다.
     if (!token) {
+      if (typeof window !== 'undefined' && sessionStorage.getItem('fcm-sw-registration-failed') === '1') {
+        console.warn('FCM token retry skipped: service worker registration previously failed in this session.');
+        isLoading.current = false;
+        return;
+      }
+
       if (retryLoadToken.current >= 3) {
         alert('Unable to load token, refresh the browser');
         console.info(
