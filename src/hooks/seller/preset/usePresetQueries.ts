@@ -1,9 +1,10 @@
 // Using in preset page, so that we can fetch all the presets at once and then filter them on the client side
 // instead of making multiple API calls for each preset type
 "use client";
+import { useAlarmStore } from "@/store/useAlarmStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export type PresetData = {
     presetId: string;
@@ -52,6 +53,7 @@ export function usePresetQueries() {
 // export PUT Preset API function for later use in form submission
 export const usePresetUpdate = (preset: PresetData) => {
     const queryClient = useQueryClient();
+    const { showAlarm } = useAlarmStore();
 
     return useMutation({
         mutationFn: async(preset: PresetData) => {
@@ -60,10 +62,11 @@ export const usePresetUpdate = (preset: PresetData) => {
             return response.data;
         },
         onSuccess: (data) => {
-            console.log("Preset updated successfully:", data);
+            showAlarm('프리셋이 성공적으로 저장되었습니다.', 'success', '성공', true);
             queryClient.invalidateQueries({ queryKey: ['presets'] }); // 업데이트 후 캐시 무효화하여 최신 데이터 가져오기
         },
         onError: (error: any) => {
+            showAlarm('프리셋 저장에 실패했습니다. 다시 시도해주세요.', 'error', '실패', true);
             console.error("Error updating preset:", error);
             // 에러 처리 로직 추가 (예: 사용자에게 알림 표시)
         }

@@ -143,14 +143,10 @@ export function usePresetForm({ initialValues, sectionLabel, requireTimeSlots, s
       console.error(`${sectionLabel} 유효성 검사 실패`, parsed.error.flatten());
       return;
     }
-
     setErrors({});
-
-    console.log(`${sectionLabel} 저장 값`, parsed.data);
-    
-    // TODO: parsed data API 연동 전처리 후 저장 로직 구현
+    // console.log(`${sectionLabel} 저장 값`, parsed.data);
     const preprocessedData = dataPreprocessing(parsed.data);
-    console.log(`${sectionLabel} 전처리된 데이터`, preprocessedData);
+    // console.log(`${sectionLabel} 전처리된 데이터`, preprocessedData);
     if(!preprocessedData) return;
     if(!presetUpdate) return;
     presetUpdate.mutate(preprocessedData);

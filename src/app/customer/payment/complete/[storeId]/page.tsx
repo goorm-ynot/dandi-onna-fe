@@ -1,21 +1,18 @@
 'use client';
 
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCartStore } from '@/store/useCartStore';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { formatDateTimeString } from '@/lib/dateParse';
 import { getPaymentMethodText } from '@/lib/utils';
 import { useNavigation } from '@/hooks/useNavigation';
 import { StoreSummary } from '@/types/storeType';
 import SafeArea from '@/components/layout/SafeArea';
-
-interface Props {
-  params: Promise<{ storeId: string; storeInfo?: StoreSummary }>;
-}
-
-export default function PaymentCompletePage({ params }: Props) {
-  const { storeId, storeInfo } = use(params);
+export default function PaymentCompletePage() {
+  const params = useParams<{ storeId: string }>();
+  const storeId = params.storeId as string;
+  const storeInfo: StoreSummary | undefined = undefined;
   const { replaceCustomerHome } = useNavigation();
   const searchParams = useSearchParams();
   const router = useRouter();

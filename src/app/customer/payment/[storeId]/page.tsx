@@ -1,7 +1,7 @@
 'use client';
 import { usePaymentActions } from '@/hooks/customer/usePaymentAction';
 import { StoreSummary } from '@/types/storeType';
-import React, { use, useState } from 'react';
+import React, { useState } from 'react';
 import StoreDetailHeader from '@/components/features/customer/StoreDetailHeader';
 import OrderItemCard from '@/components/features/customer/OrderItemCard';
 import OrderDetailList from '@/components/features/customer/OrderDetailList';
@@ -16,13 +16,12 @@ import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDial
 import { useNavigation } from '@/hooks/useNavigation';
 import { Checkbox } from '@/components/ui/checkbox';
 import SafeArea from '@/components/layout/SafeArea';
+import { useParams } from 'next/navigation';
 
-interface Props {
-  params: Promise<{ storeId: string; storeInfo?: StoreSummary }>;
-}
-
-export default function PaymentPage({ params }: Props) {
-  const { storeId, storeInfo } = use(params);
+export default function PaymentPage() {
+  const params = useParams<{ storeId: string }>();
+  const storeId = params.storeId as string;
+  const storeInfo: StoreSummary | undefined = undefined;
   const { updateCartQuantity, removeMenuFromCart, selectedMenus } = useCartStore();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<'CARD' | 'KAKAO_PAY' | 'NAVER_PAY' | null>(null);
   const [isPaymentConfirmDialogOpen, setIsPaymentConfirmDialogOpen] = useState(false);

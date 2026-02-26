@@ -12,20 +12,6 @@ import { usePresetQueries } from "@/hooks/seller/preset/usePresetQueries";
 import { ConfirmDialog } from "@/components/features/dashboard/SubmitConfirmDialog";
 import { useState } from "react";
 
-
-/**
- * TODO:
- * UI 제작
- * 기능 구현 1차 [v]
- * - 추가 정책 설정 버튼 클릭 시 아래에 새로운 section 생성 [v]
- * - section 생성 시, 시간대 설정 부분 추가해야 함 [v]
- * 기능 구현 
- *   - name 값 설정 [v]
- *   - 값 유효성 검사 [v]
- *   - 값 저장 (API 연동) [진행중]
- * 
- */
-
 function PresetPage() {
   const { extraPolicies, hiddenTypes, addPolicy, getPolicyTitle, 
     handlePresetCancel, isPresetSavedDialogOpen, setIsPresetSavedDialogOpen } = usePresetPage();

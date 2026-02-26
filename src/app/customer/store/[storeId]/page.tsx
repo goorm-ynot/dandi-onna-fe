@@ -1,6 +1,6 @@
 'use client';
 import { useStoreDetailManage } from '@/hooks/customer/useStoreDetailManage';
-import { use, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import StoreDetailHeader from '@/components/features/customer/StoreDetailHeader';
 import StoreDetailInfo from '@/components/features/customer/StoreDetailInfo';
 import TimeSlotHeader from '@/components/features/customer/TimeSlotHeader';
@@ -9,17 +9,15 @@ import { StickyFooter } from '@/components/features/customer/StickyFooter';
 import OrderBottomSheet from '@/components/features/customer/OrderBottomSheet';
 import StoreDetailSkeleton from '@/components/features/customer/StoreDetailSkeleton';
 import { useNavigation } from '@/hooks/useNavigation';
+import { useParams } from 'next/navigation';
 
 // 🎯 ProductCard 상태 타입
 type ProductCardState = 'selected' | 'default' | 'disabled';
 
 // app/store/[storeId]/page.tsx
-interface Props {
-  params: Promise<{ storeId: string }>; // 👈 Promise 타입으로 변경
-}
-
-export default function StorePage({ params }: Props) {
-  const { storeId } = use(params);
+export default function StorePage() {
+  const params = useParams<{ storeId: string }>();
+  const storeId = params.storeId as string;
   const {
     // store state
     store,
