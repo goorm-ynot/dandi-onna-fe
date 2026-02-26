@@ -28,8 +28,13 @@ export async function GET(request: NextRequest) {
 // PUT 요청: 백엔드에 노쇼 기본 프리셋 업데이트(없으면 생성, 있음 갱신함)
 export async function PUT(request: NextRequest) {
     try {
-        // no params
-        const response = await serverApiClient.put('/owner/no-show-presets/default');
+        // params:
+        const params = await request.json();
+        console.log('Received params for updating default noshow preset:', params);
+
+
+        // 백엔드 API 호출
+        const response = await serverApiClient.put('/owner/no-show-presets/default', params);
         
         return NextResponse.json(response, { status: 200 });        
     } catch (error: any) {

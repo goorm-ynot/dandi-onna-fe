@@ -43,3 +43,9 @@ service_key.json
 *.bk
 /bk/*
 */test-page/*
+
+# test
+*.test.tsx
+*/test/*
+*storybook.log
+storybook-static
