@@ -11,6 +11,10 @@
   import CreateActionButton from './components/CreateActionButton';
   import Notice from '../ui/Notice';
   import { CircleAlert } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import Link from 'next/link';
+import { PresetListSection } from './components/PresetListSection';
 
   interface NoShowCreateFormProps<T = Reservation> {
     noShowData: T;
@@ -31,36 +35,57 @@
 
     return (
       <>
-        <div className='pt-[36px] pb-24 px-20'>
-          <Notice 
-                variant={'warning'}
-                icon={<CircleAlert size={16} className='icon-m text-system-yellow-strong' />}
-                title="판매하실 노쇼 메뉴를 등록해주세요."
-                description="방문 시간이 초과되어 노쇼 등록이 가능합니다."
-                />
-        </div>
         {/* 노쇼 알람 울리게 할건지 선택 */}
         <FormProvider {...formResult.form}>
           <FormLayout
             onSubmit={formResult.onSubmit}
-            bottomChildren={
-              <>
-                <PriceSummary formResult={formResult} />
-                <CreateActionButton />
-              </>
-            }>
+            >
+            <div className='pt-[36px] px-20'>
+              <Notice 
+                variant={'warning'}
+                icon={<CircleAlert size={16} className='icon-m text-system-yellow-strong' />}
+                title="판매하실 노쇼 메뉴를 등록해주세요."
+                description="방문 시간이 초과되어 노쇼 등록이 가능합니다."
+              />
+            </div>
+
+            <Label className='title5 text-foreground-normal px-20'>메뉴의 개수를 입력해 주세요.</Label>
             <MenuQuantityList formResult={formResult} />
-            <DiscountSelector formResult={formResult} mode='create' />
-            <VisitTimeSelector formResult={formResult} mode='create' />
+            {/* <DiscountSelector formResult={formResult} mode='create' /> */}
+            {/* <VisitTimeSelector formResult={formResult} mode='create' /> */}
+
+            {/* preset에 적용한 정책 불러와서 보여주기 */}
+            {/* title */}
+            <div className='px-20'>
+              <div className='pt-24 border-t border-border-secondary flex flex-row justify-between items-end'>
+                <div className="flex gap-[4px] items-center">
+                  <Label className="title5 text-foreground-normal">적용되는 정책</Label>
+                  <Label className="body2 text-foreground-primary px-8 py-2 rounded-[20px] bg-background-quaternary">기본</Label>
+                </div>
+                <Link href="/mypage/preset" className="body1 text-foreground-primary-emphasis underline">다른 프리셋 선택하기</Link>
+              </div>
+            </div>
+
+            {/* preset 리스트 */}
+            <PresetListSection />
+            
             {/* 안내문 */}
             <div className='px-20'>
-              <Notice 
-                variant={'error'}
-                icon={<CircleAlert size={16} className='icon-m text-system-pink-strong' />}
-                title="결제가 완료되면 판매가 확정됩니다."
-                description="노쇼 메뉴는 등록 즉시 고객에게 제공되며, 결제 완료 시 환불이 불가능합니다."
-                />
-            </div>        
+              <div className='p-14 rounded-md bg-background-quaternary flex flex-row gap-10'>
+                <Checkbox id="isNoShowSale" 
+                  />
+                <div className="flex flex-col gap-10">
+                  <Label htmlFor="isNoShowSale" className='body4 text-foreground-normal'>즉시 판매로 등록</Label>  
+                  <Label htmlFor="isNoShowSale" className='body1 text-foreground-secondary'>대기시간 없이 바로 판매를 시작합니다.</Label>
+                </div>
+              </div>
+            </div>   
+
+            {/* 가격 요약 */}
+            <PriceSummary formResult={formResult} /> 
+
+            {/* 생성 버튼 */}
+            <CreateActionButton />    
           </FormLayout>
         </FormProvider>
 

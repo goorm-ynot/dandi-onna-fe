@@ -10,7 +10,7 @@ interface PriceSummaryProps {
 
 export default function PriceSummary({ formResult }: PriceSummaryProps) {
   const { originalTotal, discountTotal } = formResult;
-  console.log('PriceSummary 렌더링됨', formResult);
+  // console.log('PriceSummary 렌더링됨', formResult);
   // ✅ 생성 폼인지 체크
   const isCreateForm = 'fields' in formResult;
 
@@ -27,7 +27,7 @@ export default function PriceSummary({ formResult }: PriceSummaryProps) {
   // }, [visitTime]);
 
   return (
-    <div className='flex flex-col gap-12 justify-center item-center px-20 pt-20 w-full'>
+    <div className='flex flex-col gap-12 justify-center item-center px-20 w-full'>
       <div className='flex flex-col w-full bg-background-normal-foreground rounded-sm px-12'>
         {/* 판매금액 행 */}
         <div className='flex items-center justify-between w-full py-12'>
