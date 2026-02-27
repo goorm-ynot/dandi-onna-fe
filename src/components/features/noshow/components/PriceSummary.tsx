@@ -10,7 +10,7 @@ interface PriceSummaryProps {
 
 export default function PriceSummary({ formResult }: PriceSummaryProps) {
   const { originalTotal, discountTotal } = formResult;
-  console.log('PriceSummary 렌더링됨', formResult);
+  // console.log('PriceSummary 렌더링됨', formResult);
   // ✅ 생성 폼인지 체크
   const isCreateForm = 'fields' in formResult;
 
@@ -27,7 +27,7 @@ export default function PriceSummary({ formResult }: PriceSummaryProps) {
   // }, [visitTime]);
 
   return (
-    <div className='flex flex-col gap-12 justify-center item-center px-20 pt-20 w-full'>
+    <div className='flex flex-col gap-12 justify-center item-center px-20 w-full'>
       <div className='flex flex-col w-full bg-background-normal-foreground rounded-sm px-12'>
         {/* 판매금액 행 */}
         <div className='flex items-center justify-between w-full py-12'>
@@ -44,11 +44,14 @@ export default function PriceSummary({ formResult }: PriceSummaryProps) {
           <Label className='title1 flex-shrink-0'>방문 가능시간</Label>
           <Label className='text-right title1 whitespace-nowrap'>{visitTime.getMinutes()}분 후</Label>
         </div>
-        {/* 노쇼 판매 대기시간 */}
-        <div className='flex items-center justify-between w-full py-12 border-t border-border-secondary'>
-          <Label className='title1 flex-shrink-0'>노쇼 판매 대기시간</Label>
-          <Label className='text-right title1 whitespace-nowrap'>20분 후</Label>
-        </div>
+        {'saleDelayMinutes' in formResult && formResult.saleDelayMinutes !== undefined && formResult.saleDelayMinutes !== null && (
+          <div className='flex items-center justify-between w-full py-12 border-t border-border-secondary'>
+            <Label className='title1 flex-shrink-0'>노쇼 판매 대기시간</Label>
+            <Label className='text-right title1 whitespace-nowrap'>
+              {`${formResult.saleDelayMinutes}분 후`}
+            </Label>
+          </div>
+        )}
       </div>
     </div>
   );

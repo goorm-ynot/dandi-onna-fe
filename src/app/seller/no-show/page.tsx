@@ -129,7 +129,6 @@ export default function NoShowMenuPage() {
 /** TwoColumnLayout만 보이기 */
   return (
     <>
-      {/* TODO: rightTitle 수정하기 */}
       <TwoColumnLayout
         rightTitle='노쇼 주문내역 상세정보'
         leftContent={

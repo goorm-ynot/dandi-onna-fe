@@ -1,4 +1,4 @@
-import { mockNoshowMenuDetail } from '@/mock/reservation';
+// import { mockNoshowMenuDetail } from '@/mock/reservation';
 import serverApiClient from '@/services/ApiClient';
 import { NextRequest, NextResponse } from 'next/server';
 

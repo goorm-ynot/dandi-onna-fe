@@ -32,6 +32,11 @@ export const noShowFormSchema = z.object({
     .number({ message: '방문 시간을 입력해주세요' })
     .min(10, '최소 10분 이상 입력해주세요')
     .max(300, '최대 300분까지 입력 가능합니다'),
+  saleDelayMinutes: z
+    .number({ message: '대기 시간을 입력해주세요' })
+    .min(1, '최소 1분 이상 입력해주세요')
+    .max(300, '최대 300분까지 입력 가능합니다'),
+  isNoShowSale: z.boolean(),
 });
 
 // 수정용 스키마 (단일 메뉴 객체)

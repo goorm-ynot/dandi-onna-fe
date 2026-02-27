@@ -9,6 +9,7 @@ import DiscountSelector from './components/DiscountSelector';
 import VisitTimeSelector from './components/VisitTimeSelector';
 import PriceSummary from './components/PriceSummary';
 import EditActionButtons from './components/CreateActionButtons';
+import { Label } from '@/components/ui/label';
 
 interface NoShowEditFormProps {
   noShowData: NoShowMenu;
@@ -29,6 +30,7 @@ export default function NoShowEditForm({ noShowData, onDataUpdate }: NoShowEditF
               <EditActionButtons noShowData={noShowData} onDataUpdate={onDataUpdate} />
             </>
           }>
+          <Label className='title5 text-foreground-normal px-20'>메뉴의 개수를 입력해 주세요.</Label>
           <MenuQuantityList formResult={formResult} />
           <DiscountSelector formResult={formResult} mode='edit' />
           <VisitTimeSelector formResult={formResult} mode='edit' />

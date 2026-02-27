@@ -1,6 +1,5 @@
 'use client';
 import SinglePageLayout from '@/components/features/dashboard/SinglePageLayout';
-import SingleColumnLayout from '@/components/layout/SingleColumnLayout';
 import { TwoColumnLayout } from '@/components/layout/TwoCloumnLayout';
 import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDialog';
 import { orderStatus } from '@/constants/sellerNavConstant';

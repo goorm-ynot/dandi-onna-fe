@@ -11,7 +11,7 @@ export const mockReservations = {
         { menuId: 'd5fcc0c1-1acc-475e-871c-9a2993ee9097', name: '모둠초밥 10pcs', qty: 4, price: 28000 },
       ],
       contact: '010-4455-6677',
-      status: 'NOSHOW',
+      status: 'PENDING',
     },
     {
       reservationNo: 'A00006',
@@ -49,7 +49,7 @@ export const mockReservations = {
         { menuId: '859726a7-c607-433c-9bdf-6a79c428a3cf', name: '저녁 정식', qty: 2, price: 70000 },
       ],
       contact: '010-6789-1122',
-      status: 'NOSHOW',
+      status: 'PENDING',
     },
     {
       reservationNo: 'A00002',
@@ -223,7 +223,7 @@ export const mockReservations = {
         { menuId: 'fdb9df61-4e13-4238-ba2a-5e33d32aedff', name: '참가자미세꼬시', qty: 1, price: 49000 },
       ],
       contact: '010-5555-6666',
-      status: 'NOSHOW',
+      status: 'PENDING',
     },
     {
       reservationNo: 'D00002',
@@ -248,7 +248,7 @@ export const mockReservations = {
 // const reservations = mockReservations[loginId] || [];
 
 // 노쇼 메뉴 상태 테스트용
-export const mockNoshowMenu = {
+export const mockPENDINGMenu = {
   success: true,
   code: 'OK',
   message: '성공',
@@ -281,12 +281,12 @@ export const mockNoshowMenu = {
   },
 };
 
-export const mockNoshowMenuDetail = {
+export const mockPENDINGMenuDetail = {
   success: true,
   code: 'OK',
   message: '성공',
   data: {
-    noshowPostsId: 2,
+    PENDINGPostsId: 2,
     menuId: '8faac229-a50d-4403-8f72-bb09a663d4c6',
     visitTime: '2025-11-16T18:30:00+09:00',
     name: '1인 숙성 모둠회',

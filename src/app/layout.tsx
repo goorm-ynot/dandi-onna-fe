@@ -15,6 +15,7 @@ const pretendard = localFont({
 
 // 🎯 SEO 최적화된 메타데이터
 export const metadata: Metadata = {
+  metadataBase: new URL('https://dandi-onna-fe.vercel.app'),
   title: {
     default: '단디온나',
     template: '%s | 단디온나',
@@ -141,6 +142,15 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
+              if (location.hostname === 'localhost' && 'serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then((registrations) => {
+                  registrations.forEach((registration) => registration.unregister());
+                });
+                if ('caches' in window) {
+                  caches.keys().then((keys) => keys.forEach((key) => caches.delete(key)));
+                }
+              }
+
               if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
                   // 모든 리소스 로드 후 PWA 관련 리소스 로드

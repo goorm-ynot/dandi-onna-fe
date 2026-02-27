@@ -48,12 +48,34 @@ export const fetchToken = async () => {
     if (!fcmMessaging) return null;
 
     const { getToken } = await import('firebase/messaging');
+
+    let serviceWorkerRegistration: ServiceWorkerRegistration | undefined;
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+      serviceWorkerRegistration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', {
+        scope: '/',
+      });
+      await navigator.serviceWorker.ready;
+    }
+
     const token = await getToken(fcmMessaging, {
       vapidKey: process.env.NEXT_PUBLIC_FIREBASE_FCM_VAPID_KEY,
+      serviceWorkerRegistration,
     });
+
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('fcm-sw-registration-failed');
+    }
+
     return token;
   } catch (err) {
     console.error('An error occurred while fetching the token:', err);
+
+    const firebaseError = err as { code?: string };
+
+    if (typeof window !== 'undefined' && firebaseError.code === 'messaging/failed-service-worker-registration') {
+      sessionStorage.setItem('fcm-sw-registration-failed', '1');
+    }
+
     return null;
   }
 };

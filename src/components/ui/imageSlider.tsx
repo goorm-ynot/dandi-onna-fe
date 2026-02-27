@@ -155,6 +155,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, autoPlay = true, inte
                 fill
                 sizes='206px'
                 quality={100}
+                priority={index === 0}
                 unoptimized={true}
                 className='object-contain'
                 draggable={false}

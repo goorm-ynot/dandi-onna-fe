@@ -1,120 +1,204 @@
 'use client';
-
-import React, { use, useEffect, useState } from 'react';
-import { useCartStore } from '@/store/useCartStore';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { formatDateTimeString } from '@/lib/dateParse';
-import { getPaymentMethodText } from '@/lib/utils';
-import { useNavigation } from '@/hooks/useNavigation';
+import { usePaymentActions } from '@/hooks/customer/usePaymentAction';
 import { StoreSummary } from '@/types/storeType';
+import React, { use, useState } from 'react';
+import StoreDetailHeader from '@/components/features/customer/StoreDetailHeader';
+import OrderItemCard from '@/components/features/customer/OrderItemCard';
+import OrderDetailList from '@/components/features/customer/OrderDetailList';
+import PaymentPolicyAccordion from '@/components/features/customer/PaymentPolicyAccordion';
+import { StickyFooter } from '@/components/features/customer/StickyFooter';
+import { Button } from '@/components/ui/button';
+import { useCartStore } from '@/store/useCartStore';
+import KakaoPayIcon from '@/components/icons/KakaoPayIcon';
+import NaverPayIcon from '@/components/icons/NaverPayIcon';
+import { formatTimeWithKoreanUnit } from '@/lib/dateParse';
+import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDialog';
+import { useNavigation } from '@/hooks/useNavigation';
+import { Checkbox } from '@/components/ui/checkbox';
 import SafeArea from '@/components/layout/SafeArea';
 
 interface Props {
   params: Promise<{ storeId: string; storeInfo?: StoreSummary }>;
 }
 
-export default function PaymentCompletePage({ params }: Props) {
+export default function PaymentPage({ params }: Props) {
   const { storeId, storeInfo } = use(params);
-  const { replaceCustomerHome } = useNavigation();
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const { paymentSnapshot, completePayment } = useCartStore();
-  const [mounted, setMounted] = useState(false);
+  const { updateCartQuantity, removeMenuFromCart, selectedMenus } = useCartStore();
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<'CARD' | 'KAKAO_PAY' | 'NAVER_PAY' | null>(null);
+  const [isPaymentConfirmDialogOpen, setIsPaymentConfirmDialogOpen] = useState(false);
+  const [isPolicyAgreed, setIsPolicyAgreed] = useState(false);
+  const { goToPaymentComplete } = useNavigation();
 
-  // URL 파라미터에서 가져오기
-  const storeName = searchParams.get('storeName');
-  const addressRoad = searchParams.get('addressRoad');
+  const { paymentSnapshot, isProcessing, paymentError, processPayment, changePaymentMethod, getPaymentSummary } =
+    usePaymentActions(storeInfo);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const summary = getPaymentSummary();
 
-  const handleGoHome = () => {
-    // paymentSnapshot 초기화
-    completePayment(null as any);
-    replaceCustomerHome();
+  const handlePayClick = async () => {
+    // 결제 전 확인 모달 띄우기
+    if (!selectedPaymentMethod) {
+      alert('결제 방법을 선택해주세요.');
+      return;
+    }
+    if (!isPolicyAgreed) {
+      alert('예약 및 환불 규정에 동의해주세요.');
+      return;
+    }
+    
+    // // 체크박스 동의 시 바로 결제 처리
+    // const success = await processPayment();
+    // if (success) {
+    //   goToPaymentComplete(storeId, storeInfo);
+    // }
+      setIsPaymentConfirmDialogOpen(true);
   };
 
-  if (!mounted || !paymentSnapshot) {
+  const handlePaymentConfirm = async () => {
+    setIsPaymentConfirmDialogOpen(false);
+    const success = await processPayment();
+    if (success) {
+      // 결제 성공 - 완료 페이지로 이동됨
+      goToPaymentComplete(storeId, storeInfo);
+    }
+  };
+
+  const handlePaymentCancel = () => {
+    setIsPaymentConfirmDialogOpen(false);
+  };
+
+  const handlePaymentMethodSelect = (method: 'CARD' | 'KAKAO_PAY' | 'NAVER_PAY') => {
+    setSelectedPaymentMethod(method);
+    changePaymentMethod(method);
+  };
+
+  const handleQuantityChange = (postId: number, newQuantity: number) => {
+    if (newQuantity === 0) {
+      removeMenuFromCart(postId);
+    } else {
+      updateCartQuantity(postId, newQuantity);
+    }
+  };
+
+  if (!summary || !paymentSnapshot) {
     return (
-      <div className='min-h-screen flex items-center justify-center bg-white'>
+      <div className='min-h-screen flex items-center justify-center'>
         <p className='body3 text-[#4c4c4c]'>결제 정보를 불러올 수 없습니다.</p>
       </div>
     );
   }
 
   return (
-    <SafeArea className='min-h-screen bg-white'>
-      {/* Content */}
-      <div className='flex flex-col gap-5 items-center px-4 pt-[136px] pb-10'>
-        {/* Success Icon & Message */}
-        <div className='flex flex-col gap-[60px] items-center w-full'>
-          <div className='flex flex-col gap-[15px] items-center h-32 w-full'>
-            {/* Check Icon */}
-            <div className='w-[60px] h-[60px] rounded-full bg-[#8749fe] flex items-center justify-center'>
-              <svg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'>
-                <path
-                  d='M25 8.75L11.875 21.875L6.25 16.25'
-                  stroke='white'
-                  strokeWidth='3'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                />
-              </svg>
-            </div>
+    <SafeArea>
+    <div className='min-h-screen bg-white pb-[200px]'>
+      {/* Header */}
+      <div className='fixed top-0 left-0 right-0 z-50 bg-white'>
+        <StoreDetailHeader title='결제하기' />
+      </div>
 
-            <p className='title9 text-[#000000] text-center'>결제가 완료되었습니다</p>
-            <p className='body1 text-[#707070] text-center'>주문이 정상적으로 접수되었습니다</p>
+      {/* Content */}
+      <div className='px-[16px] py-10 flex flex-col gap-[40px] mt-[60px]'>
+        {/* Order Items */}
+        <div className='flex flex-col gap-[20px]'>
+          {selectedMenus.map((item) => (
+            <OrderItemCard
+              key={item.postId}
+              menuName={item.menuName}
+              quantity={item.quantity}
+              maxQuantity={item.qtyRemaining || 10}
+              price={item.discountedPrice * item.quantity}
+              onQuantityChange={(newQuantity) => handleQuantityChange(item.postId, newQuantity)}
+              onRemove={() => removeMenuFromCart(item.postId)}
+            />
+          ))}
+        </div>
+
+        {/* Payment Summary */}
+        <div className='flex flex-col gap-5'>
+          <div className='flex gap-[6px] items-center'>
+            <p className='title5 text-[#262626]'>최종 결제금액</p>
           </div>
 
-          {/* Order Details */}
-          <div className='bg-[#f9f9f9] rounded-[10px] p-[20px] w-full flex flex-col gap-4'>
-            <div className='flex flex-col gap-[10px]'>
-              {/* 매장명 */}
-              <div className='grid grid-cols-[100px_1fr] gap-[10px] h-[19px]'>
-                <p className='body1 text-[#4c4c4c]'>매장명</p>
-                <p className='body10 text-[#262626] text-right text-ellipsis overflow-hidden whitespace-nowrap'>
-                  {storeInfo?.storeName || paymentSnapshot.storeName || '-'}
-                </p>
-              </div>
-
-              {/* 방문일시 */}
-              <div className='grid grid-cols-[100px_1fr] gap-[10px] h-[19px]'>
-                <p className='body1 text-[#4c4c4c]'>방문일시</p>
-                <p className='body10 text-[#262626] text-right'>
-                  {paymentSnapshot.visitTime ? formatDateTimeString(new Date(paymentSnapshot.visitTime)) : '-'}
-                </p>
-              </div>
-
-              {/* 결제금액 */}
-              <div className='grid grid-cols-[100px_1fr] gap-[10px] h-[19px]'>
-                <p className='body1 text-[#4c4c4c]'>결제금액</p>
-                <div className='flex items-start justify-end'>
-                  <p className='body10 text-[#8749fe] text-right'>
-                    {paymentSnapshot.totalAmount.toLocaleString('ko-KR')}
-                  </p>
-                  <p className='body10 text-[#8749fe]'>원</p>
-                </div>
-              </div>
-
-              {/* 결제수단 */}
-              <div className='grid grid-cols-[100px_1fr] gap-[10px] h-[19px]'>
-                <p className='body1 text-[#4c4c4c]'>결제수단</p>
-                <p className='body10 text-[#262626] text-right'>{getPaymentMethodText(paymentSnapshot.paymentMethod)}</p>
-              </div>
+          <div className='bg-white rounded-[10px] shadow-3 p-4 flex flex-col gap-5 border border-border-secondary'>
+            <OrderDetailList item='상품금액' price={summary.originalAmount.toLocaleString('ko-KR')} />
+            <OrderDetailList item='할인금액' price={summary.discountAmount.toLocaleString('ko-KR')} />
+            <div className='border-t border-[#e1e1e1] pt-5'>
+              <OrderDetailList item='총 결제예정금액' price={summary.finalAmount.toLocaleString('ko-KR')} />
             </div>
           </div>
         </div>
 
-        {/* 홈으로 가기 Button */}
-        <Button
-          variant='outline'
-          className='w-full h-[48px] border-[#d8d8d8] bg-white rounded-[6px] px-[12px] py-[10px]'
-          onClick={handleGoHome}>
-          <p className='body4 text-[#262626]'>홈으로 가기</p>
-        </Button>
+        {/* Payment Method */}
+        <div className='flex flex-col gap-5'>
+          <p className='title5 text-[#262626]'>결제 방법</p>
+
+          <div className='flex flex-col gap-[10px]'>
+            {/* Credit Card */}
+            <Button
+              variant='outline'
+              className={`h-11 rounded-[6px] px-[12px] py-[10px] ${
+                selectedPaymentMethod === 'CARD' ? 'border-[#8749fe] bg-system-mauve-light' : 'border-[#c6c6c6] bg-white'
+              }`}
+              onClick={() => handlePaymentMethodSelect('CARD')}>
+              <p className='body5 text-[#262626]'>신용/체크카드</p>
+            </Button>
+
+            {/* Other Payment Methods */}
+            <div className='flex gap-4'>
+              <Button
+                variant='outline'
+                className={`flex-1 h-11 rounded-[6px] flex items-center justify-center gap-1 px-[12px] py-[10px] ${
+                  selectedPaymentMethod === 'KAKAO_PAY' ? 'border-[#8749fe] bg-system-mauve-light' : 'border-[#c6c6c6] bg-white'
+                }`}
+                onClick={() => handlePaymentMethodSelect('KAKAO_PAY')}>
+                <KakaoPayIcon />
+                <p className='body5 text-[#262626]'>카카오페이</p>
+              </Button>
+              <Button
+                variant='outline'
+                className={`flex-1 h-11 rounded-[6px] flex items-center justify-center gap-1 px-[12px] py-[10px] ${
+                  selectedPaymentMethod === 'NAVER_PAY' ? 'border-[#8749fe] bg-system-mauve-light' : 'border-[#c6c6c6] bg-white'
+                }`}
+                onClick={() => handlePaymentMethodSelect('NAVER_PAY')}>
+                <NaverPayIcon />
+                <p className='body5 text-[#262626]'>네이버페이</p>
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Payment Policy */}
+        <div className='flex flex-col gap-[10px]'>
+          <PaymentPolicyAccordion />
+          <Checkbox
+            id='payment-policy-agreement'
+            checked={isPolicyAgreed}
+            onCheckedChange={setIsPolicyAgreed}
+            label='예약 및 환불 규정을 모두 읽었으며 이에 동의합니다.'
+          />
+        </div>
       </div>
+
+      {/* Sticky Footer */}
+      <StickyFooter
+        visitingTime={formatTimeWithKoreanUnit(new Date(summary?.visitTime || new Date()))}
+        totalPaymentAmount={summary.finalAmount.toLocaleString()}
+        context='payment'
+        onPaymentClick={handlePayClick}
+      />
+
+      {/* 결제 확인 Dialog */}
+      <ConfirmDialog
+        open={isPaymentConfirmDialogOpen}
+        onOpenChange={setIsPaymentConfirmDialogOpen}
+        onConfirm={handlePaymentConfirm}
+        onCancel={handlePaymentCancel}
+        title='확인해주세요'
+        description={`예약 및 환불 규정을 모두 읽었으며
+이에 동의합니다`}
+        confirmText='네, 결제할게요'
+        cancelText='아니요'
+      />
+    </div>
     </SafeArea>
   );
 }
