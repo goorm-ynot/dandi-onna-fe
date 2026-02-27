@@ -1,4 +1,5 @@
 import { NoShowMenuList, Pagination } from '@/types/noShowPanelType';
+import { PresetData } from '@/hooks/seller/preset/usePresetQueries';
 import { create } from 'zustand';
 import { subscribeWithSelector } from 'zustand/middleware';
 
@@ -9,6 +10,7 @@ interface NoShowStore {
   pagination: Pagination; // 페이지네이션 데이터
   activeEdit?: boolean; // 수정 상태
   selectItemId?: string; // 선택한 아이템 id
+  presetData: PresetData | null; // 프리셋 데이터 임시 저장
 
   // ======== Action ==========
   /**
@@ -34,6 +36,8 @@ interface NoShowStore {
    * 오른쪽 폼 오픈 여부 boolean 세팅
    */
   setActiveEdit: (activeEdit: boolean) => void;
+
+  setPresetData: (presetData: PresetData | null) => void;
 }
 
 export const useNoShowStore = create<NoShowStore>()(
@@ -49,6 +53,7 @@ export const useNoShowStore = create<NoShowStore>()(
     selectNoShowItem: null,
     activeEdit: false,
     selectItemId: '',
+    presetData: null,
 
     setNoShowList: (noShowList) =>
       set({
@@ -68,5 +73,7 @@ export const useNoShowStore = create<NoShowStore>()(
     setSelectItem: (selectItem) => set({ selectItemId: selectItem }),
 
     setActiveEdit: (activeEdit) => set({ activeEdit }),
+
+    setPresetData: (presetData) => set({ presetData }),
   }))
 );

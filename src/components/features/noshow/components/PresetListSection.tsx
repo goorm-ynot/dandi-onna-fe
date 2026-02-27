@@ -1,4 +1,4 @@
-import { usePresetQueries, PresetData } from "@/hooks/seller/preset/usePresetQueries";
+import { PresetData } from "@/hooks/seller/preset/usePresetQueries";
 import { Label } from "@radix-ui/react-label";
 
 
@@ -8,9 +8,11 @@ const presetList = [
     {id: 'saleDelayMinutes', name: '노쇼 판매 대기 시간', render: (value: number) => `${value}분 후`},
 ];
 
-export function PresetListSection() {
-    const { presets } = usePresetQueries();
-    const presetData = presets?.[0] as PresetData; // 현재는 기본 프리셋 하나만 불러오므로 첫 번째 요소 사용
+interface PresetListSectionProps {
+    presetData?: PresetData | null;
+}
+
+export function PresetListSection({ presetData }: PresetListSectionProps) {
     return (
         <div className="px-20 flex flex-col gap-14">
             {presetList.map(preset => {

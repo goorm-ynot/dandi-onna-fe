@@ -44,11 +44,14 @@ export default function PriceSummary({ formResult }: PriceSummaryProps) {
           <Label className='title1 flex-shrink-0'>방문 가능시간</Label>
           <Label className='text-right title1 whitespace-nowrap'>{visitTime.getMinutes()}분 후</Label>
         </div>
-        {/* 노쇼 판매 대기시간 */}
-        <div className='flex items-center justify-between w-full py-12 border-t border-border-secondary'>
-          <Label className='title1 flex-shrink-0'>노쇼 판매 대기시간</Label>
-          <Label className='text-right title1 whitespace-nowrap'>20분 후</Label>
-        </div>
+        {'saleDelayMinutes' in formResult && formResult.saleDelayMinutes !== undefined && formResult.saleDelayMinutes !== null && (
+          <div className='flex items-center justify-between w-full py-12 border-t border-border-secondary'>
+            <Label className='title1 flex-shrink-0'>노쇼 판매 대기시간</Label>
+            <Label className='text-right title1 whitespace-nowrap'>
+              {`${formResult.saleDelayMinutes}분 후`}
+            </Label>
+          </div>
+        )}
       </div>
     </div>
   );
