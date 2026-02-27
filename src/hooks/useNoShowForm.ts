@@ -8,13 +8,22 @@ import { useReservationApi } from './useReservationApi';
 import { useReservationStore } from '@/store/useReservationStore';
 import { useNoShowStore } from '@/store/useNoShowStore';
 import { reservationStorage } from '@/lib/reservationStorage';
+import { usePresetQueries } from './seller/preset/usePresetQueries';
 
 // 노쇼 발생 폼
 export function useNoShowForm(defaultData?: Reservation) {
   const { batchNoShow } = useReservationApi();
   const { setSelectedReservation, selectedReservation } = useReservationStore();
+  const { presetData, setPresetData } = useNoShowStore();
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
   const [pendingFormData, setPendingFormData] = useState<NoShowFormValues | null>(null);
+  const { presets, isLoading } = usePresetQueries();
+
+  // 프리셋 데이터 저장
+  useEffect(() => {
+    const nextPreset = presets?.[0] ?? null;
+    setPresetData(nextPreset);
+  }, [presets, setPresetData]);
 
   const form = useForm<NoShowFormValues>({
     resolver: zodResolver(noShowFormSchema),
@@ -27,17 +36,28 @@ export function useNoShowForm(defaultData?: Reservation) {
           quantity: menu.qty, // 초기값
           maxQty: menu.qty, // 원래 예약된 수량
         })) || [],
-      discount: 50, // 기본 할인율 50%
-      duringTime: 30, // 기본 소요 시간 30분
+      discount: 45, // 프리셋 기본 할인율
+      duringTime: 30, // 프리셋 기본 소요 시간
+      saleDelayMinutes: 15, // 프리셋 기본 대기 시간
+      isNoShowSale: false,
     },
   });
 
-  const { control, handleSubmit, formState } = form;
+  const { control, handleSubmit, formState, reset, setValue } = form;
   const { errors } = formState;
   const { fields, update, remove } = useFieldArray({
     control,
     name: 'menus',
   });
+
+  // 프리셋 데이터가 로드되면 폼 값 업데이트
+  useEffect(() => {
+    if (presetData) {
+      setValue('discount', presetData.discountPercent);
+      setValue('duringTime', presetData.visitAvailableMinutes);
+      setValue('saleDelayMinutes', presetData.saleDelayMinutes);
+    }
+  }, [presetData, setValue]);
 
   // ✅ 수량 증가
   const increment = (index: number) => {
@@ -92,15 +112,22 @@ export function useNoShowForm(defaultData?: Reservation) {
       items: items,
       discountPercent: pendingFormData.discount,
       expireAfterMinutes: visitAt,
+      saleDelayMinutes: pendingFormData.saleDelayMinutes,
+      isNoShowSale: pendingFormData.isNoShowSale,
     };
 
-    // console.log('✅ 확정된 제출 데이터:', finalData);
+    console.log('✅ 확정된 제출 데이터:', finalData);
+
+    // TODO: isNoShowSale의 경우에 따른 API 호출 로직 분기
+
+    // api 호출 우선 처리
+    // batchNoShow(finalData);
     // localStorage 업데이트 처리
-    reservationStorage.updateStatus(selectedReservation?.reservationNo, 'NOSHOW');
-    batchNoShow(finalData);
-    setIsSubmitDialogOpen(false);
-    setPendingFormData(null);
-    setSelectedReservation(null);
+    // reservationStorage.updateStatus(selectedReservation?.reservationNo, 'NOSHOW');
+    //-------------------------------------------------
+    // setIsSubmitDialogOpen(false);
+    // setPendingFormData(null);
+    // setSelectedReservation(null);
     // 🎯 네비게이션은 batchNoShow의 onSuccess에서 처리됨
   }, [pendingFormData, batchNoShow, setSelectedReservation, selectedReservation]);
 
@@ -111,6 +138,7 @@ export function useNoShowForm(defaultData?: Reservation) {
   }, []);
 
   const onSubmit = handleSubmit((data) => {
+    console.log('✅ 제출 폼 데이터:', data);
     // Dialog를 띄우고 데이터를 pending 상태에 저장
     setPendingFormData(data);
     setIsSubmitDialogOpen(true);
@@ -127,12 +155,15 @@ export function useNoShowForm(defaultData?: Reservation) {
     deleteMenu,
     onSubmit,
     visitTime: calculatedVisitTime,
+    saleDelayMinutes: presetData?.saleDelayMinutes,
     // Dialog 관련
     isSubmitDialogOpen,
     setIsSubmitDialogOpen,
     handleConfirmSubmit,
     handleCancelSubmit,
     pendingFormData,
+    // 프리셋 관련
+    isLoading,
   };
 }
 

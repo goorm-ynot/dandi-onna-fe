@@ -1,7 +1,5 @@
-import { mockNoshowMenu } from '@/mock/reservation';
 import serverApiClient from '@/services/ApiClient';
 import { NextRequest, NextResponse } from 'next/server';
-import { mock } from 'node:test';
 
 // GET 요청: 백엔드에서 노쇼 데이터 가져오기
 export async function GET(request: NextRequest) {

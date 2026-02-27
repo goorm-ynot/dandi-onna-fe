@@ -11,7 +11,7 @@ interface VisitTimeSelectorProps {
   formResult: UseNoShowFormResult | UseNoShowMenuFormResult;
   mode: 'create' | 'edit';
 }
-// TODO: 시간 선택 시, 10분단위 혹은 30분단위로 올림처리 관련
+
 export default function VisitTimeSelector({ formResult, mode }: VisitTimeSelectorProps) {
   const { register, setValue, watch } = useFormContext();
   const { errors } = formResult;
