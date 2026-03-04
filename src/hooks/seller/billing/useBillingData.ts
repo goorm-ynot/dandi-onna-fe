@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { billingInvoiceType, BillingType } from '@/types/paymentType';
+import { billingInvoiceType, BillingType, UseBillingDataReturn } from '@/types/paymentType';
 import { SortState } from '@/types/boardData';
 import { 
   fetchBillingInvoices, 
@@ -8,41 +8,55 @@ import {
   fetchInvoiceDetails
 } from '@/actions/billing';
 import { handleSortToggle, sortData } from '@/lib/sortUtils';
+import { useBillingStore } from '@/store/useBillingStore';
 
-export interface BillingState {
-  currentPage: number;
-  invoiceData: BillingType[];
-  subscriptionInfo: any;
-  paymentMethod: any;
-  pagination: any;
-  isLoading: boolean;
-}
+const parsePaymentDate = (value: string) => {
+  const parsed = new Date(value);
+  if (!Number.isNaN(parsed.getTime())) {
+    return parsed.getTime();
+  }
 
-export interface UseBillingDataReturn extends BillingState {
-  setCurrentPage: (page: number) => void;
-  handlePrevPage: () => void;
-  handleNextPage: () => void;
-  goToPage: (page: number) => void;
-  sortState: SortState;
-  handleSort: (key: string) => void;
-  sortedInvoiceData: BillingType[];
-  onSelectRow: (item: BillingType) => void;
-  onClose: () => void;
-  popupOpen: boolean;
-  popupData: billingInvoiceType | null;
-}
+  const normalized = value.replace(/\./g, '-').replace(/\//g, '-');
+  const fallbackParsed = new Date(normalized);
+  if (!Number.isNaN(fallbackParsed.getTime())) {
+    return fallbackParsed.getTime();
+  }
+
+  return Number.NEGATIVE_INFINITY;
+};
+
+const getRecentInvoice = (invoices: BillingType[]) => {
+  if (invoices.length === 0) return null;
+
+  return invoices.reduce((latest, current) => {
+    const latestTime = parsePaymentDate(latest.paymentDate);
+    const currentTime = parsePaymentDate(current.paymentDate);
+
+    return currentTime > latestTime ? current : latest;
+  });
+};
 
 export function useBillingData(): UseBillingDataReturn {
-  const [currentPage, setCurrentPage] = useState(1);
   const [invoiceData, setInvoiceData] = useState<BillingType[]>([]);
   const [subscriptionInfo, setSubscriptionInfo] = useState<any>(null);
   const [paymentMethod, setPaymentMethod] = useState<any>(null);
   const [pagination, setPagination] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [sortState, setSortState] = useState<SortState>({ key: '', order: null });
-  const [popupOpen, setPopupOpen] = useState<boolean>(false);
-  const [selectedInvoice, setSelectedInvoice] = useState<BillingType | null>(null); // 선택된 인보이스 상태
-  const [popupData, setPopupData] = useState<billingInvoiceType | null>(null);
+  const {
+    currentPage,
+    setCurrentPage,
+    sortState,
+    setSortState,
+    popupOpen,
+    setPopupOpen,
+    selectedInvoice,
+    setSelectedInvoice,
+    popupData,
+    setPopupData,
+    recentInvoice,
+    setRecentInvoice,
+    resetPopup,
+  } = useBillingStore();
 
   const loadData = useCallback(async () => {
     setIsLoading(true);
@@ -57,6 +71,7 @@ export function useBillingData(): UseBillingDataReturn {
       if (invoices.success) {
         setInvoiceData(invoices.data);
         setPagination(invoices.pagination);
+        setRecentInvoice(getRecentInvoice(invoices.data));
       }
 
       if (subscription.success) {
@@ -79,13 +94,13 @@ export function useBillingData(): UseBillingDataReturn {
 
   const handlePrevPage = () => {
     if (pagination?.hasPrevPage) {
-      setCurrentPage(prev => prev - 1);
+      setCurrentPage(currentPage - 1);
     }
   };
 
   const handleNextPage = () => {
     if (pagination?.hasNextPage) {
-      setCurrentPage(prev => prev + 1);
+      setCurrentPage(currentPage + 1);
     }
   };
 
@@ -113,18 +128,52 @@ export function useBillingData(): UseBillingDataReturn {
     setPopupOpen(true);
   }
 
+  const onSelectRecentInvoice = () => {
+    if (!recentInvoice) return;
+    onSelectRow(recentInvoice);
+  };
+
   const onClose = () => {
-    setPopupOpen(false);
-    setSelectedInvoice(null);
+    resetPopup();
+  }
+
+  const handlePrint = async () => {
+    if (!selectedInvoice) return;
+    window.open(`/print/invoice/${selectedInvoice.invoiceId}`, '_blank', 'noopener,noreferrer');
+  }
+
+  const handleDownload = async (item: BillingType) => {
+    if (!item && !selectedInvoice) return;
+    const invoice = item || selectedInvoice;
+    if (!invoice) return;
+    const link = document.createElement('a');
+    link.href = `/api/pdf/invoice/${invoice.invoiceId}`;
+    link.download = `invoice_${invoice.invoiceId}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  const handleDownloadRecent = async () => {
+    if (!recentInvoice) return;
+    const link = document.createElement('a');
+    link.href = `/api/pdf/invoice/${recentInvoice.invoiceId}`;
+    link.download = `invoice_${recentInvoice.invoiceId}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   return {
+    // 상태
     currentPage,
     invoiceData,
     subscriptionInfo,
     paymentMethod,
     pagination,
     isLoading,
+    recentInvoice,
+    // 액션 및 핸들러
     setCurrentPage,
     handlePrevPage,
     handleNextPage,
@@ -133,8 +182,13 @@ export function useBillingData(): UseBillingDataReturn {
     handleSort,
     sortedInvoiceData,
     onSelectRow,
+    onSelectRecentInvoice,
     onClose,
     popupOpen,
     popupData,
+    // 추가 액션
+    handlePrint,
+    handleDownload,
+    handleDownloadRecent,
   };
 }

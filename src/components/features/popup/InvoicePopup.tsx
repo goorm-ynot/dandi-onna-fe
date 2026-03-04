@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { SectionCard, SectionCardContent, SectionCardHeader, SectionCardTitle } from "@/components/ui/section-card";
 import { InfoCard, InfoCardRow } from "@/components/ui/info-card";
-import { billingInvoiceType } from "@/types/paymentType";
+import { billingInvoiceType, BillingType } from "@/types/paymentType";
 import { formatInvoiceField } from "@/lib/invoiceFormatter";
 import { XIcon } from "lucide-react";
 import IconDownload from "@/assets/icons/icon-download.svg"
@@ -11,7 +11,7 @@ type InvoicePopupProps = {
     isOpen: boolean;
     data?: billingInvoiceType | null;
     onClose: () => void;
-    onDownload?: () => void;
+    onDownload?: (item: BillingType) => void;
     onPrint?: () => void;
 }
 
@@ -106,7 +106,7 @@ export function InvoicePopup({
                                 <IconPrinter style={{width:24, height:24}} />
                                 인쇄하기
                             </Button>
-                            <Button type='button' onClick={onDownload} className="px-16 py-7 flex flex-row gap-6">
+                            <Button type='button' onClick={() => onDownload} className="px-16 py-7 flex flex-row gap-6">
                                 <IconDownload className="text-white" style={{width:24, height:24}} />
                                 다운로드
                             </Button>

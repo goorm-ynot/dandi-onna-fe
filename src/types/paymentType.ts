@@ -1,3 +1,5 @@
+import { SortState } from "./boardData";
+
 export interface PaymentDataType {
   storeId: string; // 가게 ID
   visitTime: string; // 방문 예정 시간
@@ -57,5 +59,35 @@ export type billingInvoiceType = {
   installment: string; // 할부 개월 수
   paymentId: string; // 승인번호
 }
+
+export interface BillingState {
+  currentPage: number;
+  invoiceData: BillingType[];
+  subscriptionInfo: any;
+  paymentMethod: any;
+  pagination: any;
+  isLoading: boolean;
+  recentInvoice: BillingType | null;
+}
+
+export interface UseBillingDataReturn extends BillingState {
+  setCurrentPage: (page: number) => void;
+  handlePrevPage: () => void;
+  handleNextPage: () => void;
+  goToPage: (page: number) => void;
+  sortState: SortState;
+  handleSort: (key: string) => void;
+  sortedInvoiceData: BillingType[];
+  onSelectRow: (item: BillingType) => void;
+  onSelectRecentInvoice: () => void;
+  onClose: () => void;
+  popupOpen: boolean;
+  popupData: billingInvoiceType | null;
+  // 추가 액션
+  handlePrint: () => void;
+  handleDownload: (item: BillingType) => void;
+  handleDownloadRecent: () => void;
+}
+
 
 //----- 결제 및 청구 타입 end ------

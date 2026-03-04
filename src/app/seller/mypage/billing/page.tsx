@@ -4,7 +4,7 @@ import DashBoardLayout from "@/components/layout/DashboardLayout";
 import { Label } from "@/components/ui/label";
 import Card from "@/assets/icons/IconL-card.svg";
 import { formatKRW, getCardLastFour } from "@/lib/format";
-import { getPaymentMethodText, getPreviousPaymentDate, isBilingStateText } from "@/lib/utils";
+import { getPaymentMethodText, isBilingStateText } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
     SectionCard,
@@ -24,10 +24,10 @@ import { InvoicePopup } from "@/components/features/popup/InvoicePopup";
  * TODO: 
  * 청구 및 결제 페이지 구현 (1/5) - [v]
  * 행 선택 시, 결제 영수증 팝업 구현 (2/5) [v]
- * 영수증 보기 버튼 클릭 시 팝업 뜨기 []
- * 다운로드 버튼 클릭 시 바로 다운로드 []
- * 결제 내역 다운로드 기능 구현 - 개별 (3/5) PDF 다운로드
- * 결제 내역 다운로드 기능 구현 - 전체 (4/5) PDF -> zip 다운로드
+ * 영수증 보기 버튼 클릭 시 팝업 뜨기 [v]
+ * 다운로드 버튼 클릭 시 바로 다운로드 [v]
+ * 결제 내역 다운로드 기능 구현 - 개별 (3/5) PDF 다운로드 [v]
+ * 결제 내역 다운로드 기능 구현 - 전체 (4/5) PDF -> zip 다운로드 [x]
  * 결제 수단 변경 기능 구현 (5/5) -> 보류
  */
 const billingColumns = [
@@ -59,7 +59,34 @@ const billingColumns = [
     },
 ]
 
-const invoiceColumns: Column<BillingType>[] = [
+
+
+function BillingPage() {
+  const {
+    currentPage,
+    invoiceData,
+    subscriptionInfo,
+    paymentMethod,
+    pagination,
+    isLoading,
+    handlePrevPage,
+    handleNextPage,
+    goToPage,
+    sortState,
+    handleSort,
+    sortedInvoiceData,
+    onSelectRow,
+        onSelectRecentInvoice,
+    onClose,
+    popupOpen,
+    popupData,
+    recentInvoice,
+    handleDownload,
+    handleDownloadRecent,
+    handlePrint,
+  } = useBillingData();
+
+  const invoiceColumns: Column<BillingType>[] = [
     {
         key: 'duringDate', 
         header: '청구기간', 
@@ -100,32 +127,19 @@ const invoiceColumns: Column<BillingType>[] = [
         key: 'download',
         header: '다운로드',
         location: 'center' as const,
-        render: () => (
-            <Button variant="icon" className="w-full h-auto flex items-center justify-center p-0 body1"><DownLoadIcon className="text-foreground-normal" style={{width: 18, height: 18}}  /></Button>
+        render: (row: BillingType) => (
+            <Button 
+            type="button" 
+            variant="icon" 
+            onClick={(e: React.MouseEvent) => {
+              e.stopPropagation();
+              handleDownload(row);
+            }}
+            className="w-full h-auto flex items-center justify-center p-0 body1"><DownLoadIcon className="text-foreground-normal" style={{width: 18, height: 18}}  /></Button>
         ),
     }
 
 ];
-
-function BillingPage() {
-  const {
-    currentPage,
-    invoiceData,
-    subscriptionInfo,
-    paymentMethod,
-    pagination,
-    isLoading,
-    handlePrevPage,
-    handleNextPage,
-    goToPage,
-    sortState,
-    handleSort,
-    sortedInvoiceData,
-    onSelectRow,
-    onClose,
-    popupOpen,
-    popupData,
-  } = useBillingData();
 
   return (
     <DashBoardLayout>
@@ -183,11 +197,29 @@ function BillingPage() {
                         <div className="flex flex-row justify-between">
                             <div className="flex flex-col gap-6">
                                 <Label className="body1 text-foreground-normal">최근 결제 영수증</Label>
-                                <Label className="body5 text-foreground-normal">{getPreviousPaymentDate(new Date())} 결제분 ({subscriptionInfo && formatKRW(subscriptionInfo.price || 0)})</Label>
+                                <Label className="body5 text-foreground-normal">
+                                  {recentInvoice
+                                    ? `${recentInvoice.paymentDate} 결제분 (${formatKRW(recentInvoice.amount)}원)`
+                                    : '-'}
+                                </Label>
                             </div>
                             <div className="flex flex-row gap-10">
-                                <Button variant="outline" className="px-16 py-10 rounded-md border-border-normal text-foreground-normal body1">영수증 보기</Button>
-                                <Button variant="outline" className="px-12 py-7 rounded-md border-border-normal text-foreground-normal"><DownLoadIcon className="text-foreground-normal" style={{width: 18, height: 18}} /></Button>
+                                <Button 
+                                    type='button'
+                                    onClick={onSelectRecentInvoice}
+                                    disabled={!recentInvoice}
+                                    variant="outline" 
+                                    className="px-16 py-10 rounded-md border-border-normal text-foreground-normal body1">
+                                        영수증 보기
+                                </Button>
+                                <Button 
+                                    type='button'
+                                    onClick={handleDownloadRecent}
+                                    disabled={!recentInvoice}
+                                    variant="outline" 
+                                    className="px-12 py-7 rounded-md border-border-normal text-foreground-normal">
+                                    <DownLoadIcon className="text-foreground-normal" style={{width: 18, height: 18}} />
+                                </Button>
                             </div>
                         </div>
                         {/* table */}
@@ -245,7 +277,7 @@ function BillingPage() {
             </div>
         </div>
 
-        <InvoicePopup isOpen={popupOpen} onClose={onClose} data={popupData} />
+        <InvoicePopup isOpen={popupOpen} onClose={onClose} data={popupData} onDownload={handleDownload} onPrint={handlePrint} />
     </DashBoardLayout>
   );
 }
