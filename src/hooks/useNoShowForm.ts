@@ -1,5 +1,5 @@
 import { useForm, useFieldArray, useWatch, UseFormHandleSubmit } from 'react-hook-form';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { NoShowMenu, Reservation } from '@/types/boardData';
 import { noShowEditFormSchema, NoShowEditFormValues, noShowFormSchema, NoShowFormValues } from '@/types/noShowFormZod';
@@ -18,11 +18,17 @@ export function useNoShowForm(defaultData?: Reservation) {
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
   const [pendingFormData, setPendingFormData] = useState<NoShowFormValues | null>(null);
   const { presets, isLoading } = usePresetQueries();
+  const presetsSetRef = useRef(false);
 
-  // 프리셋 데이터 저장
+  // 프리셋 데이터 저장 - 마운트 후에만 한 번 실행
   useEffect(() => {
+    if (presetsSetRef.current) return;
+    
     const nextPreset = presets?.[0] ?? null;
-    setPresetData(nextPreset);
+    if (nextPreset) {
+      setPresetData(nextPreset);
+      presetsSetRef.current = true;
+    }
   }, [presets, setPresetData]);
 
   const form = useForm<NoShowFormValues>({
