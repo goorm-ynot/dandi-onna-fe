@@ -33,11 +33,11 @@ export const MENU_ITEMS: MenuItem[] = [
     label: '상품/재고',
     path: '/no-show',
     children: [
-      { id: 'product-management', label: '상품 관리' },
-      { id: 'stock-management', label: '재고 관리' },
+      // { id: 'product-management', label: '상품 관리' },
+      // { id: 'stock-management', label: '재고 관리' },
       { id: 'menu-management', label: '메뉴 관리' },
       { id: 'noshow-menu-management', label: '노쇼 메뉴 관리', path: '/no-show' },
-      { id: 'noshow-menu-create', label: '노쇼 메뉴 등록' },
+      // { id: 'noshow-menu-create', label: '노쇼 메뉴 등록' },
     ],
   },
   {

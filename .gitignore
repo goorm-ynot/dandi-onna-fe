@@ -47,5 +47,7 @@ service_key.json
 # test
 *.test.tsx
 */test/*
+
+# storybook
 *storybook.log
 storybook-static
