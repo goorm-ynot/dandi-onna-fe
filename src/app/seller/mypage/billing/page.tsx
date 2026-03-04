@@ -267,7 +267,7 @@ function BillingPage() {
                                 </Button>
                             </div>
                             {/* Button */}
-                            <Button variant='outline' className="px-16 py-7">
+                            <Button type="button" onClick={() => alert('준비중 입니다.')} variant='outline' className="px-16 py-7">
                                 <DownLoadIcon className="text-foreground-normal" style={{width: 18, height: 18}} />
                                 <span className="ml-6 body1">일괄 다운받기(ZIP)</span>
                             </Button>
