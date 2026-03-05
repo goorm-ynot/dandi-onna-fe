@@ -32,9 +32,9 @@ const determineReservationVariant = (reservations: Reservation[]): EmptyPanelVar
     return 'info';
   }
 
-  // error 우선순위 (나중에 구현)
-  // const hasError = reservations.some((res) => res.status === 'ERROR');
-  // if (hasError) return 'error';
+  // error 우선순위 
+  const hasError = reservations.some((res) => res.status === 'QUEUED');
+  if (hasError) return 'error';
 
   // warning 우선순위: LATE가 한 개라도 있는 경우
   const hasLate = reservations.some((res) => res.status === 'LATE');
@@ -88,8 +88,8 @@ function SellerPageContent() {
   /** 예시 탭 목록 (UI용) */
   const tabs = [
     { id: 'all', label: '전체' },
-    { id: 'PENDING', label: '방문예정' },
-    { id: 'LATE', label: '확인필요' },
+    { id: 'PENDING', label: '방문예정' }, //방문예정과 확인필요 함께 보여주어야?
+    { id: 'QUEUED', label: '노쇼등록대기' }, 
     { id: 'NOSHOW', label: '노쇼' },
     { id: 'VISIT_DONE', label: '방문완료' },
   ];
@@ -124,6 +124,7 @@ function SellerPageContent() {
               'bg-status-noshow text-status-noshow-foreground': res.status === 'LATE',
               'bg-system-blue-light text-system-blue-strong': res.status === 'NOSHOW',
               'bg-status-completed text-status-completed-foreground': res.status === 'VISIT_DONE',
+              'bg-system-green text-system-green-strong': res.status === 'QUEUED', // 바뀔 수 있음
             }
           )}
         >

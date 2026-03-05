@@ -127,14 +127,17 @@ export function useNoShowForm(defaultData?: Reservation) {
     // TODO: isNoShowSale의 경우에 따른 API 호출 로직 분기
 
     // api 호출 우선 처리
-    // batchNoShow(finalData);
+    const resp = batchNoShow(finalData);
     // localStorage 업데이트 처리
-    // reservationStorage.updateStatus(selectedReservation?.reservationNo, 'NOSHOW');
+    if(pendingFormData.isNoShowSale){
+      reservationStorage.updateStatus(selectedReservation?.reservationNo, 'NOSHOW');
+    } else {
+      reservationStorage.updateStatus(selectedReservation?.reservationNo, 'QUEUED');
+    }
     //-------------------------------------------------
-    // setIsSubmitDialogOpen(false);
-    // setPendingFormData(null);
-    // setSelectedReservation(null);
-    // 🎯 네비게이션은 batchNoShow의 onSuccess에서 처리됨
+    setIsSubmitDialogOpen(false);
+    setPendingFormData(null);
+    setSelectedReservation(null);
   }, [pendingFormData, batchNoShow, setSelectedReservation, selectedReservation]);
 
   // ✅ Dialog 취소

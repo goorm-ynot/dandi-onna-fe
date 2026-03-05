@@ -57,23 +57,7 @@ export const useReservationApi = () => {
     onSuccess: (data, variables) => {
       console.log('✅ 노쇼 처리 성공:', data);
       showAlarm('노쇼 메뉴 처리가 완료되었습니다.', 'success', '성공', true);
-      
-      // localStorage 업데이트
-      // API 응답에서 reservations가 없을 경우 variables(요청 데이터)의 items 사용
-      const reservationsToUpdate = data?.data?.reservations || data?.reservations || variables?.items || [];
-      
-      if (Array.isArray(reservationsToUpdate) && reservationsToUpdate.length > 0) {
-        reservationsToUpdate.forEach((res: any) => {
-          const reservationNo = res.reservationNo || res.id;
-          if (reservationNo) {
-            reservationStorage.updateStatus(reservationNo, 'NOSHOW');
-          }
-        });
-      }
-      
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
-      // 네비게이션을 onSuccess에서 처리
-      router.push('/seller/no-show');
     },
     onError: (error: any) => {
       console.error('❌ 노쇼 처리 실패:', error);

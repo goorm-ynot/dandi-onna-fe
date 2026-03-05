@@ -30,7 +30,7 @@ export const EmptyPanelGuide = ({ config, variant, className }: EmptyPanelGuideP
         icon={
           <Info
             className={clsx('icon-m', {
-              'text-system-red-strong': variant === 'error',
+              'text-system-pink-strong': variant === 'error',
               'text-system-yellow-strong': variant === 'warning',
               'text-system-green-strong': variant === 'success',
               'text-primitives-brand': variant === 'info',
