@@ -120,30 +120,39 @@ export function useNoShowForm(defaultData?: Reservation) {
       expireAfterMinutes: visitAt,
       saleDelayMinutes: pendingFormData.saleDelayMinutes,
       isNoShowSale: pendingFormData.isNoShowSale,
+      reservationNo: selectedReservation?.reservationNo, // 지연 등록 시 큐 매칭용
+      // 프리셋 정보 추가
+      presetName: presetData?.name,
+      presetDiscountPercent: presetData?.discountPercent,
+      presetDelayMinutes: presetData?.saleDelayMinutes,
     };
 
     console.log('✅ 확정된 제출 데이터:', finalData);
 
-    // TODO: isNoShowSale의 경우에 따른 API 호출 로직 분기
-
-    // api 호출 우선 처리
-    const resp = batchNoShow(finalData);
-    // localStorage 업데이트 처리
-    if(pendingFormData.isNoShowSale){
-      reservationStorage.updateStatus(selectedReservation?.reservationNo, 'NOSHOW');
-    } else {
-      reservationStorage.updateStatus(selectedReservation?.reservationNo, 'QUEUED');
-    }
-    //-------------------------------------------------
-    setIsSubmitDialogOpen(false);
-    setPendingFormData(null);
-    setSelectedReservation(null);
-  }, [pendingFormData, batchNoShow, setSelectedReservation, selectedReservation]);
+    // api 호출 후 성공 시에만 후속 처리
+    batchNoShow(finalData, {
+      onSuccess: () => {
+        // localStorage 업데이트는 useReservationApi의 onSuccess에서 처리됨
+        // 즉시 판매: NOSHOW로 직접 업데이트 (기존 로직 유지 가능)
+        // 지연 등록: applyQueueRegister가 QUEUED + 큐 정보 저장
+        if (pendingFormData.isNoShowSale) {
+          reservationStorage.updateStatus(selectedReservation?.reservationNo, 'NOSHOW');
+        }
+        // QUEUED 상태는 useReservationApi.onSuccess에서 applyQueueRegister로 처리됨
+        //-------------------------------------------------
+        setIsSubmitDialogOpen(false);
+        setPendingFormData(null);
+        setSelectedReservation(null);
+      },
+    });
+  }, [pendingFormData, batchNoShow, setSelectedReservation, selectedReservation, presetData]);
 
   // ✅ Dialog 취소
   const handleCancelSubmit = useCallback(() => {
     setIsSubmitDialogOpen(false);
     setPendingFormData(null);
+    setSelectedReservation(null);
+
   }, []);
 
   const onSubmit = handleSubmit((data) => {

@@ -2,6 +2,7 @@ import React from 'react';
 import { Label } from '@/components/ui/label';
 import { useWatch, useFormContext } from 'react-hook-form';
 import { UseNoShowFormResult, UseNoShowMenuFormResult } from '@/types/noShowPanelType';
+import { useNoShowStore } from '@/store/useNoShowStore';
 import { formatTimeString, roundToNext10Minutes } from '@/lib/dateParse';
 
 interface PriceSummaryProps {
@@ -10,21 +11,11 @@ interface PriceSummaryProps {
 
 export default function PriceSummary({ formResult }: PriceSummaryProps) {
   const { originalTotal, discountTotal } = formResult;
-  // console.log('PriceSummary 렌더링됨', formResult);
-  // ✅ 생성 폼인지 체크
-  const isCreateForm = 'fields' in formResult;
-
-  // ✅ visitTime 가져오기 (생성: 계산된 Date, 수정: ISO 문자열)
-  // const visitTime = 'visitTime' in formResult ? formResult.visitTime : undefined;
-  const visitTime = formResult.visitTime;
-
-  // const calculatedVisitAt = React.useMemo(() => {
-  //   if (!visitTime) return formatTimeString(new Date());
-
-  //   // ✅ visitTime이 Date 객체 또는 ISO 문자열
-  //   const visitDate = typeof visitTime === 'string' ? new Date(visitTime) : (visitTime as Date);
-  //   return formatTimeString(visitDate);
-  // }, [visitTime]);
+  const presetData = useNoShowStore((state) => state.presetData);
+  
+  // ✅ PresetListSection과 동일한 값 사용
+  // visitAvailableMinutes: 프리셋에서 정의된 고정 방문 가능 시간
+  const visitAvailableMinutes = presetData?.visitAvailableMinutes ?? 0;
 
   return (
     <div className='flex flex-col gap-12 justify-center item-center px-20 w-full'>
@@ -42,7 +33,7 @@ export default function PriceSummary({ formResult }: PriceSummaryProps) {
         {/* 방문시간 행 */}
         <div className='flex items-center justify-between w-full py-12 border-t border-border-secondary'>
           <Label className='title1 flex-shrink-0'>방문 가능시간</Label>
-          <Label className='text-right title1 whitespace-nowrap'>{visitTime.getMinutes()}분 후</Label>
+          <Label className='text-right title1 whitespace-nowrap'>{visitAvailableMinutes}분 후</Label>
         </div>
         {'saleDelayMinutes' in formResult && formResult.saleDelayMinutes !== undefined && formResult.saleDelayMinutes !== null && (
           <div className='flex items-center justify-between w-full py-12 border-t border-border-secondary'>

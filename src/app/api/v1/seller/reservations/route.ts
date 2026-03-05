@@ -72,9 +72,13 @@ export async function POST(request: NextRequest) {
       });
     }
     else {
+      // 지연 등록: preset 정보 포함
       result = await serverApiClient.post('/owner/no-show-post-schedules', {
         presetId: reservation.presetId,
         items: reservation.items,
+        name: reservation.presetName,
+        discountPercent: reservation.presetDiscountPercent,
+        delayMinutes: reservation.presetDelayMinutes,
       })
     }
 
