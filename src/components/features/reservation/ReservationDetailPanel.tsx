@@ -64,6 +64,11 @@ export default function ReservationDetailPanel({
       </div>
 
       {/* 버튼들 */}
+      {/* TODO: 
+      - 상태가 QUEUED일 때, 버튼 용도가 바뀌게 해야함
+      - QUEUED 일 때, 노쇼등록 -> 등록 취소 / 방문완료 -> 즉시 등록
+          - 등록 취소 및 즉시등록 시 API 호출 필요
+      */}
       <div className='flex gap-10 justify-center item-center py-20'>
         <Button variant={'ghost'} size={'lg'} className='w-full body3' onClick={() => onEditMode?.(true)} disabled={reservation.status === 'NOSHOW' || reservation.status === 'VISIT_DONE'}>
           노쇼등록

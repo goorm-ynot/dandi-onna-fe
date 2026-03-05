@@ -56,6 +56,25 @@ export const useReservationApi = () => {
     },
     onSuccess: (data, variables) => {
       console.log('✅ 노쇼 처리 성공:', data);
+      console.log('✅ 노쇼 처리 성공:', variables);
+      
+      // 지연 등록인 경우: applyQueueRegister로 QUEUED 상태 및 큐 정보 저장
+      if (data.data.scheduleId && data.data.status === 'QUEUED') {
+        const reservationNo = variables.reservationNo;
+        if (reservationNo) {
+          reservationStorage.applyQueueRegister(reservationNo, {
+            scheduleId: data.data.scheduleId,
+            state: data.data.status,
+            discountPercent: data.data.discountPercent,
+            visitAvailableMinutes: data.data.visitAvailableMinutes,
+            saleDelayMinutes: data.data.saleDelayMinutes,
+            startAt: data.data.startAt,
+            expireAt: data.data.expireAt,
+            requestedAt: data.data.requestedAt,
+          });
+        }
+      }
+      
       showAlarm('노쇼 메뉴 처리가 완료되었습니다.', 'success', '성공', true);
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
     },

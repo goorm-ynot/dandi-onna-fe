@@ -9,6 +9,7 @@ import { useReservationApi } from './useReservationApi';
 import { Reservation, SortState } from '@/types/boardData';
 import { sortData, handleSortToggle } from '@/lib/sortUtils';
 import { reservationStorage } from '@/lib/reservationStorage';
+import { fetchNoshowSchedules } from '@/lib/queuePolling';
 
 export const useReservationManager = ({ userId = null }: { userId?: string | null }) => {
   const router = useRouter();
@@ -88,6 +89,33 @@ export const useReservationManager = ({ userId = null }: { userId?: string | nul
       handleQueryError(reservationError);
     }
   }, [reservationError]);
+
+  // ✅ 큐 폴링: 30초마다 스케줄 상태 확인 및 병합
+  // - QUEUED 예약이 있을 때만 활성화
+  // - PROCESSING → queue.state만 업데이트
+  // - PUBLISHED → status=NOSHOW
+  // - CANCELLED/FAILED → status=PENDING (then normalize to LATE if expired)
+  const { data: queuePollData } = useQuery({
+    queryKey: ['queuePolling'],
+    queryFn: async () => {
+      const response = await fetchNoshowSchedules();
+      return response;
+    },
+    enabled: !!userId && reservationStorage.hasAnyQueuedSchedule(),
+    refetchInterval: 30000, // 30초
+    refetchIntervalInBackground: false,
+    staleTime: 0,
+  });
+
+  // 큐 폴링 데이터가 업데이트되면 localStorage에 병합
+  useEffect(() => {
+    if (queuePollData) {
+      // 큐 상태를 localStorage 예약에 병합
+      reservationStorage.applyQueuePolling(queuePollData);
+      // 예약 목록 쿼리 무효화하여 UI 업데이트
+      queryClient.invalidateQueries({ queryKey: ['reservations'] });
+    }
+  }, [queuePollData, queryClient]);
 
   // 만료된 예약 가져오기
   const expiredReservations = useMemo(() => {

@@ -10,6 +10,18 @@ export interface MenuMini {
   price: number;
 }
 
+/** 큐 정보 타입 */
+export interface QueueInfo {
+  scheduleId: string | number;
+  state?: QueueScheduleStatus;
+  discountPercent?: number;
+  visitAvailableMinutes?: number;
+  saleDelayMinutes?: number;
+  startAt?: string;
+  expireAt?: string;
+  requestedAt?: string;
+}
+
 /** 일반 예약 타입 */
 export interface Reservation {
   reservationNo: string; // 예약 번호
@@ -18,6 +30,7 @@ export interface Reservation {
   contact: string; // 고객 연락처
   expired: boolean; // 예약 시간 초과 여부 확인
   menus: MenuMini[]; // 메뉴
+  queue?: QueueInfo; // 큐 스케줄 정보 (노쇼 지연 등록 시)
 }
 
 export interface SingleColumnLayoutProps<T = any> {
@@ -120,9 +133,13 @@ export interface SortState {
 
 // 노쇼 등록 타입
 export interface NoShowCreate {
-  items: { menuId: string; quantity: number }[];
+  items: { menuId: string; quantity: number; reservationNo?: string }[];
   discountPercent: number;
   expireAfterMinutes: Date;
+  reservationNo?: string; // 지연 등록 시 큐 매칭용
+  presetName?: string; // 프리셋 이름
+  presetDiscountPercent?: number; // 프리셋 할인율
+  presetDelayMinutes?: number; // 프리셋 대기 시간
 }
 
 // 노쇼 메뉴 데이터 타입
@@ -201,8 +218,8 @@ export interface OrderItem {
 
 // 상태 관련 타입들
 export type ReservationStatus = 'PENDING' | 'LATE' | 'NOSHOW' | 'VISIT_DONE' | 'QUEUED' | 'PROCESSING' | 'PUBLISHED' | 'CANCELLED' | 'FAILED';
+export type QueueScheduleStatus = 'QUEUED' | 'PROCESSING' | 'PUBLISHED' | 'CANCELLED' | 'FAILED';
 export type OrderStatus = 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED';
-
 export type PaymentStatus = 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED' | 'CANCELLED';
 
 // export type PaymentMethod = 'CARD' | 'TEST_CARD' | 'CASH' | 'KAKAO_PAY' | 'NAVER_PAY';
