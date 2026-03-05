@@ -1,5 +1,5 @@
 import { useForm, useFieldArray, useWatch, UseFormHandleSubmit } from 'react-hook-form';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { NoShowMenu, Reservation } from '@/types/boardData';
 import { noShowEditFormSchema, NoShowEditFormValues, noShowFormSchema, NoShowFormValues } from '@/types/noShowFormZod';
@@ -18,11 +18,17 @@ export function useNoShowForm(defaultData?: Reservation) {
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
   const [pendingFormData, setPendingFormData] = useState<NoShowFormValues | null>(null);
   const { presets, isLoading } = usePresetQueries();
+  const presetsSetRef = useRef(false);
 
-  // 프리셋 데이터 저장
+  // 프리셋 데이터 저장 - 마운트 후에만 한 번 실행
   useEffect(() => {
+    if (presetsSetRef.current) return;
+    
     const nextPreset = presets?.[0] ?? null;
-    setPresetData(nextPreset);
+    if (nextPreset) {
+      setPresetData(nextPreset);
+      presetsSetRef.current = true;
+    }
   }, [presets, setPresetData]);
 
   const form = useForm<NoShowFormValues>({
@@ -121,14 +127,17 @@ export function useNoShowForm(defaultData?: Reservation) {
     // TODO: isNoShowSale의 경우에 따른 API 호출 로직 분기
 
     // api 호출 우선 처리
-    // batchNoShow(finalData);
+    const resp = batchNoShow(finalData);
     // localStorage 업데이트 처리
-    // reservationStorage.updateStatus(selectedReservation?.reservationNo, 'NOSHOW');
+    if(pendingFormData.isNoShowSale){
+      reservationStorage.updateStatus(selectedReservation?.reservationNo, 'NOSHOW');
+    } else {
+      reservationStorage.updateStatus(selectedReservation?.reservationNo, 'QUEUED');
+    }
     //-------------------------------------------------
-    // setIsSubmitDialogOpen(false);
-    // setPendingFormData(null);
-    // setSelectedReservation(null);
-    // 🎯 네비게이션은 batchNoShow의 onSuccess에서 처리됨
+    setIsSubmitDialogOpen(false);
+    setPendingFormData(null);
+    setSelectedReservation(null);
   }, [pendingFormData, batchNoShow, setSelectedReservation, selectedReservation]);
 
   // ✅ Dialog 취소

@@ -63,13 +63,20 @@ export async function POST(request: NextRequest) {
 
     console.log('POST Body:', { reservation });
 
-    const result = await serverApiClient.post('/owner/no-show-posts/batch', {
-      items: reservation.items,
-      discountPercent: reservation.discountPercent,
-      expireAt: reservation.expireAfterMinutes,
-      expireAfterMinutes: 10, // 일단 10으로 고정(10분 뒤 입력) TODO: 프론트에서 받아오도록 수정
-      
-    });
+    let result;
+    if(reservation.isNoShowSale){
+      result = await serverApiClient.post('/owner/no-show-posts/batch', {
+        items: reservation.items,
+        discountPercent: reservation.discountPercent,
+        expireAt: reservation.expireAfterMinutes,
+      });
+    }
+    else {
+      result = await serverApiClient.post('/owner/no-show-post-schedules', {
+        presetId: reservation.presetId,
+        items: reservation.items,
+      })
+    }
 
     // 받은 데이터 그대로 반환
     return NextResponse.json(result);

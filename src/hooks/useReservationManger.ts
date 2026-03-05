@@ -54,8 +54,16 @@ export const useReservationManager = ({ userId = null }: { userId?: string | nul
       // ✅ localStorage에서 직접 데이터 가져오기
       const allReservations = reservationStorage.getAll();
       
-      // ✅ 상태별 필터링
-      const filtered = reservationStorage.filterByStatus(activeTab === 'LATE' ? 'LATE' : activeTab || 'all');
+      // ✅ 상태별 필터링 - PENDING 탭에서는 PENDING과 LATE 모두 표시
+      let filtered;
+      if (activeTab === 'PENDING') {
+        // PENDING 탭에서는 PENDING과 LATE 모두 포함
+        filtered = allReservations.filter(
+          (res: Reservation) => res.status === 'PENDING' || res.status === 'LATE'
+        );
+      } else {
+        filtered = reservationStorage.filterByStatus(activeTab || 'all');
+      }
       
       // ✅ 페이지네이션 계산
       const pageSize = 10;

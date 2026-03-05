@@ -185,6 +185,33 @@ export async function fetchInvoiceDetails(invoiceData: BillingType) {
   }
 }
 
+/**
+ * invoiceId로 영수증 상세 조회
+ */
+export async function fetchInvoiceDetailsById(invoiceId: string) {
+  try {
+    const allBillingData = generateBillingData(mockUser.subscriptionStartDate);
+    const invoice = allBillingData.find((item) => item.invoiceId === invoiceId);
+
+    if (!invoice) {
+      return {
+        success: false,
+        error: '영수증을 찾을 수 없습니다.',
+        data: null,
+      };
+    }
+
+    return await fetchInvoiceDetails(invoice);
+  } catch (error) {
+    console.error('영수증 조회 실패:', error);
+    return {
+      success: false,
+      error: '영수증을 불러올 수 없습니다.',
+      data: null,
+    };
+  }
+}
+
 // 다음 결제일 계산
 function getNextPaymentDate() {
   const today = new Date();

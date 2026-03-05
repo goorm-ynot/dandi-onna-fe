@@ -23,7 +23,7 @@ import { Skeleton } from '@/components/ui/skeleton';
     transformData?: (data: T) => Reservation;
   }
 
-  export default function NoShowCreateForm<T = Reservation>({
+  function NoShowCreateForm<T = Reservation>({
     noShowData,
     onDataUpdate,
     transformData,
@@ -129,3 +129,5 @@ import { Skeleton } from '@/components/ui/skeleton';
       </>
     );
   }
+
+export default React.memo(NoShowCreateForm);

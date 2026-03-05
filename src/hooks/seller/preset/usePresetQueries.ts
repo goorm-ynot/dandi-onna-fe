@@ -16,36 +16,29 @@ export type PresetData = {
 }
 
 export function usePresetQueries() {
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [presets, setPresets] = useState<PresetData[]>([]);
-
     const query = useQuery({
         queryKey: ['presets'],
         queryFn: async () => {
-            setLoading(true);
-            setError(null);
             const response = await axios.get('/api/v1/seller/noshow/preset/default');
-            // console.log("API Response:", response.data);
             if(response.data && response.data.data) {
-                setPresets([response.data.data]); // API에서 받은 데이터를 배열로 감싸서 상태에 저장
-                // console.log("Presets set in state:", [response.data.data]);
+                return [response.data.data]; // 배열로 감싸서 반환
             } else {                
-                setPresets([]); // 데이터가 없으면 빈 배열로 설정
+                return []; // 데이터가 없으면 빈 배열 반환
             }
-            setLoading(false);
-            return response.data;
         },
         staleTime: 1000 * 60 * 5, // 5분간 캐시 유지
         refetchOnWindowFocus: false, // 윈도우 포커스시 refetch 비활성화
-        enabled: true, // 컴포넌트가 마운트될 때 바로 실행
     });
+
+    const presets = (query.data as PresetData[]) || [];
+    const { isLoading, error } = query;
+    const errorMessage = error instanceof Error ? error.message : null;
 
     return {
         ...query,
         presets,
-        loading,
-        error,
+        loading: isLoading,
+        error: errorMessage,
     }
 }
 
