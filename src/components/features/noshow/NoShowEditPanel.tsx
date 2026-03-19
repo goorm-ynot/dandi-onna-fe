@@ -30,10 +30,12 @@ export default function NoShowEditForm({ noShowData, onDataUpdate }: NoShowEditF
               <EditActionButtons noShowData={noShowData} onDataUpdate={onDataUpdate} />
             </>
           }>
-          <Label className='title5 text-foreground-normal px-20'>메뉴의 개수를 입력해 주세요.</Label>
-          <MenuQuantityList formResult={formResult} />
-          <DiscountSelector formResult={formResult} mode='edit' />
-          <VisitTimeSelector formResult={formResult} mode='edit' />
+          
+            <Label className='title5 text-foreground-normal px-20 pt-[36px]'>메뉴의 개수를 입력해 주세요.</Label>
+            <MenuQuantityList formResult={formResult} />
+            <DiscountSelector formResult={formResult} mode='edit' />
+            <VisitTimeSelector formResult={formResult} mode='edit' />
+          
         </FormLayout>
       </FormProvider>
 

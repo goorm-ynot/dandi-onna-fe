@@ -33,6 +33,8 @@ export interface Reservation {
   queue?: QueueInfo; // 큐 스케줄 정보 (노쇼 지연 등록 시)
 }
 
+export type ReservationQueuedAction = 'CANCEL' | 'PUBLISH_NOW';
+
 export interface SingleColumnLayoutProps<T = any> {
   title: string;
   showDate?: boolean;
@@ -87,6 +89,7 @@ export interface TwoColumnLayoutProps<T = any> {
   onDataUpdate?: (data: T) => void;
   onStatusUpdate?: (id: string, status: string) => void;
   onEditMode?: (active: boolean) => void;
+  onQueuedAction?: (action: ReservationQueuedAction, data: T) => void;
 
   leftClassName?: string;
   rightClassName?: string;
@@ -108,6 +111,7 @@ export interface RightPanelContentProps<T = any> {
   onStatusUpdate?: (id: string, status: string) => void;
   onClose?: () => void;
   onEditMode?: (editmode: boolean) => void;
+  onQueuedAction?: (action: ReservationQueuedAction, data: T) => void;
 }
 
 // table 컬럼 타입

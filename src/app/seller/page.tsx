@@ -3,11 +3,12 @@
  * TODO: 
  * 즉시 판매로 등록 체크박스 추가 (UI 먼저) [v]
  * 노쇼 예약 시 : 판매 대기 시간 API 연동(기본 프리셋만 조회?) [v]
- * 즉시 판매로 등록 체크 박스에 따른 api 연동(분리) [진행중]
- * 즉시 판매가 안니 경우 API 및 localstorage 저장 방식 신규 추가 []
+ * 즉시 판매로 등록 체크 박스에 따른 api 연동(분리) [v]
+ * 즉시 판매가 안니 경우 API 및 localstorage 저장 방식 신규 추가 [v]
  * '등록 취소' 분기 처리 []
- *  - '노쇼등록대기'인 경우 -> 방문시간초과로 상태 변경 []
- *  - '방문시간초과'인 경우 -> 그냥 state 초기화 (panel이 초기상태로) []
+ *  - '노쇼등록대기'인 경우 -> 방문시간초과로 상태 변경 [v]
+ *  - '방문시간초과'인 경우 -> 그냥 state 초기화 (panel이 초기상태로) [v]
+ *  - '노쇼등록대기'인 경우 -> 오른쪽 판낼의 버튼 변경 []
  */
 'use client';
 
@@ -15,7 +16,7 @@ import SinglePageLayout from '@/components/features/dashboard/SinglePageLayout';
 import { TwoColumnLayout } from '@/components/layout/TwoCloumnLayout';
 import { reservationStatus } from '@/constants/sellerNavConstant';
 import { useReservationManager } from '@/hooks/useReservationManger';
-import { Reservation } from '@/types/boardData';
+import { Reservation, ReservationQueuedAction } from '@/types/boardData';
 import { useEffect, useState, Suspense } from 'react';
 import { ConfirmDialog } from '@/components/features/dashboard/SubmitConfirmDialog';
 import { useSearchParams } from 'next/navigation';
@@ -189,6 +190,19 @@ function SellerPageContent() {
     // setSelectedReservation(null);
   };
 
+  /** 등록 대기인 경우 등록 취소 / 즉시 등록 분기 처리 
+   * TODO: API 연동 필요 (노쇼 등록 대기 -> 방문시간초과 / 노쇼 등록 대기 -> 즉시 등록) 0319
+  */
+  const handleQueuedAction = (action: ReservationQueuedAction, reservation: Reservation) => {
+    if(!reservation.queue) return;
+    console.log('queued action:', action, reservation);
+    if(action === 'CANCEL') {
+      // 예약 상태를 '방문시간초과'로 변경
+    } else if(action === 'PUBLISH_NOW') {
+      // 예약 상태를 '즉시 등록'으로 변경
+    }
+  };
+
   /** 로딩 중 상태 표시 */
   if (isLoading) {
     return (
@@ -233,6 +247,7 @@ function SellerPageContent() {
         onDataUpdate={onDataUpdate}
         onStatusUpdate={() => console.log('update2')}
         onEditMode={onChangeEdit}
+        onQueuedAction={handleQueuedAction}
         leftClassName='flex-1'
         rightClassName='w-96'
         showTitles={!!selectedReservation}

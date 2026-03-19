@@ -15,6 +15,7 @@ export function TwoColumnLayout({
   onDataUpdate,
   onStatusUpdate,
   onEditMode,
+  onQueuedAction,
   leftClassName = 'flex-1',
   rightClassName = 'w-96',
   showTitles = true,
@@ -51,6 +52,7 @@ export function TwoColumnLayout({
               onStatusUpdate={onStatusUpdate}
               onClose={onBack}
               onEditMode={onEditMode}
+              onQueuedAction={onQueuedAction}
             />
           </div>
         </div>

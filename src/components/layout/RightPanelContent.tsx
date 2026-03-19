@@ -18,6 +18,7 @@ export default function RightPanelContent({
   onStatusUpdate,
   onClose,
   onEditMode,
+  onQueuedAction,
 }: RightPanelContentProps) {
   // 데이터가 없으면 EmptyGuide 표시
   if (!data) {
@@ -44,6 +45,7 @@ export default function RightPanelContent({
           onClose={onClose}
           onEditMode={onEditMode}
           onDataUpdate={onDataUpdate ? () => onDataUpdate(data) : undefined}
+          onQueuedAction={onQueuedAction ? (action) => onQueuedAction(action, data) : undefined}
         />
       );
 

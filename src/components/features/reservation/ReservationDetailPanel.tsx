@@ -1,6 +1,6 @@
 import React from 'react';
 import { PanelMode, PanelType } from '@/types/PanleTypes';
-import { Reservation } from '@/types/boardData';
+import { Reservation, ReservationQueuedAction } from '@/types/boardData';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { formatTimeString } from '@/lib/dateParse';
@@ -13,6 +13,7 @@ interface ReservationDetailPanel {
   onClose?: () => void;
   onEditMode?: (editmode: boolean) => void;
   onDataUpdate?: (data: any) => void;
+  onQueuedAction?: (action: ReservationQueuedAction) => void;
 }
 
 export default function ReservationDetailPanel({
@@ -23,7 +24,26 @@ export default function ReservationDetailPanel({
   onClose,
   onEditMode,
   onDataUpdate,
+  onQueuedAction,
 }: ReservationDetailPanel) {
+  const handleFirstButtonClick = () => {
+    if (reservation.status === 'QUEUED') {
+      onQueuedAction?.('CANCEL');
+      return;
+    }
+
+    onEditMode?.(true);
+  };
+
+  const handleSecondButtonClick = () => {
+    if (reservation.status === 'QUEUED') {
+      onQueuedAction?.('PUBLISH_NOW');
+      return;
+    }
+
+    onDataUpdate?.(reservation);
+  };
+
   return (
     <div className='px-20 flex flex-col justify-between min-h-[758px] pt-[36px] '>
       <div className='flex flex-col gap-24'>
@@ -70,11 +90,21 @@ export default function ReservationDetailPanel({
           - 등록 취소 및 즉시등록 시 API 호출 필요
       */}
       <div className='flex gap-10 justify-center item-center py-20'>
-        <Button variant={'ghost'} size={'lg'} className='w-full body3' onClick={() => onEditMode?.(true)} disabled={reservation.status === 'NOSHOW' || reservation.status === 'VISIT_DONE'}>
-          노쇼등록
+        <Button
+         variant={'ghost'}
+         size={'lg'} 
+         className='w-full body3'
+         onClick={handleFirstButtonClick} 
+         disabled={reservation.status === 'NOSHOW' || reservation.status === 'VISIT_DONE'}>
+          {reservation.status === 'QUEUED' ? '등록취소' : '노쇼등록'}
         </Button>
-        <Button variant={'default'} size={'lg'} className='w-full body5' onClick={() => onDataUpdate?.(reservation)} disabled={reservation.status === 'NOSHOW' || reservation.status === 'VISIT_DONE'}>
-          방문완료
+        <Button 
+          variant={'default'} 
+          size={'lg'} 
+          className='w-full body5' 
+          onClick={handleSecondButtonClick} 
+          disabled={reservation.status === 'NOSHOW' || reservation.status === 'VISIT_DONE'}>
+          {reservation.status === 'QUEUED' ? '즉시등록' : '방문완료'}
         </Button>
       </div>
     </div>
