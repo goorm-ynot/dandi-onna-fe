@@ -21,7 +21,7 @@ export default function Header({ navList, hasNotification, userName }: HeaderPro
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const menuRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const { pos, updatePosition } = useDropdownPosition();
-  const { goSellerHomeParams } = useNavigation();
+  const { goSellerHome } = useNavigation();
   const BASE_URL = '/seller';
   
   const openMenu = (id: string) => {
@@ -57,7 +57,7 @@ export default function Header({ navList, hasNotification, userName }: HeaderPro
         {/* 왼쪽: 로고 + 네비게이션 */}
         <div className='flex items-center gap-12'>
           {/* 로고 */}
-          <div className='logo text-2xl cursor-pointer' onClick={() => goSellerHomeParams}>
+          <div className='logo text-2xl cursor-pointer' onClick={() => goSellerHome()}>
             단디온나
           </div>
 
