@@ -65,7 +65,7 @@ export default function Header({ navList, hasNotification, userName }: HeaderPro
           <nav className='self-stretch inline-flex justify-center items-center'>
             {navList.map((menu) => {
               const isActive = pathname === menu.path || menu.children?.some((child) => child.path && pathname === child.path);
-              const isOpen = openMenuId === menu.id;
+              const hasChildren = !!menu.children?.length;
 
               return (
                 <button
@@ -73,7 +73,7 @@ export default function Header({ navList, hasNotification, userName }: HeaderPro
                   ref={(el) => {
                     menuRefs.current[menu.id] = el;
                   }}
-                  onMouseEnter={() => openMenu(menu.id)}
+                  onMouseEnter={() => (hasChildren ? openMenu(menu.id) : closeMenu())}
                   onClick={() => handleNavClick(menu)}
                   className={`
           transition px-[50px] 
@@ -99,11 +99,11 @@ export default function Header({ navList, hasNotification, userName }: HeaderPro
       </div>
 
       {/* ✅ Portal로 드롭다운 렌더링 */}
-      {openMenuId && (
+      {openMenuId && navList.find((m) => m.id === openMenuId)?.children?.length ? (
         <DropdownPortal>
           <DropDownNav menu={navList.find((m) => m.id === openMenuId)!} x={pos.x} y={pos.y} close={closeMenu} />
         </DropdownPortal>
-      )}
+      ) : null}
     </header>
   );
 }

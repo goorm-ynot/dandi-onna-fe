@@ -22,11 +22,7 @@ export const MENU_ITEMS: MenuItem[] = [
   {
     id: 'sales-management',
     label: '매출 관리',
-    children: [
-      { id: 'settlement-management', label: '정산관리', icon: 'Lock' },
-      { id: 'tax-invoice', label: '세금계산서', icon: 'Lock' },
-      { id: 'vat-management', label: '부가가치세', icon: 'Lock' },
-    ],
+    path: '/mypage/analytics',
   },
   {
     id: 'product-stock-management',
@@ -46,7 +42,7 @@ export const MENU_ITEMS: MenuItem[] = [
     path: '/mypage',
     children: [
       { id: 'mypage-business-info', label: '가게 설정', path: '/mypage' },
-      { id: 'business-management', label: '매출 관리', path:'/mypage/analytics' },
+      // { id: 'business-management', label: '매출 관리', path:'/mypage/analytics' },
       { id: 'noshow-preset', label: '노쇼 프리셋', path: '/mypage/preset' },
       { id: 'billing-management', label: '청구 및 결제', path:'/mypage/billing' },
     ],
